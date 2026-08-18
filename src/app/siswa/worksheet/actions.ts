@@ -17,12 +17,13 @@ export async function markVideoWatched(sessionId: string) {
     .single()
 
   if (progress) {
-    await supabase
+    const { error } = await supabase
       .from('exercise_progress')
       .update({ is_video_watched: true })
       .eq('id', progress.id)
+    if (error) throw new Error(error.message)
   } else {
-    await supabase
+    const { error } = await supabase
       .from('exercise_progress')
       .insert({
         student_id: user.id,
@@ -30,6 +31,7 @@ export async function markVideoWatched(sessionId: string) {
         is_video_watched: true,
         status: 'in_progress',
       })
+    if (error) throw new Error(error.message)
   }
 
   revalidatePath('/siswa/worksheet')
@@ -51,7 +53,7 @@ export async function submitWorksheet(sessionId: string, formData: string) {
     .single()
 
   if (progress) {
-    await supabase
+    const { error } = await supabase
       .from('exercise_progress')
       .update({
         worksheet_data: worksheetData,
@@ -59,8 +61,9 @@ export async function submitWorksheet(sessionId: string, formData: string) {
         points_earned: 10
       })
       .eq('id', progress.id)
+    if (error) throw new Error(error.message)
   } else {
-    await supabase
+    const { error } = await supabase
       .from('exercise_progress')
       .insert({
         student_id: user.id,
@@ -70,6 +73,7 @@ export async function submitWorksheet(sessionId: string, formData: string) {
         is_video_watched: true,
         points_earned: 10
       })
+    if (error) throw new Error(error.message)
   }
 
   revalidatePath('/siswa/worksheet')

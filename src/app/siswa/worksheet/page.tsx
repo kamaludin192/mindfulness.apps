@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import VideoPlayer from '@/components/siswa/VideoPlayer'
 import WorksheetForm from '@/components/siswa/WorksheetForm'
 import { BookOpen } from 'lucide-react'
@@ -51,7 +52,7 @@ export default async function WorksheetPage({ searchParams }: { searchParams: { 
       <main className="p-4 max-w-lg mx-auto">
         <div className="flex gap-2 overflow-x-auto pb-4 snap-x hide-scrollbar scrollbar-hide">
           {sessions.map((s) => (
-            <a 
+            <Link 
               key={s.id} 
               href={`/siswa/worksheet?session=${s.id}`}
               className={`snap-center whitespace-nowrap px-4 py-2 rounded-full font-medium transition-colors border ${
@@ -61,7 +62,7 @@ export default async function WorksheetPage({ searchParams }: { searchParams: { 
               }`}
             >
               Sesi {s.session_number}
-            </a>
+            </Link>
           ))}
         </div>
 

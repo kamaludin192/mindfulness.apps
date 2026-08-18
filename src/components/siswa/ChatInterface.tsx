@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { sendMessage } from '@/app/siswa/chat/actions'
 import { Send } from 'lucide-react'
@@ -18,7 +18,8 @@ export default function ChatInterface({
   const [newMessage, setNewMessage] = useState('')
   const [sending, setSending] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const supabase = createClient()
+  
+  const supabase = useMemo(() => createClient(), [])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -41,12 +42,7 @@ export default function ChatInterface({
             (newMsg.sender_id === guruId && newMsg.receiver_id === currentUserId)
           ) {
             setMessages((prev) => {
-              // Prevent duplicates if optimistic update already added it
-              // Assuming our optimistic id is a UUID and DB id is a UUID, they won't match, 
-              // but we can just rely on the server for simplicity or filter by message text and time.
-              // A better way is not using optimistic updates if we rely strictly on realtime, 
-              // but optimistic is better UX. We'll filter duplicates by checking if it already exists 
-              // (but ids differ). Let's just do a simple check.
+              if (prev.some(m => m.id === newMsg.id)) return prev;
               return [...prev, newMsg]
             })
           }
@@ -76,14 +72,8 @@ export default function ChatInterface({
     }
   }
 
-  // Deduplicate messages by their content and rough time, or just ID if not using optimistic
-  // Since we removed optimistic update above to prevent double rendering easily, we just rely on DB return and Realtime.
-  // Actually, sendMessage doesn't return the message, and realtime handles the UI update.
-  // We need to fetch it or rely strictly on realtime.
-  // BUT the user who sends it also receives it via realtime. So it will appear.
-
   return (
-    <div className="flex flex-col h-[500px] bg-white rounded-3xl shadow-sm border border-brand-100 overflow-hidden">
+    <div className="flex flex-col h-[500px] bg-white rounded-3xl shadow-sm border border-brand-50 overflow-hidden">
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-brand-50/30">
         {messages.length === 0 ? (
           <div className="text-center text-gray-500 mt-10">
@@ -91,9 +81,6 @@ export default function ChatInterface({
           </div>
         ) : (
           messages.map((msg, idx) => {
-            // Very basic deduplication hack in case realtime and initial fetch overlap
-            if (idx > 0 && messages[idx - 1].id === msg.id) return null;
-            
             const isMe = msg.sender_id === currentUserId
             return (
               <div key={msg.id || idx} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
@@ -101,7 +88,7 @@ export default function ChatInterface({
                   className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
                     isMe 
                       ? 'bg-brand-500 text-white rounded-br-sm' 
-                      : 'bg-white text-brand-900 rounded-bl-sm border border-brand-100 shadow-sm'
+                      : 'bg-white text-brand-900 rounded-bl-sm border border-brand-50 shadow-sm'
                   }`}
                 >
                   <p>{msg.message}</p>
@@ -113,13 +100,13 @@ export default function ChatInterface({
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSend} className="p-3 bg-white border-t border-brand-100 flex gap-2">
+      <form onSubmit={handleSend} className="p-3 bg-white border-t border-brand-50 flex gap-2">
         <input 
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Tulis pesan..."
-          className="flex-1 rounded-full px-4 py-2 border border-brand-200 focus:ring-2 focus:ring-brand-500 outline-none bg-brand-50/50"
+          className="flex-1 rounded-full px-4 py-2 border border-brand-300 focus:ring-2 focus:ring-brand-500 outline-none bg-brand-50/50"
         />
         <button 
           type="submit"

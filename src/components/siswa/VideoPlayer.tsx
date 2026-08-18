@@ -28,9 +28,11 @@ export default function VideoPlayer({
     }
   }
 
-  const embedUrl = videoUrl?.includes('youtube.com/watch') 
-    ? videoUrl.replace('watch?v=', 'embed/')
-    : videoUrl
+  const embedUrl = videoUrl?.includes('youtu.be/')
+    ? videoUrl.replace('youtu.be/', 'youtube.com/embed/')
+    : videoUrl?.includes('youtube.com/watch') 
+      ? videoUrl.replace('watch?v=', 'embed/')
+      : videoUrl
 
   return (
     <div className="flex flex-col gap-4">

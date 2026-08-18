@@ -34,7 +34,7 @@ export default function WorksheetForm({ sessionId, initialData, status }: Worksh
       <h3 className="text-xl font-bold text-brand-900 mb-2">Lembar Kerja Siswa</h3>
       
       <div className="bg-surface rounded-2xl shadow-sm border border-brand-50 overflow-hidden flex flex-col">
-        <div className="bg-brand-50 px-4 py-3 border-b border-brand-100">
+        <div className="bg-brand-50 px-4 py-3 border-b border-brand-50">
           <label htmlFor="reflection" className="font-semibold text-brand-900 block">
             Refleksi Diri
           </label>
@@ -53,7 +53,7 @@ export default function WorksheetForm({ sessionId, initialData, status }: Worksh
       </div>
 
       <div className="bg-surface rounded-2xl shadow-sm border border-brand-50 overflow-hidden flex flex-col">
-        <div className="bg-brand-50 px-4 py-3 border-b border-brand-100">
+        <div className="bg-brand-50 px-4 py-3 border-b border-brand-50">
           <label htmlFor="actionPlan" className="font-semibold text-brand-900 block">
             Rencana Aksi
           </label>
