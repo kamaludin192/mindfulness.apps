@@ -40,7 +40,7 @@ export default async function GuruDashboardMonitoring() {
        </div>
 
        <div className="bg-surface rounded-2xl shadow-sm border border-brand-300 overflow-hidden">
-         <StudentTable students={studentsWithProgress as any} />
+         <StudentTable students={studentsWithProgress as unknown as Parameters<typeof StudentTable>[0]["students"]} />
        </div>
      </div>
   );

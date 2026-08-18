@@ -53,7 +53,7 @@ export default async function CounselingPage() {
       </div>
 
       <div className="bg-surface rounded-2xl shadow-sm border border-brand-300 overflow-hidden">
-        <CounselingTable bookings={formattedBookings as any} />
+        <CounselingTable bookings={formattedBookings as unknown as Parameters<typeof CounselingTable>[0]["bookings"]} />
       </div>
     </div>
   );
