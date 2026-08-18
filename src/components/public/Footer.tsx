@@ -67,16 +67,8 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#e8ece1]/50">
+      <div className="max-w-6xl mx-auto mt-12 pt-6 border-t border-white/10 text-center text-xs text-[#e8ece1]/50">
         <p>&copy; {new Date().getFullYear()} Mindfulnessintervention.id - Hak Cipta Dilindungi.</p>
-        <div className="flex gap-6">
-          <Link href="/login" className="hover:text-white transition-colors">
-            Masuk Siswa
-          </Link>
-          <Link href="/login" className="hover:text-white transition-colors">
-            Masuk Guru BK
-          </Link>
-        </div>
       </div>
     </footer>
   );
