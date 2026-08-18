@@ -12,7 +12,7 @@ export default function Footer() {
               <Leaf className="w-4 h-4 text-white" />
             </span>
             <span className="font-serif font-bold text-xl tracking-tight text-white">
-              mindfulness<span className="font-normal text-[#c2db8f]">.id</span>
+              mindfulnessintervention<span className="font-normal text-[#c2db8f]">.id</span>
             </span>
           </div>
           <p className="text-sm text-[#e8ece1]/70 max-w-md leading-relaxed">
@@ -68,7 +68,7 @@ export default function Footer() {
       </div>
 
       <div className="max-w-6xl mx-auto mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#e8ece1]/50">
-        <p>&copy; {new Date().getFullYear()} Mindfulness.id - Hak Cipta Dilindungi.</p>
+        <p>&copy; {new Date().getFullYear()} Mindfulnessintervention.id - Hak Cipta Dilindungi.</p>
         <div className="flex gap-6">
           <Link href="/login" className="hover:text-white transition-colors">
             Masuk Siswa

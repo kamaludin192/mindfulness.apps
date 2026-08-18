@@ -23,8 +23,8 @@ export default function Navbar() {
           <span className="flex items-center justify-center w-9 h-9 rounded-full bg-[#3f5726] shadow-sm group-hover:scale-105 transition-transform">
             <Leaf className="w-4 h-4 text-white" />
           </span>
-          <span className="font-serif font-bold text-lg tracking-tight text-[#3f5726]">
-            mindfulness<span className="font-normal text-[#5a7a35]">.id</span>
+          <span className="font-serif font-bold text-base md:text-lg tracking-tight text-[#3f5726]">
+            mindfulnessintervention<span className="font-normal text-[#5a7a35]">.id</span>
           </span>
         </Link>
 
