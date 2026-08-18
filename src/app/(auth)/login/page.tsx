@@ -166,9 +166,17 @@ export default function AuthPage() {
 
               {/* Password Input */}
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-[#1e2a14] uppercase tracking-wider block" htmlFor="password">
-                  Kata Sandi
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-[#1e2a14] uppercase tracking-wider block" htmlFor="password">
+                    Kata Sandi
+                  </label>
+                  <Link
+                    href="/forgot-password"
+                    className="text-xs font-semibold text-[#3f5726] hover:underline"
+                  >
+                    Lupa kata sandi?
+                  </Link>
+                </div>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#2b3a1a]/40">
                     <Lock className="h-4 w-4" />
