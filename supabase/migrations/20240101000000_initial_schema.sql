@@ -5,7 +5,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TYPE user_role AS ENUM ('siswa', 'guru_bk', 'superadmin');
 
 CREATE TABLE public.profiles (
-    id UUID REFERENCES auth.users(id) PRIMARY KEY,
+    id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
     role user_role NOT NULL DEFAULT 'siswa',
     full_name TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
@@ -23,7 +23,7 @@ CREATE TABLE public.cms_contents (
 -- 3. Assessments Table
 CREATE TABLE public.assessments (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    student_id UUID REFERENCES public.profiles(id) NOT NULL,
+    student_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
     mood_score INTEGER NOT NULL CHECK (mood_score >= 1 AND mood_score <= 5),
     notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
@@ -34,8 +34,8 @@ CREATE TYPE exercise_status AS ENUM ('in_progress', 'completed');
 
 CREATE TABLE public.exercise_progress (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    student_id UUID REFERENCES public.profiles(id) NOT NULL,
-    session_id UUID REFERENCES public.cms_contents(id) NOT NULL,
+    student_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    session_id UUID REFERENCES public.cms_contents(id) ON DELETE CASCADE NOT NULL,
     status exercise_status NOT NULL DEFAULT 'in_progress',
     worksheet_data JSONB,
     is_video_watched BOOLEAN NOT NULL DEFAULT false,
@@ -50,8 +50,8 @@ CREATE TYPE booking_status AS ENUM ('pending', 'approved', 'rejected');
 
 CREATE TABLE public.counseling_bookings (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    student_id UUID REFERENCES public.profiles(id) NOT NULL,
-    guru_id UUID REFERENCES public.profiles(id) NOT NULL,
+    student_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    guru_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
     scheduled_at TIMESTAMP WITH TIME ZONE NOT NULL,
     status booking_status NOT NULL DEFAULT 'pending',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -61,8 +61,8 @@ CREATE TABLE public.counseling_bookings (
 -- 6. Chat_Messages Table
 CREATE TABLE public.chat_messages (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    sender_id UUID REFERENCES public.profiles(id) NOT NULL,
-    receiver_id UUID REFERENCES public.profiles(id) NOT NULL,
+    sender_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    receiver_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
     message TEXT NOT NULL,
     is_read BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
@@ -107,9 +107,6 @@ CREATE POLICY "Profiles are viewable by everyone" ON public.profiles
 -- Users can insert their own profile
 CREATE POLICY "Users can insert their own profile" ON public.profiles
     FOR INSERT WITH CHECK (auth.uid() = id);
--- Users can update own profile
-CREATE POLICY "Users can update own profile" ON public.profiles
-    FOR UPDATE USING (auth.uid() = id);
 
 -- 2. Cms_Contents
 -- Everyone can view CMS contents
@@ -166,7 +163,7 @@ CREATE POLICY "Siswa can insert own bookings" ON public.counseling_bookings
     FOR INSERT WITH CHECK (auth.uid() = student_id);
 -- Siswa can update own bookings (e.g. cancel)
 CREATE POLICY "Siswa can update own bookings" ON public.counseling_bookings
-    FOR UPDATE USING (auth.uid() = student_id);
+    FOR UPDATE USING (auth.uid() = student_id) WITH CHECK (status = 'pending');
 -- Guru BK can view bookings assigned to them
 CREATE POLICY "Guru BK can view assigned bookings" ON public.counseling_bookings
     FOR SELECT USING (auth.uid() = guru_id);
