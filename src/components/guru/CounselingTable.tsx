@@ -17,14 +17,16 @@ type Booking = {
 
 export function CounselingTable({ bookings }: { bookings: Booking[] }) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleUpdate = async (id: string, status: 'approved' | 'rejected') => {
     try {
       setLoadingId(id);
+      setErrorMsg(null);
       await updateCounselingStatus(id, status);
     } catch (error) {
       console.error(error);
-      alert("Failed to update status");
+      setErrorMsg("Gagal mengubah status. Silakan coba lagi.");
     } finally {
       setLoadingId(null);
     }
@@ -39,8 +41,14 @@ export function CounselingTable({ bookings }: { bookings: Booking[] }) {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-left border-collapse">
+    <div className="space-y-4">
+      {errorMsg && (
+        <div className="p-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg">
+          {errorMsg}
+        </div>
+      )}
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse">
         <thead>
           <tr className="bg-brand-50 border-b border-brand-300">
             <th className="px-6 py-4 font-semibold text-brand-900">Nama Siswa</th>
@@ -109,6 +117,7 @@ export function CounselingTable({ bookings }: { bookings: Booking[] }) {
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

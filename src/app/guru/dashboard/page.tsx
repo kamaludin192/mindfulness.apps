@@ -5,6 +5,11 @@ import { StudentTable } from "@/components/guru/StudentTable";
 export default async function GuruDashboardMonitoring() {
   const supabase = createClient();
   
+  const { data: user, error: authError } = await supabase.auth.getUser();
+  if (authError || !user?.user) {
+    return <div>Silakan login sebagai Guru BK.</div>;
+  }
+
   const { data: studentsWithProgress, error } = await supabase
     .from('profiles')
     .select(`
@@ -35,8 +40,7 @@ export default async function GuruDashboardMonitoring() {
        </div>
 
        <div className="bg-surface rounded-2xl shadow-sm border border-brand-300 overflow-hidden">
-         {/* @ts-ignore */}
-         <StudentTable students={studentsWithProgress} />
+         <StudentTable students={studentsWithProgress as any} />
        </div>
      </div>
   );

@@ -40,8 +40,7 @@ export default async function CounselingPage() {
     guru_id: b.guru_id,
     scheduled_at: b.scheduled_at,
     status: b.status,
-    // @ts-ignore
-    student_profile: b.student
+    student_profile: b.student as unknown as { full_name: string }
   })) || [];
 
   return (
@@ -54,8 +53,7 @@ export default async function CounselingPage() {
       </div>
 
       <div className="bg-surface rounded-2xl shadow-sm border border-brand-300 overflow-hidden">
-        {/* @ts-ignore */}
-        <CounselingTable bookings={formattedBookings} />
+        <CounselingTable bookings={formattedBookings as any} />
       </div>
     </div>
   );
