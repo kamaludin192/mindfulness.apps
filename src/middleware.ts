@@ -62,10 +62,18 @@ export async function middleware(request: NextRequest) {
   const isSiswaRoute = request.nextUrl.pathname.startsWith('/siswa')
   const isGuruRoute = request.nextUrl.pathname.startsWith('/guru')
 
+  const redirectWithCookies = (url: URL) => {
+    const response = NextResponse.redirect(url)
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      response.cookies.set(cookie.name, cookie.value, cookie)
+    })
+    return response
+  }
+
   if (!user && (isSiswaRoute || isGuruRoute)) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
-    return NextResponse.redirect(url)
+    return redirectWithCookies(url)
   }
 
   if (user) {
@@ -87,19 +95,19 @@ export async function middleware(request: NextRequest) {
       } else {
         url.pathname = '/'
       }
-      return NextResponse.redirect(url)
+      return redirectWithCookies(url)
     }
 
     if (isSiswaRoute && role !== 'siswa') {
       const url = request.nextUrl.clone()
       url.pathname = role === 'guru_bk' || role === 'superadmin' ? '/guru' : '/login'
-      return NextResponse.redirect(url)
+      return redirectWithCookies(url)
     }
 
     if (isGuruRoute && role !== 'guru_bk' && role !== 'superadmin') {
       const url = request.nextUrl.clone()
       url.pathname = role === 'siswa' ? '/siswa' : '/login'
-      return NextResponse.redirect(url)
+      return redirectWithCookies(url)
     }
   }
 

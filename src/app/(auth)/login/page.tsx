@@ -1,8 +1,23 @@
 'use client'
 
-import { useFormState } from 'react-dom'
+import { useFormState, useFormStatus } from 'react-dom'
 import { User, Lock, LogIn } from 'lucide-react'
 import { login } from './actions'
+
+function SubmitButton() {
+  const { pending } = useFormStatus()
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-brand-500 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      <LogIn className="h-4 w-4 mr-2" />
+      {pending ? 'Memproses...' : 'Masuk'}
+    </button>
+  )
+}
 
 const initialState = {
   error: null as string | null,
@@ -65,13 +80,7 @@ export default function LoginPage() {
           )}
 
           <div className="flex flex-col gap-3 pt-2">
-            <button 
-              type="submit"
-              className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-brand-500 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors"
-            >
-              <LogIn className="h-4 w-4 mr-2" />
-              Masuk
-            </button>
+            <SubmitButton />
           </div>
         </form>
       </div>
