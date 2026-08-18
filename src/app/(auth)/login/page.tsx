@@ -17,7 +17,31 @@ import {
   CheckCircle2,
   Sparkles,
 } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 import { login, register, type AuthState } from './actions'
+
+function GoogleIcon() {
+  return (
+    <svg className="w-5 h-5" viewBox="0 0 24 24">
+      <path
+        fill="#4285F4"
+        d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+      />
+    </svg>
+  )
+}
 
 function SubmitButton({ isRegister }: { isRegister: boolean }) {
   const { pending } = useFormStatus()
@@ -49,11 +73,32 @@ export default function AuthPage() {
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
 
   const [loginState, loginAction] = useFormState(login, initialAuthState)
   const [registerState, registerAction] = useFormState(register, initialAuthState)
 
   const currentState = activeTab === 'login' ? loginState : registerState
+
+  const handleGoogleAuth = async () => {
+    try {
+      setGoogleLoading(true)
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+      if (error) {
+        alert(`Gagal login dengan Google: ${error.message}`)
+        setGoogleLoading(false)
+      }
+    } catch (err) {
+      console.error('Google OAuth Error:', err)
+      setGoogleLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#f3f6e8] text-[#2b3a1a] selection:bg-[#c2db8f]/40 relative overflow-hidden">
@@ -65,7 +110,7 @@ export default function AuthPage() {
       <header className="p-4 md:p-6 max-w-6xl w-full mx-auto flex items-center justify-between z-10">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-xs text-[#3f5726] border border-[#d5dcc4] text-xs md:text-sm font-semibold hover:bg-white hover:shadow-xs transition-all"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-xs text-[#3f5726] border border-[#d5dcc4] text-xs md:text-sm font-semibold hover:bg-white hover:shadow-xs transition-all cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Kembali ke Beranda</span>
@@ -123,6 +168,35 @@ export default function AuthPage() {
             >
               Daftar Akun
             </button>
+          </div>
+
+          {/* Google Sign In Button */}
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={handleGoogleAuth}
+              disabled={googleLoading}
+              className="w-full flex items-center justify-center gap-3 py-3.5 px-4 rounded-2xl border border-[#d5dcc4] bg-white hover:bg-[#f3f6e8] text-[#1e2a14] text-xs md:text-sm font-semibold shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            >
+              {googleLoading ? (
+                <div className="w-5 h-5 border-2 border-[#3f5726]/30 border-t-[#3f5726] rounded-full animate-spin" />
+              ) : (
+                <GoogleIcon />
+              )}
+              <span>
+                {activeTab === 'login'
+                  ? 'Masuk Cepat dengan Google'
+                  : 'Daftar Otomatis dengan Google'}
+              </span>
+            </button>
+
+            {/* Divider */}
+            <div className="relative flex items-center justify-center pt-1">
+              <div className="border-t border-[#d5dcc4] w-full" />
+              <span className="bg-white px-3 text-[11px] text-[#2b3a1a]/50 uppercase tracking-wider shrink-0">
+                atau via email
+              </span>
+            </div>
           </div>
 
           {/* Feedback Alerts */}
