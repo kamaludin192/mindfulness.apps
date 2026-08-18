@@ -170,28 +170,29 @@ export default function AuthPage() {
             </button>
           </div>
 
-          {/* Google Sign In Button */}
-          <div className="space-y-3">
-            <button
-              type="button"
-              onClick={handleGoogleAuth}
-              disabled={googleLoading}
-              className="w-full flex items-center justify-center gap-3 py-3.5 px-4 rounded-2xl border border-[#d5dcc4] bg-white hover:bg-[#f3f6e8] text-[#1e2a14] text-xs md:text-sm font-semibold shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-            >
-              {googleLoading ? (
-                <div className="w-5 h-5 border-2 border-[#3f5726]/30 border-t-[#3f5726] rounded-full animate-spin" />
-              ) : (
-                <GoogleIcon />
-              )}
-              <span>
-                {activeTab === 'login'
-                  ? 'Masuk Cepat dengan Google'
-                  : 'Daftar Otomatis dengan Google'}
-              </span>
-            </button>
+          {/* Google Sign In Button (Icon Only) */}
+          <div className="space-y-4 pt-1">
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={handleGoogleAuth}
+                disabled={googleLoading}
+                title={activeTab === 'login' ? 'Masuk dengan Google' : 'Daftar dengan Google'}
+                aria-label={activeTab === 'login' ? 'Masuk dengan Google' : 'Daftar dengan Google'}
+                className="w-14 h-14 flex items-center justify-center rounded-2xl border border-[#d5dcc4] bg-white hover:bg-[#f3f6e8] shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {googleLoading ? (
+                  <div className="w-5 h-5 border-2 border-[#3f5726]/30 border-t-[#3f5726] rounded-full animate-spin" />
+                ) : (
+                  <div className="scale-110">
+                    <GoogleIcon />
+                  </div>
+                )}
+              </button>
+            </div>
 
             {/* Divider */}
-            <div className="relative flex items-center justify-center pt-1">
+            <div className="relative flex items-center justify-center">
               <div className="border-t border-[#d5dcc4] w-full" />
               <span className="bg-white px-3 text-[11px] text-[#2b3a1a]/50 uppercase tracking-wider shrink-0">
                 atau via email
