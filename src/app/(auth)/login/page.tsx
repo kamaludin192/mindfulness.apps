@@ -13,8 +13,6 @@ import {
   Eye,
   EyeOff,
   ArrowLeft,
-  GraduationCap,
-  UserCheck,
   AlertCircle,
   CheckCircle2,
   Sparkles,
@@ -51,7 +49,6 @@ export default function AuthPage() {
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [selectedRole, setSelectedRole] = useState<'siswa' | 'guru_bk'>('siswa')
 
   const [loginState, loginAction] = useFormState(login, initialAuthState)
   const [registerState, registerAction] = useFormState(register, initialAuthState)
@@ -216,41 +213,14 @@ export default function AuthPage() {
           {/* REGISTER FORM */}
           {activeTab === 'register' && (
             <form action={registerAction} className="space-y-4">
-              {/* Role Selection (Siswa vs Guru BK) */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-[#1e2a14] uppercase tracking-wider block">
-                  Daftar Sebagai:
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole('siswa')}
-                    className={`p-3 rounded-2xl border flex items-center justify-center gap-2 text-xs md:text-sm font-semibold transition-all cursor-pointer ${
-                      selectedRole === 'siswa'
-                        ? 'border-[#3f5726] bg-[#3f5726]/10 text-[#3f5726] ring-2 ring-[#3f5726]'
-                        : 'border-[#d5dcc4] bg-white text-[#2b3a1a]/70 hover:bg-[#f3f6e8]'
-                    }`}
-                  >
-                    <GraduationCap className="w-4 h-4" />
-                    <span>Siswa (Murid)</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole('guru_bk')}
-                    className={`p-3 rounded-2xl border flex items-center justify-center gap-2 text-xs md:text-sm font-semibold transition-all cursor-pointer ${
-                      selectedRole === 'guru_bk'
-                        ? 'border-[#3f5726] bg-[#3f5726]/10 text-[#3f5726] ring-2 ring-[#3f5726]'
-                        : 'border-[#d5dcc4] bg-white text-[#2b3a1a]/70 hover:bg-[#f3f6e8]'
-                    }`}
-                  >
-                    <UserCheck className="w-4 h-4" />
-                    <span>Guru BK</span>
-                  </button>
-                </div>
-                {/* Hidden input to pass selected role to FormData */}
-                <input type="hidden" name="role" value={selectedRole} />
+              {/* Notice that registration is for students */}
+              <div className="p-3.5 bg-[#f3f6e8] rounded-2xl border border-[#d5dcc4] text-xs text-[#2b3a1a]/80 flex items-start gap-2.5">
+                <Sparkles className="w-4 h-4 text-[#3f5726] shrink-0 mt-0.5" />
+                <p className="leading-relaxed">
+                  Pendaftaran akun ini khusus untuk <strong>Siswa (Murid)</strong>. Akun Guru BK didaftarkan langsung oleh Administrator Sekolah.
+                </p>
               </div>
+              <input type="hidden" name="role" value="siswa" />
 
               {/* Full Name Input */}
               <div className="space-y-1.5">

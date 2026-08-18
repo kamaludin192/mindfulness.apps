@@ -59,7 +59,7 @@ export async function register(prevState: AuthState, formData: FormData): Promis
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const confirmPassword = formData.get('confirmPassword') as string
-  const role = (formData.get('role') as string) || 'siswa'
+  const role = 'siswa'
 
   if (!fullName || !email || !password) {
     return { error: 'Semua bidang wajib diisi.' }
