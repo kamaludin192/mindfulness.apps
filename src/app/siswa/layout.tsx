@@ -1,65 +1,69 @@
-import Link from "next/link";
-import { Home, BookHeart, UserCircle } from "lucide-react";
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
+import Link from 'next/link'
+import { Leaf } from 'lucide-react'
+import { SiswaSidebar, SiswaBottomNav } from '@/components/siswa/SiswaNav'
 
-export default function SiswaLayout({
+export default async function SiswaLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
+  const supabase = createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('full_name, role')
+    .eq('id', user.id)
+    .single()
+
+  const fullName = profile?.full_name || user.user_metadata?.full_name || 'Siswa'
+  const initial = fullName.charAt(0).toUpperCase()
+
   return (
-    <div className="min-h-screen bg-brand-50 flex flex-col">
+    <div className="min-h-screen bg-[#f3f6e8] text-[#2b3a1a] flex flex-col selection:bg-[#c2db8f]/40">
       {/* Mobile Top App Bar */}
-      <header className="sticky top-0 z-10 bg-white border-b border-brand-300 px-4 py-3 flex items-center justify-between shadow-sm md:hidden">
-        <h1 className="text-lg font-bold text-brand-900">Mindfulness App</h1>
-        <div className="w-8 h-8 rounded-full bg-brand-300 flex items-center justify-center text-brand-900 font-semibold">
-          S
-        </div>
+      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-[#d5dcc4] px-4 py-3 flex items-center justify-between shadow-xs md:hidden">
+        <Link href="/siswa" className="flex items-center gap-2">
+          <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-[#3f5726] text-white">
+            <Leaf className="w-4 h-4" />
+          </span>
+          <span className="font-serif font-bold text-sm text-[#1e2a14]">
+            mindfulness<span className="text-[#3f5726] font-normal">.id</span>
+          </span>
+        </Link>
+
+        <Link
+          href="/siswa/profil"
+          className="flex items-center gap-2 p-1 pr-2 rounded-full bg-[#f3f6e8] border border-[#d5dcc4] text-xs font-semibold text-[#1e2a14]"
+        >
+          <div className="w-6 h-6 rounded-full bg-[#3f5726] text-white flex items-center justify-center text-xs font-bold">
+            {initial}
+          </div>
+          <span className="max-w-[100px] truncate">{fullName}</span>
+        </Link>
       </header>
 
+      {/* Main App Shell */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Desktop Sidebar (hidden on mobile) */}
-        <aside className="hidden md:flex flex-col w-64 bg-white border-r border-brand-300 h-[calc(100vh)] sticky top-0">
-          <div className="p-6 border-b border-brand-300">
-            <h1 className="text-xl font-bold text-brand-900">Mindfulness</h1>
-            <p className="text-sm text-brand-700">Portal Siswa</p>
-          </div>
-          <nav className="flex-1 px-4 py-6 space-y-2">
-            <Link href="/siswa" className="flex items-center px-4 py-3 text-brand-900 bg-brand-50 rounded-lg font-medium">
-              <Home className="h-5 w-5 mr-3 text-brand-500" />
-              Beranda
-            </Link>
-            <Link href="/siswa/materi" className="flex items-center px-4 py-3 text-brand-700 hover:bg-brand-50 hover:text-brand-900 rounded-lg transition-colors">
-              <BookHeart className="h-5 w-5 mr-3 text-brand-500" />
-              Materi
-            </Link>
-            <Link href="/siswa/profil" className="flex items-center px-4 py-3 text-brand-700 hover:bg-brand-50 hover:text-brand-900 rounded-lg transition-colors">
-              <UserCircle className="h-5 w-5 mr-3 text-brand-500" />
-              Profil
-            </Link>
-          </nav>
-        </aside>
+        {/* Desktop Sidebar */}
+        <SiswaSidebar />
 
-        {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto pb-20 md:pb-0">
+        {/* Dynamic Page Content */}
+        <main className="flex-1 overflow-y-auto pb-24 md:pb-8">
           {children}
         </main>
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 w-full bg-white border-t border-brand-300 flex justify-around items-center h-16 px-2 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-20">
-        <Link href="/siswa" className="flex flex-col items-center justify-center w-full h-full text-brand-700 hover:text-brand-900">
-          <Home className="h-6 w-6 mb-1 text-brand-500" />
-          <span className="text-[10px] font-medium">Beranda</span>
-        </Link>
-        <Link href="/siswa/materi" className="flex flex-col items-center justify-center w-full h-full text-brand-700 hover:text-brand-900">
-          <BookHeart className="h-6 w-6 mb-1" />
-          <span className="text-[10px] font-medium">Materi</span>
-        </Link>
-        <Link href="/siswa/profil" className="flex flex-col items-center justify-center w-full h-full text-brand-700 hover:text-brand-900">
-          <UserCircle className="h-6 w-6 mb-1" />
-          <span className="text-[10px] font-medium">Profil</span>
-        </Link>
-      </nav>
+      <SiswaBottomNav />
     </div>
-  );
+  )
 }
