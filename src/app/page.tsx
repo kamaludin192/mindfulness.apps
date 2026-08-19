@@ -19,13 +19,13 @@ export default function HomePage() {
         {/* 1. HERO SECTION */}
         <section className="relative px-4 pt-16 pb-20 md:pt-24 md:pb-28 overflow-hidden">
           {/* Ambient Lighting Circles */}
-          <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-linear-to-b from-[#c8e29a]/35 via-[#dfecc7]/20 to-transparent blur-3xl pointer-events-none -z-10 rounded-full" />
+          <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-gradient-to-b from-[#c8e29a]/35 via-[#dfecc7]/20 to-transparent blur-3xl pointer-events-none -z-10 rounded-full" />
           <div className="absolute top-40 -left-20 w-80 h-80 bg-[#3f5726]/10 blur-3xl pointer-events-none -z-10 rounded-full" />
           <div className="absolute top-40 -right-20 w-80 h-80 bg-[#c2db8f]/20 blur-3xl pointer-events-none -z-10 rounded-full" />
 
           <div className="max-w-5xl mx-auto flex flex-col items-center text-center space-y-8">
             {/* Trust / Official Badge */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 text-[#243513] text-xs md:text-sm font-semibold shadow-xs border border-[#d5dcc4] backdrop-blur-md hover:border-[#3f5726]/50 transition-all">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white text-[#1e2a14] text-xs md:text-sm font-bold shadow-xs border border-[#d5dcc4] backdrop-blur-md hover:border-[#3f5726] transition-all">
               <span className="w-2 h-2 rounded-full bg-[#3f5726] animate-pulse" />
               <ShieldCheck className="w-4 h-4 text-[#3f5726]" />
               <span>mindfulnessintervention.id • Ruang Aman & Terverifikasi Siswa</span>
@@ -36,11 +36,11 @@ export default function HomePage() {
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold font-serif leading-[1.15] tracking-tight text-[#141f0d]">
                 Intervensi Kesadaran Penuh{" "}
                 <br className="hidden sm:inline" />
-                <span className="bg-linear-to-r from-[#2e4219] via-[#3f5726] to-[#557332] bg-clip-text text-transparent">
+                <span className="text-[#3f5726]">
                   & Ruang Konseling Siswa
                 </span>
               </h1>
-              <p className="text-base sm:text-lg md:text-xl text-[#2b3a1a]/80 max-w-3xl mx-auto leading-relaxed pt-2">
+              <p className="text-base sm:text-lg md:text-xl text-[#243316] font-medium max-w-3xl mx-auto leading-relaxed pt-2">
                 Platform intervensi berbasis kesadaran (MBI) yang melatih siswa untuk hadir utuh, mengelola stres akademik, dan memudahkan sesi bimbingan konseling bersama Guru BK secara terstruktur dan aman.
               </p>
             </div>

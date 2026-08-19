@@ -157,13 +157,13 @@ export default function MoodTracker() {
   const activeMoodData = MOODS.find((m) => m.id === selectedMood)
 
   return (
-    <section className="bg-white rounded-3xl p-6 md:p-8 border border-[#d5dcc4] shadow-xs space-y-5">
+    <section className="bg-white rounded-3xl p-6 md:p-8 border-2 border-[#d5dcc4] shadow-xs space-y-5">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm md:text-base font-bold font-serif text-[#1e2a14] flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-[#3f5726]" />
+        <h2 className="text-sm sm:text-base font-extrabold font-serif text-[#0f172a] flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-[#057a44]" />
           Check-in Emosi Hari Ini
         </h2>
-        <span className="text-[11px] text-[#2b3a1a]/60">Pilih perasaanmu saat ini</span>
+        <span className="text-xs font-semibold text-[#475569]">Pilih perasaanmu saat ini</span>
       </div>
 
       {/* Mood Selector Buttons matching reference image */}
@@ -179,15 +179,15 @@ export default function MoodTracker() {
               onClick={() => setSelectedMood(mood.id)}
               className={`py-4 px-2 sm:py-5 sm:px-3 rounded-2xl flex flex-col items-center justify-center gap-2.5 sm:gap-3 transition-all cursor-pointer ${
                 isSelected
-                  ? 'border-[3px] border-[#a7f3d0] bg-white shadow-xs -translate-y-0.5'
-                  : 'border border-[#e2e8f0] bg-[#f8fafc]/50 hover:bg-[#f1f5f9] hover:border-[#cbd5e1]'
+                  ? 'border-[3px] border-[#057a44] bg-emerald-50/50 shadow-xs -translate-y-0.5'
+                  : 'border-2 border-[#e2e8f0] bg-[#f8fafc] hover:bg-[#f1f5f9] hover:border-[#cbd5e1]'
               }`}
             >
               <div className="transition-transform duration-200 hover:scale-110">
                 <Icon />
               </div>
               <span className={`text-[11px] sm:text-xs text-center leading-tight transition-colors ${
-                isSelected ? 'font-bold text-[#1e2a14]' : 'font-medium text-[#475569]'
+                isSelected ? 'font-extrabold text-[#065f46]' : 'font-bold text-[#1e293b]'
               }`}>
                 {mood.label}
               </span>
@@ -198,17 +198,17 @@ export default function MoodTracker() {
 
       {/* Dynamic Feedback Card */}
       {activeMoodData && (
-        <div className="p-4 rounded-2xl bg-[#f3f6e8] border border-[#d5dcc4] animate-in fade-in slide-in-from-top-2 duration-300 space-y-3">
-          <p className="text-xs md:text-sm text-[#1e2a14] leading-relaxed">
+        <div className="p-4.5 rounded-2xl bg-[#f0fdf4] border-2 border-[#bbf7d0] animate-in fade-in slide-in-from-top-2 duration-300 space-y-3">
+          <p className="text-xs sm:text-sm font-medium text-[#0f172a] leading-relaxed">
             {activeMoodData.message}
           </p>
-          <div className="flex items-center justify-between pt-2 border-t border-[#d5dcc4]/60">
-            <span className="text-[11px] text-[#2b3a1a]/70 font-medium">
+          <div className="flex items-center justify-between pt-2.5 border-t border-[#bbf7d0]">
+            <span className="text-xs font-bold text-[#065f46]">
               Rekomendasi Langkah:
             </span>
             <Link
               href={activeMoodData.recommendation.link}
-              className="inline-flex items-center gap-1 text-xs font-bold text-[#3f5726] hover:text-[#2b3a1a] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-[#057a44] hover:text-[#065f46] hover:underline transition-colors"
             >
               <span>{activeMoodData.recommendation.title}</span>
               <ArrowRight className="w-3.5 h-3.5" />
