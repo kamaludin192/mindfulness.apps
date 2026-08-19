@@ -4,13 +4,12 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Sparkles, ArrowRight } from 'lucide-react'
 
-type MoodType = 'tenang' | 'senang' | 'cemas' | 'lelah' | 'sedih' | null
+type MoodScore = 'sangat_buruk' | 'kurang_baik' | 'biasa_saja' | 'cukup_baik' | 'sangat_senang' | null
 
-interface MoodOption {
-  id: MoodType
+interface MoodItem {
+  id: MoodScore
   label: string
-  emoji: string
-  color: string
+  icon: React.ComponentType<{ className?: string }>
   message: string
   recommendation: {
     title: string
@@ -18,71 +17,147 @@ interface MoodOption {
   }
 }
 
-const MOODS: MoodOption[] = [
+function SangatBurukIcon({ className = 'w-10 h-10 md:w-12 md:h-12' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" className={className}>
+      {/* Yellow Face */}
+      <circle cx="32" cy="32" r="27" fill="#FBC02D" stroke="#1A1A1A" strokeWidth="3.5" />
+      {/* Eyebrows */}
+      <path d="M19 19L27 23" stroke="#1A1A1A" strokeWidth="3" strokeLinecap="round" />
+      <path d="M45 19L37 23" stroke="#1A1A1A" strokeWidth="3" strokeLinecap="round" />
+      {/* Eyes */}
+      <ellipse cx="23" cy="28" rx="2.5" ry="3.5" fill="#1A1A1A" />
+      <ellipse cx="41" cy="28" rx="2.5" ry="3.5" fill="#1A1A1A" />
+      {/* Sad downturned mouth */}
+      <path d="M23 43C27 38 37 38 41 43" stroke="#1A1A1A" strokeWidth="3.5" strokeLinecap="round" />
+      {/* Blue Teardrop */}
+      <path
+        d="M20 33C20 33 17 37 17 40C17 42.2 18.8 44 21 44C23.2 44 25 42.2 25 40C25 37 22 33 22 33"
+        fill="#00B4D8"
+      />
+    </svg>
+  )
+}
+
+function KurangBaikIcon({ className = 'w-10 h-10 md:w-12 md:h-12' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" className={className}>
+      {/* Yellow Face */}
+      <circle cx="32" cy="32" r="27" fill="#FBC02D" stroke="#1A1A1A" strokeWidth="3.5" />
+      {/* Eyes */}
+      <ellipse cx="23" cy="26" rx="2.5" ry="3.5" fill="#1A1A1A" />
+      <ellipse cx="41" cy="26" rx="2.5" ry="3.5" fill="#1A1A1A" />
+      {/* Sad downturned mouth */}
+      <path d="M23 43C27 37 37 37 41 43" stroke="#1A1A1A" strokeWidth="3.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function BiasaSajaIcon({ className = 'w-10 h-10 md:w-12 md:h-12' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" className={className}>
+      {/* Yellow Face */}
+      <circle cx="32" cy="32" r="27" fill="#FBC02D" stroke="#1A1A1A" strokeWidth="3.5" />
+      {/* Eyes */}
+      <ellipse cx="23" cy="26" rx="2.5" ry="3.5" fill="#1A1A1A" />
+      <ellipse cx="41" cy="26" rx="2.5" ry="3.5" fill="#1A1A1A" />
+      {/* Straight neutral mouth */}
+      <path d="M23 41H41" stroke="#1A1A1A" strokeWidth="3.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function CukupBaikIcon({ className = 'w-10 h-10 md:w-12 md:h-12' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" className={className}>
+      {/* Yellow Face */}
+      <circle cx="32" cy="32" r="27" fill="#FBC02D" stroke="#1A1A1A" strokeWidth="3.5" />
+      {/* Eyes */}
+      <ellipse cx="23" cy="26" rx="2.5" ry="3.5" fill="#1A1A1A" />
+      <ellipse cx="41" cy="26" rx="2.5" ry="3.5" fill="#1A1A1A" />
+      {/* Gentle smiling mouth */}
+      <path d="M23 39C27 45 37 45 41 39" stroke="#1A1A1A" strokeWidth="3.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function SangatSenangIcon({ className = 'w-10 h-10 md:w-12 md:h-12' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" className={className}>
+      {/* Yellow Face */}
+      <circle cx="32" cy="32" r="27" fill="#FBC02D" stroke="#1A1A1A" strokeWidth="3.5" />
+      {/* Happy closed eyes */}
+      <path d="M19 28C21 24 25 24 27 28" stroke="#1A1A1A" strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M37 28C39 24 43 24 45 28" stroke="#1A1A1A" strokeWidth="3.5" strokeLinecap="round" />
+      {/* Blushing cheeks */}
+      <ellipse cx="18" cy="35" rx="4.5" ry="3.5" fill="#FF7043" opacity="0.85" />
+      <ellipse cx="46" cy="35" rx="4.5" ry="3.5" fill="#FF7043" opacity="0.85" />
+      {/* Wide happy smiling mouth */}
+      <path d="M22 39C26 46 38 46 42 39" stroke="#1A1A1A" strokeWidth="3.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+const MOODS: MoodItem[] = [
   {
-    id: 'tenang',
-    label: 'Tenang',
-    emoji: '🌿',
-    color: 'border-[#3f5726] bg-[#3f5726]/10 text-[#3f5726]',
-    message: 'Luar biasa! Pertahankan rasa tenang dan damai ini dalam setiap tarikan napasmu hari ini.',
+    id: 'sangat_buruk',
+    label: 'Sangat Buruk',
+    icon: SangatBurukIcon,
+    message: 'Hari ini terasa sangat berat, dan perasaanmu sepenuhnya valid. Luangkan waktu sejenak untuk beristirahat, atau ceritakan pada Guru BK.',
     recommendation: {
-      title: 'Lanjutkan Latihan Sesi',
-      link: '/siswa/worksheet',
+      title: 'Ceritakan ke Guru BK (Chat)',
+      link: '/siswa/chat',
     },
   },
   {
-    id: 'senang',
-    label: 'Senang',
-    emoji: '😊',
-    color: 'border-amber-400 bg-amber-50 text-amber-800',
-    message: 'Senang mendengarnya! Rayakan perasaan bahagia ini dan bagikan senyuman kepada sesama.',
-    recommendation: {
-      title: 'Tuliskan Refleksi Syukur',
-      link: '/siswa/worksheet',
-    },
-  },
-  {
-    id: 'cemas',
-    label: 'Cemas',
-    emoji: '🌪️',
-    color: 'border-orange-400 bg-orange-50 text-orange-800',
-    message: 'Wajar merasa cemas. Tarik napas 4 detik, tahan 4 detik, dan hembuskan 4 detik perlahan.',
+    id: 'kurang_baik',
+    label: 'Kurang Baik',
+    icon: KurangBaikIcon,
+    message: 'Tarik napas perlahan. Latihan pernapasan sadar dapat membantu meredakan ketegangan dalam pikiranmu.',
     recommendation: {
       title: 'Latihan Napas Menenangkan (Sesi 1)',
       link: '/siswa/worksheet',
     },
   },
   {
-    id: 'lelah',
-    label: 'Lelah',
-    emoji: '⚡',
-    color: 'border-purple-400 bg-purple-50 text-purple-800',
-    message: 'Tubuh dan pikiranmu sedang butuh jeda. Beri dirimu istirahat sejenak tanpa rasa bersalah.',
+    id: 'biasa_saja',
+    label: 'Biasa Saja',
+    icon: BiasaSajaIcon,
+    message: 'Kondisi netral adalah waktu yang tepat untuk memperkuat kesadaran hadir utuh di saat ini.',
     recommendation: {
       title: 'Relaksasi Mindful Body Scan',
       link: '/siswa/worksheet',
     },
   },
   {
-    id: 'sedih',
-    label: 'Sedih',
-    emoji: '🌧️',
-    color: 'border-blue-400 bg-blue-50 text-blue-800',
-    message: 'Perasaanmu sepenuhnya valid. Ingatlah bahwa kamu tidak sendirian, Guru BK siap mendengarkan.',
+    id: 'cukup_baik',
+    label: 'Cukup Baik',
+    icon: CukupBaikIcon,
+    message: 'Bagus sekali! Pertahankan rasa tenang dan fokus positif ini sepanjang aktivitas belajarmu.',
     recommendation: {
-      title: 'Ceritakan ke Guru BK (Chat)',
-      link: '/siswa/chat',
+      title: 'Lanjutkan Latihan Modul',
+      link: '/siswa/worksheet',
+    },
+  },
+  {
+    id: 'sangat_senang',
+    label: 'Sangat Senang',
+    icon: SangatSenangIcon,
+    message: 'Luar biasa! Rayakan rasa bahagia ini dan bagikan senyuman hangat kepada teman-teman di sekitarmu.',
+    recommendation: {
+      title: 'Tuliskan Refleksi Syukur',
+      link: '/siswa/worksheet',
     },
   },
 ]
 
 export default function MoodTracker() {
-  const [selectedMood, setSelectedMood] = useState<MoodType>(null)
+  const [selectedMood, setSelectedMood] = useState<MoodScore>('cukup_baik')
 
   const activeMoodData = MOODS.find((m) => m.id === selectedMood)
 
   return (
-    <section className="bg-white rounded-3xl p-6 md:p-7 border border-[#d5dcc4] shadow-xs space-y-4">
+    <section className="bg-white rounded-3xl p-6 md:p-8 border border-[#d5dcc4] shadow-xs space-y-5">
       <div className="flex items-center justify-between">
         <h2 className="text-sm md:text-base font-bold font-serif text-[#1e2a14] flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-[#3f5726]" />
@@ -91,23 +166,31 @@ export default function MoodTracker() {
         <span className="text-[11px] text-[#2b3a1a]/60">Pilih perasaanmu saat ini</span>
       </div>
 
-      {/* Mood Selector Buttons */}
-      <div className="grid grid-cols-5 gap-2 sm:gap-3">
+      {/* Mood Selector Buttons matching reference image */}
+      <div className="grid grid-cols-5 gap-2.5 sm:gap-3.5">
         {MOODS.map((mood) => {
+          const Icon = mood.icon
           const isSelected = selectedMood === mood.id
+
           return (
             <button
               key={mood.id}
               type="button"
               onClick={() => setSelectedMood(mood.id)}
-              className={`p-2.5 sm:p-3.5 rounded-2xl border flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer ${
+              className={`py-4 px-2 sm:py-5 sm:px-3 rounded-2xl flex flex-col items-center justify-center gap-2.5 sm:gap-3 transition-all cursor-pointer ${
                 isSelected
-                  ? `${mood.color} ring-2 ring-[#3f5726] shadow-sm -translate-y-0.5 font-bold`
-                  : 'border-[#d5dcc4] bg-[#f3f6e8]/40 hover:bg-[#f3f6e8] text-[#2b3a1a]/80'
+                  ? 'border-[3px] border-[#a7f3d0] bg-white shadow-xs -translate-y-0.5'
+                  : 'border border-[#e2e8f0] bg-[#f8fafc]/50 hover:bg-[#f1f5f9] hover:border-[#cbd5e1]'
               }`}
             >
-              <span className="text-xl sm:text-2xl">{mood.emoji}</span>
-              <span className="text-[10px] sm:text-xs font-semibold">{mood.label}</span>
+              <div className="transition-transform duration-200 hover:scale-110">
+                <Icon />
+              </div>
+              <span className={`text-[11px] sm:text-xs text-center leading-tight transition-colors ${
+                isSelected ? 'font-bold text-[#1e2a14]' : 'font-medium text-[#475569]'
+              }`}>
+                {mood.label}
+              </span>
             </button>
           )
         })}
@@ -119,9 +202,9 @@ export default function MoodTracker() {
           <p className="text-xs md:text-sm text-[#1e2a14] leading-relaxed">
             {activeMoodData.message}
           </p>
-          <div className="flex items-center justify-between pt-1 border-t border-[#d5dcc4]/60">
+          <div className="flex items-center justify-between pt-2 border-t border-[#d5dcc4]/60">
             <span className="text-[11px] text-[#2b3a1a]/70 font-medium">
-              Rekomendasi Mindfulness:
+              Rekomendasi Langkah:
             </span>
             <Link
               href={activeMoodData.recommendation.link}
