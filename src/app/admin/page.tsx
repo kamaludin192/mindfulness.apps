@@ -1,0 +1,239 @@
+import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
+import {
+  Users,
+  GraduationCap,
+  CheckCircle2,
+  CalendarCheck2,
+  ArrowRight,
+  Video,
+  Sparkles,
+} from "lucide-react";
+
+export default async function AdminDashboardOverview() {
+  const supabase = createClient();
+
+  // 1. Fetch total user counts by role
+  const { data: allProfiles } = await supabase
+    .from("profiles")
+    .select("id, full_name, role, created_at");
+
+  const totalUsers = allProfiles?.length || 0;
+  const siswaCount = allProfiles?.filter((p) => p.role === "siswa").length || 0;
+  const guruCount = allProfiles?.filter((p) => p.role === "guru_bk").length || 0;
+
+  // 2. Fetch completed exercises count
+  const { count: completedExercises } = await supabase
+    .from("exercise_progress")
+    .select("*", { count: "exact", head: true })
+    .eq("status", "completed");
+
+  // 3. Fetch counseling bookings stats
+  const { data: bookings } = await supabase
+    .from("counseling_bookings")
+    .select("id, status, scheduled_at, created_at");
+
+  const totalBookings = bookings?.length || 0;
+  const pendingBookings = bookings?.filter((b) => b.status === "pending").length || 0;
+
+  return (
+    <div className="space-y-8">
+      {/* 1. HERO BANNER SUPERADMIN */}
+      <section className="bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#090d16] p-6 sm:p-8 rounded-3xl text-white shadow-xl border-2 border-slate-700 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="space-y-2 max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/20 text-xs font-extrabold text-amber-300 border border-amber-500/40">
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <span>Pusat Kendali Utama Superadmin</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold font-serif tracking-tight text-white">
+            Panel Kontrol & Manajemen Sistem 🛡️
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
+            Kelola seluruh ekosistem <strong>mindfulnessintervention.id</strong>: manajemen role pengguna, modifikasi video & kurikulum 4 sesi, audit konseling, dan pemantauan performa aplikasi.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap sm:flex-nowrap gap-3 w-full md:w-auto">
+          <Link
+            href="/admin/users"
+            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs sm:text-sm font-extrabold transition-all shadow-md cursor-pointer"
+          >
+            <Users className="w-4 h-4" />
+            <span>Kelola Akun ({totalUsers})</span>
+          </Link>
+          <Link
+            href="/admin/materi"
+            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-600 text-xs sm:text-sm font-bold transition-all cursor-pointer"
+          >
+            <Video className="w-4 h-4 text-amber-400" />
+            <span>CMS Materi</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* 2. SYSTEM KPI METRICS GRID */}
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-slate-200 shadow-xs space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-extrabold text-[#475569]">Total Akun Siswa</span>
+            <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center font-bold">
+              <Users className="w-4 h-4" />
+            </div>
+          </div>
+          <p className="text-2xl sm:text-3xl font-extrabold font-serif text-[#0f172a]">{siswaCount}</p>
+          <p className="text-[11px] text-[#057a44] font-bold">Peserta Latihan Aktif</p>
+        </div>
+
+        <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-slate-200 shadow-xs space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-extrabold text-[#475569]">Total Guru BK</span>
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#057a44] flex items-center justify-center font-bold">
+              <GraduationCap className="w-4 h-4" />
+            </div>
+          </div>
+          <p className="text-2xl sm:text-3xl font-extrabold font-serif text-[#0f172a]">{guruCount}</p>
+          <p className="text-[11px] text-[#057a44] font-bold">Konselor Pembina</p>
+        </div>
+
+        <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-slate-200 shadow-xs space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-extrabold text-[#475569]">LKS Terselesaikan</span>
+            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+              <CheckCircle2 className="w-4 h-4" />
+            </div>
+          </div>
+          <p className="text-2xl sm:text-3xl font-extrabold font-serif text-[#0f172a]">{completedExercises || 0}</p>
+          <p className="text-[11px] text-blue-700 font-bold">Refleksi Terverifikasi</p>
+        </div>
+
+        <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-slate-200 shadow-xs space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-extrabold text-[#475569]">Permintaan Konseling</span>
+            <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+              <CalendarCheck2 className="w-4 h-4" />
+            </div>
+          </div>
+          <p className="text-2xl sm:text-3xl font-extrabold font-serif text-[#0f172a]">{totalBookings}</p>
+          <p className="text-[11px] text-amber-700 font-bold">{pendingBookings} Menunggu Approval</p>
+        </div>
+      </section>
+
+      {/* 3. QUICK NAVIGATION TILES */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <Link
+          href="/admin/users"
+          className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-amber-500 hover:shadow-md transition-all space-y-3 cursor-pointer group"
+        >
+          <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-800 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
+            <Users className="w-5 h-5" />
+          </div>
+          <h3 className="font-serif font-extrabold text-base text-[#0f172a] group-hover:text-amber-800 transition-colors">
+            Kelola Akun & Hak Akses (Role)
+          </h3>
+          <p className="text-xs text-[#475569] leading-relaxed">
+            Ubah role pengguna menjadi Siswa, Guru BK, atau Superadmin, serta kelola status akun.
+          </p>
+          <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-800">
+            <span>Buka Manajemen User</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </Link>
+
+        <Link
+          href="/admin/materi"
+          className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all space-y-3 cursor-pointer group"
+        >
+          <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-[#057a44] flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
+            <Video className="w-5 h-5" />
+          </div>
+          <h3 className="font-serif font-extrabold text-base text-[#0f172a] group-hover:text-[#057a44] transition-colors">
+            CMS Kurikulum & Video 4 Sesi
+          </h3>
+          <p className="text-xs text-[#475569] leading-relaxed">
+            Perbarui judul sesi, tautan video YouTube/MP4, dan deskripsi modul pembelajaran mindfulness.
+          </p>
+          <span className="inline-flex items-center gap-1 text-xs font-bold text-[#057a44]">
+            <span>Buka CMS Materi</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </Link>
+
+        <Link
+          href="/admin/konseling"
+          className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-blue-500 hover:shadow-md transition-all space-y-3 cursor-pointer group"
+        >
+          <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
+            <CalendarCheck2 className="w-5 h-5" />
+          </div>
+          <h3 className="font-serif font-extrabold text-base text-[#0f172a] group-hover:text-blue-700 transition-colors">
+            Audit Konseling BK Siswa
+          </h3>
+          <p className="text-xs text-[#475569] leading-relaxed">
+            Pantau seluruh riwayat permohonan bimbingan konseling dan persetujuan jadwal guru secara global.
+          </p>
+          <span className="inline-flex items-center gap-1 text-xs font-bold text-blue-700">
+            <span>Buka Audit Konseling</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </Link>
+      </section>
+
+      {/* 4. RECENT USERS OVERVIEW */}
+      <section className="bg-white rounded-3xl p-6 border-2 border-slate-200 shadow-xs space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+          <div>
+            <h2 className="font-serif font-extrabold text-base sm:text-lg text-[#0f172a]">
+              Daftar Pengguna Platform Terdaftar
+            </h2>
+            <p className="text-xs text-[#475569] font-medium">
+              Ringkasan {allProfiles?.slice(0, 5).length || 0} pengguna terdaftar terbaru di database
+            </p>
+          </div>
+          <Link
+            href="/admin/users"
+            className="text-xs font-bold text-amber-800 hover:underline flex items-center gap-1"
+          >
+            <span>Kelola Semua ({totalUsers})</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="divide-y divide-slate-100">
+          {allProfiles && allProfiles.length > 0 ? (
+            allProfiles.slice(0, 6).map((profile) => (
+              <div key={profile.id} className="py-3.5 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-xs text-[#0f172a] border border-slate-200">
+                    {profile.full_name?.charAt(0) || "U"}
+                  </div>
+                  <div>
+                    <p className="font-extrabold text-xs sm:text-sm text-[#0f172a]">
+                      {profile.full_name || "Tanpa Nama"}
+                    </p>
+                    <p className="text-[11px] text-[#475569]">
+                      Terdaftar: {new Date(profile.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </p>
+                  </div>
+                </div>
+
+                <span className={`text-[11px] font-extrabold px-3 py-1 rounded-full border ${
+                  profile.role === 'superadmin'
+                    ? 'bg-amber-100 text-amber-900 border-amber-300'
+                    : profile.role === 'guru_bk'
+                    ? 'bg-emerald-100 text-[#065f46] border-emerald-300'
+                    : 'bg-slate-100 text-slate-700 border-slate-300'
+                }`}>
+                  {profile.role === 'superadmin' ? 'Superadmin' : profile.role === 'guru_bk' ? 'Guru BK' : 'Siswa'}
+                </span>
+              </div>
+            ))
+          ) : (
+            <div className="py-8 text-center text-xs text-[#475569]">
+              Belum ada data pengguna.
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}

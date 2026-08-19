@@ -61,6 +61,7 @@ export async function middleware(request: NextRequest) {
   const isAuthRoute = request.nextUrl.pathname.startsWith('/login')
   const isSiswaRoute = request.nextUrl.pathname.startsWith('/siswa')
   const isGuruRoute = request.nextUrl.pathname.startsWith('/guru')
+  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
 
   const redirectWithCookies = (url: URL) => {
     const response = NextResponse.redirect(url)
@@ -70,7 +71,7 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  if (!user && (isSiswaRoute || isGuruRoute)) {
+  if (!user && (isSiswaRoute || isGuruRoute || isAdminRoute)) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return redirectWithCookies(url)
@@ -88,19 +89,27 @@ export async function middleware(request: NextRequest) {
 
     if (isAuthRoute) {
       const url = request.nextUrl.clone()
-      if (role === 'siswa') {
-        url.pathname = '/siswa'
-      } else if (role === 'guru_bk' || role === 'superadmin') {
+      if (role === 'superadmin') {
+        url.pathname = '/admin'
+      } else if (role === 'guru_bk') {
         url.pathname = '/guru'
+      } else if (role === 'siswa') {
+        url.pathname = '/siswa'
       } else {
         url.pathname = '/'
       }
       return redirectWithCookies(url)
     }
 
-    if (isSiswaRoute && role !== 'siswa') {
+    if (isAdminRoute && role !== 'superadmin') {
       const url = request.nextUrl.clone()
-      url.pathname = role === 'guru_bk' || role === 'superadmin' ? '/guru' : '/login'
+      url.pathname = role === 'guru_bk' ? '/guru' : role === 'siswa' ? '/siswa' : '/login'
+      return redirectWithCookies(url)
+    }
+
+    if (isSiswaRoute && role !== 'siswa' && role !== 'superadmin') {
+      const url = request.nextUrl.clone()
+      url.pathname = role === 'guru_bk' ? '/guru' : '/login'
       return redirectWithCookies(url)
     }
 
