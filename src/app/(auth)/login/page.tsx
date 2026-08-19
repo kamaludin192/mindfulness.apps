@@ -100,6 +100,14 @@ export default function AuthPage() {
     }
   }
 
+  const [emailValue, setEmailValue] = useState('')
+  const [passwordValue, setPasswordValue] = useState('')
+
+  const handleAutofill = (email: string, pass: string) => {
+    setEmailValue(email)
+    setPasswordValue(pass)
+  }
+
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#f3f6e8] text-[#2b3a1a] selection:bg-[#c2db8f]/40 relative overflow-hidden">
       {/* Background organic light circles */}
@@ -166,7 +174,7 @@ export default function AuthPage() {
                   : 'text-[#2b3a1a]/70 hover:text-[#2b3a1a]'
               }`}
             >
-              Daftar Akun
+              Daftar (Register)
             </button>
           </div>
 
@@ -227,6 +235,8 @@ export default function AuthPage() {
                     id="email"
                     name="email"
                     type="email"
+                    value={emailValue}
+                    onChange={(e) => setEmailValue(e.target.value)}
                     autoComplete="email"
                     required
                     className="block w-full pl-10 pr-3.5 py-3 border border-[#d5dcc4] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3f5726] focus:border-transparent text-sm text-[#1e2a14] bg-white placeholder-[#2b3a1a]/30 transition-all"
@@ -256,6 +266,8 @@ export default function AuthPage() {
                     id="password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
+                    value={passwordValue}
+                    onChange={(e) => setPasswordValue(e.target.value)}
                     autoComplete="current-password"
                     required
                     className="block w-full pl-10 pr-10 py-3 border border-[#d5dcc4] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3f5726] focus:border-transparent text-sm text-[#1e2a14] bg-white placeholder-[#2b3a1a]/30 transition-all"
@@ -277,14 +289,35 @@ export default function AuthPage() {
                 <SubmitButton isRegister={false} />
               </div>
 
-              {/* Test account note */}
-              <div className="p-3 bg-[#f3f6e8]/80 rounded-2xl border border-[#d5dcc4]/60 text-[11px] text-[#2b3a1a]/70 space-y-1">
-                <p className="font-semibold text-[#3f5726] flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" />
-                  Akun Uji Coba Demo:
+              {/* Quick 1-Click Autofill Demo Accounts */}
+              <div className="p-3.5 bg-[#f8fafc] rounded-2xl border border-slate-200 text-xs space-y-2.5">
+                <p className="font-extrabold text-[#0f172a] flex items-center gap-1.5 text-xs">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Pilih Akun Demo (Klik untuk Isi Otomatis):</span>
                 </p>
-                <p>Siswa: <span className="font-mono text-[#1e2a14] font-semibold">siswa@mindfulness.id</span> | Sandi: <span className="font-mono text-[#1e2a14]">password123</span></p>
-                <p>Guru BK: <span className="font-mono text-[#1e2a14] font-semibold">guru@mindfulness.id</span> | Sandi: <span className="font-mono text-[#1e2a14]">password123</span></p>
+                <div className="grid grid-cols-3 gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleAutofill('siswa@mindfulness.id', 'password123')}
+                    className="p-2 bg-white hover:bg-emerald-50 text-[#065f46] border border-emerald-200 rounded-xl font-bold text-[11px] transition-colors text-center cursor-pointer shadow-2xs"
+                  >
+                    🎓 Siswa
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleAutofill('guru@mindfulness.id', 'password123')}
+                    className="p-2 bg-white hover:bg-blue-50 text-blue-700 border border-blue-200 rounded-xl font-bold text-[11px] transition-colors text-center cursor-pointer shadow-2xs"
+                  >
+                    👨‍🏫 Guru BK
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleAutofill('admin@mindfulness.id', 'password123')}
+                    className="p-2 bg-white hover:bg-amber-50 text-amber-900 border border-amber-300 rounded-xl font-bold text-[11px] transition-colors text-center cursor-pointer shadow-2xs"
+                  >
+                    🛡️ Admin
+                  </button>
+                </div>
               </div>
             </form>
           )}

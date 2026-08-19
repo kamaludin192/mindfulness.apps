@@ -3,16 +3,16 @@
 -- Create admin, guru_bk, and student in auth.users
 INSERT INTO auth.users (id, aud, role, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
 VALUES
-  ('a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d', 'authenticated', 'authenticated', 'admin@example.com', crypt('password123', gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{}', now(), now()),
-  ('b2c3d4e5-f6a1-4b2c-9d8e-1f2a3b4c5d6e', 'authenticated', 'authenticated', 'guru@example.com', crypt('password123', gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{}', now(), now()),
-  ('f6e5d4c3-b2a1-4a5b-8c9d-0e1f2a3b4c5d', 'authenticated', 'authenticated', 'siswa@example.com', crypt('password123', gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{}', now(), now());
+  ('a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d', 'authenticated', 'authenticated', 'admin@example.com', extensions.crypt('password123', extensions.gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{}', now(), now()),
+  ('b2c3d4e5-f6a1-4b2c-9d8e-1f2a3b4c5d6e', 'authenticated', 'authenticated', 'guru@example.com', extensions.crypt('password123', extensions.gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{}', now(), now()),
+  ('f6e5d4c3-b2a1-4a5b-8c9d-0e1f2a3b4c5d', 'authenticated', 'authenticated', 'siswa@example.com', extensions.crypt('password123', extensions.gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{}', now(), now());
 
 -- Add identities for login
 INSERT INTO auth.identities (id, user_id, provider_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
 VALUES
-  (uuid_generate_v4(), 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d', 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d', format('{"sub":"%s","email":"%s"}', 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d', 'admin@example.com')::jsonb, 'email', now(), now(), now()),
-  (uuid_generate_v4(), 'b2c3d4e5-f6a1-4b2c-9d8e-1f2a3b4c5d6e', 'b2c3d4e5-f6a1-4b2c-9d8e-1f2a3b4c5d6e', format('{"sub":"%s","email":"%s"}', 'b2c3d4e5-f6a1-4b2c-9d8e-1f2a3b4c5d6e', 'guru@example.com')::jsonb, 'email', now(), now(), now()),
-  (uuid_generate_v4(), 'f6e5d4c3-b2a1-4a5b-8c9d-0e1f2a3b4c5d', 'f6e5d4c3-b2a1-4a5b-8c9d-0e1f2a3b4c5d', format('{"sub":"%s","email":"%s"}', 'f6e5d4c3-b2a1-4a5b-8c9d-0e1f2a3b4c5d', 'siswa@example.com')::jsonb, 'email', now(), now(), now());
+  (gen_random_uuid(), 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d', 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d', format('{"sub":"%s","email":"%s"}', 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d', 'admin@example.com')::jsonb, 'email', now(), now(), now()),
+  (gen_random_uuid(), 'b2c3d4e5-f6a1-4b2c-9d8e-1f2a3b4c5d6e', 'b2c3d4e5-f6a1-4b2c-9d8e-1f2a3b4c5d6e', format('{"sub":"%s","email":"%s"}', 'b2c3d4e5-f6a1-4b2c-9d8e-1f2a3b4c5d6e', 'guru@example.com')::jsonb, 'email', now(), now(), now()),
+  (gen_random_uuid(), 'f6e5d4c3-b2a1-4a5b-8c9d-0e1f2a3b4c5d', 'f6e5d4c3-b2a1-4a5b-8c9d-0e1f2a3b4c5d', format('{"sub":"%s","email":"%s"}', 'f6e5d4c3-b2a1-4a5b-8c9d-0e1f2a3b4c5d', 'siswa@example.com')::jsonb, 'email', now(), now(), now());
 
 -- Seed Profiles
 INSERT INTO public.profiles (id, role, full_name)

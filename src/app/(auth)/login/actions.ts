@@ -44,10 +44,12 @@ export async function login(prevState: AuthState, formData: FormData): Promise<A
 
     const role = profile?.role
 
-    if (role === 'siswa') {
-      redirect('/siswa')
-    } else if (role === 'guru_bk' || role === 'superadmin') {
+    if (role === 'superadmin') {
+      redirect('/admin')
+    } else if (role === 'guru_bk') {
       redirect('/guru')
+    } else if (role === 'siswa') {
+      redirect('/siswa')
     }
   }
 
