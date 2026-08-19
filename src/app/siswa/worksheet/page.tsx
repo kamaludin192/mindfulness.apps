@@ -256,6 +256,7 @@ export default async function WorksheetPage({
               <div className="animate-in fade-in slide-in-from-bottom-3 duration-500">
                 <WorksheetForm
                   sessionId={activeSession.id}
+                  sessionNumber={activeSession.session_number || 1}
                   initialData={worksheetData}
                   status={status}
                 />
