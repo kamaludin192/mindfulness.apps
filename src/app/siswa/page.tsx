@@ -10,11 +10,13 @@ import {
   PlayCircle,
   HeartHandshake,
   Lock,
+  BookOpen,
+  Award,
 } from 'lucide-react'
 import MoodTracker from '@/components/siswa/MoodTracker'
 
 export const metadata = {
-  title: 'Dashboard Siswa - Mindfulness Intervention',
+  title: 'Dashboard Siswa - mindfulnessintervention.id',
 }
 
 interface SessionItem {
@@ -114,43 +116,87 @@ export default async function SiswaDashboard() {
   ]
   const todayAffirmation = affirmations[new Date().getDay() % affirmations.length]
 
+  // Next recommended session
+  const nextSession = sessionListWithLock.find((s) => !s.isCompleted) || sessionListWithLock[0]
+  const nextSessionHref = nextSession.id
+    ? `/siswa/worksheet?session=${nextSession.id}`
+    : '/siswa/worksheet'
+
   return (
-    <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-6">
+    <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-7">
       {/* 1. HERO GREETING BANNER */}
-      <section className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#3f5726] to-[#2b3a1a] p-6 md:p-8 text-white shadow-md">
-        <div className="relative z-10 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-xs font-medium text-[#c2db8f] border border-white/10">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Afirmasi Harian</span>
+      <section className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#273817] via-[#374e21] to-[#1e2c12] p-6 sm:p-8 md:p-9 text-white shadow-md border border-[#4d6b2f]/30">
+        {/* Ambient Decorative Highlights */}
+        <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#c2db8f]/15 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#3f5726]/30 blur-2xl pointer-events-none" />
+
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          {/* Left Column: Greeting & Affirmation */}
+          <div className="md:col-span-7 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-semibold text-[#d4eab0] border border-white/15 shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 text-[#c2db8f]" />
+              <span>Afirmasi Mindfulness Harian</span>
+            </div>
+
+            <div className="space-y-2">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-serif tracking-tight leading-tight">
+                Selamat Datang, {firstName} 🌿
+              </h1>
+              <p className="text-white/85 text-xs sm:text-sm leading-relaxed max-w-lg italic bg-white/10 p-3.5 rounded-2xl border border-white/10 backdrop-blur-xs">
+                &ldquo;{todayAffirmation}&rdquo;
+              </p>
+            </div>
+
+            <div className="pt-1 flex flex-wrap gap-3">
+              <Link
+                href={nextSessionHref}
+                className="inline-flex items-center gap-2 bg-[#c2db8f] hover:bg-[#d5e8af] text-[#1e2a14] px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all shadow-xs hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
+              >
+                <BookOpen className="w-4 h-4 text-[#2f431b]" />
+                <span>Lanjutkan Sesi {nextSession.session_number}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
 
-          <div className="space-y-1">
-            <h1 className="text-2xl md:text-3xl font-bold font-serif tracking-tight">
-              Selamat datang, {firstName} 🌿
-            </h1>
-            <p className="text-white/80 text-xs md:text-sm max-w-xl italic leading-relaxed">
-              &ldquo;{todayAffirmation}&rdquo;
+          {/* Right Column: Progress Card */}
+          <div className="md:col-span-5 bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/15 space-y-3 text-left">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-white/90 flex items-center gap-1.5">
+                <Award className="w-4 h-4 text-[#c2db8f]" />
+                Progres 4 Sesi
+              </span>
+              <span className="text-xs font-bold text-[#c2db8f] font-mono">
+                {completedCount}/4 Sesi
+              </span>
+            </div>
+
+            {/* Progress Percentage & Bar */}
+            <div className="space-y-2">
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl sm:text-3xl font-bold font-serif text-white">
+                  {progressPercent}%
+                </span>
+                <span className="text-[11px] text-white/70">
+                  {completedCount === 4 ? 'Semua Selesai 🎉' : `${4 - completedCount} Sesi Tersisa`}
+                </span>
+              </div>
+
+              <div className="w-full bg-black/40 h-3 rounded-full overflow-hidden p-0.5 border border-white/15">
+                <div
+                  className="bg-linear-to-r from-[#a7f3d0] to-[#c2db8f] h-full rounded-full transition-all duration-500 shadow-xs"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+            </div>
+
+            <p className="text-[11px] text-white/75 leading-relaxed pt-1">
+              {completedCount === 0 && 'Mulai langkah pertamamu dengan mempraktikkan Sesi 1 hari ini.'}
+              {completedCount > 0 && completedCount < 4 && 'Kerja bagus! Lanjutkan latihanmu untuk memupuk ketenangan batin.'}
+              {completedCount === 4 && 'Selamat! Kamu telah menyelesaikan seluruh 4 sesi intervensi mindfulness.'}
             </p>
           </div>
-
-          {/* Progress Bar in Hero */}
-          <div className="pt-2 max-w-md space-y-2">
-            <div className="flex justify-between text-xs font-semibold">
-              <span className="text-white/90">Progres 4 Sesi Mindfulness</span>
-              <span className="text-[#c2db8f] font-mono">{completedCount}/4 Sesi ({progressPercent}%)</span>
-            </div>
-            <div className="w-full bg-black/30 h-2.5 rounded-full overflow-hidden p-0.5 border border-white/10">
-              <div
-                className="bg-[#c2db8f] h-full rounded-full transition-all duration-500 shadow-xs"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-          </div>
         </div>
-
-        {/* Decorative background glows */}
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 -mb-10 w-40 h-40 rounded-full bg-[#c2db8f]/10 blur-xl pointer-events-none" />
       </section>
 
       {/* 2. INTERACTIVE DAILY MOOD CHECK-IN */}
@@ -164,14 +210,14 @@ export default async function SiswaDashboard() {
               4 Sesi Intervensi Mindfulness
             </h2>
             <p className="text-xs text-[#2b3a1a]/70">
-              Ikuti setiap tahapan materi video dan lembar kerja secara bertahap.
+              Ikuti setiap tahapan materi video dan lembar kerja secara terstruktur.
             </p>
           </div>
           <Link
             href="/siswa/worksheet"
             className="text-xs font-bold text-[#3f5726] hover:underline flex items-center gap-1"
           >
-            <span>Buka Materi</span>
+            <span>Buka Semua Materi</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -191,7 +237,7 @@ export default async function SiswaDashboard() {
               return (
                 <div
                   key={sess.session_number}
-                  className="relative bg-white/80 rounded-3xl p-5 md:p-6 border border-gray-200 shadow-xs flex flex-col justify-between overflow-hidden"
+                  className="relative bg-white rounded-3xl p-5 md:p-6 border border-gray-200 shadow-xs flex flex-col justify-between overflow-hidden"
                 >
                   {/* Blurred card content */}
                   <div className="filter blur-[2.5px] opacity-30 select-none pointer-events-none space-y-4">
@@ -309,7 +355,7 @@ export default async function SiswaDashboard() {
 
         <Link
           href="/siswa/chat"
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#f3f6e8] hover:bg-[#e4ebce] text-[#3f5726] text-xs font-bold transition-all border border-[#d5dcc4] shrink-0"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#f3f6e8] hover:bg-[#e4ebce] text-[#3f5726] text-xs font-bold transition-all border border-[#d5dcc4] shrink-0 cursor-pointer shadow-2xs"
         >
           <MessageSquareQuote className="w-4 h-4" />
           <span>Buka Chat & Janji Temu</span>
