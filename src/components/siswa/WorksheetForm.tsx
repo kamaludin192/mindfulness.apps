@@ -7,6 +7,9 @@ import {
   Save,
   Plus,
   Trash2,
+  Heart,
+  Sparkles,
+  Smile,
 } from 'lucide-react'
 
 export interface BreathingRow {
@@ -33,12 +36,9 @@ export interface ThoughtRow {
   sensations: string
 }
 
-export interface IntegrationRow {
+export interface GratitudeItem {
   id: string
-  experience: string
-  sensations: string
-  selfCompassion: string
-  commitment: string
+  text: string
 }
 
 export interface WorksheetPayload {
@@ -46,7 +46,8 @@ export interface WorksheetPayload {
   breathingRows?: BreathingRow[]
   experienceRows?: ExperienceRow[]
   thoughtRows?: ThoughtRow[]
-  integrationRows?: IntegrationRow[]
+  gratitudeItems?: GratitudeItem[]
+  selfLoveLetter?: string
   summaryNote?: string
   submittedAt?: string
 }
@@ -58,7 +59,7 @@ interface WorksheetFormProps {
   status: 'in_progress' | 'completed' | null
 }
 
-// Default templates for each worksheet
+// Default templates for worksheets
 const DEFAULT_BREATHING_ROWS: BreathingRow[] = [
   { id: '1', date: '', time: '', duration: '', notes: '' },
   { id: '2', date: '', time: '', duration: '', notes: '' },
@@ -75,9 +76,10 @@ const DEFAULT_THOUGHT_ROWS: ThoughtRow[] = [
   { id: '2', situation: '', thoughts: '', emotions: '', sensations: '' },
 ]
 
-const DEFAULT_INTEGRATION_ROWS: IntegrationRow[] = [
-  { id: '1', experience: '', sensations: '', selfCompassion: '', commitment: '' },
-  { id: '2', experience: '', sensations: '', selfCompassion: '', commitment: '' },
+const DEFAULT_GRATITUDE_ITEMS: GratitudeItem[] = [
+  { id: '1', text: '' },
+  { id: '2', text: '' },
+  { id: '3', text: '' },
 ]
 
 export default function WorksheetForm({
@@ -104,9 +106,12 @@ export default function WorksheetForm({
     initialData?.thoughtRows || DEFAULT_THOUGHT_ROWS
   )
 
-  // Sesi 4 State (Integration & Self-Compassion)
-  const [integrationRows, setIntegrationRows] = useState<IntegrationRow[]>(
-    initialData?.integrationRows || DEFAULT_INTEGRATION_ROWS
+  // Sesi 4 State (Gratitude Journal & Self-Love Letter)
+  const [gratitudeItems, setGratitudeItems] = useState<GratitudeItem[]>(
+    initialData?.gratitudeItems || DEFAULT_GRATITUDE_ITEMS
+  )
+  const [selfLoveLetter, setSelfLoveLetter] = useState<string>(
+    initialData?.selfLoveLetter || ''
   )
 
   // General reflections
@@ -121,7 +126,8 @@ export default function WorksheetForm({
         breathingRows: sessionNumber === 1 ? breathingRows : undefined,
         experienceRows: sessionNumber === 2 ? experienceRows : undefined,
         thoughtRows: sessionNumber === 3 ? thoughtRows : undefined,
-        integrationRows: sessionNumber === 4 ? integrationRows : undefined,
+        gratitudeItems: sessionNumber === 4 ? gratitudeItems : undefined,
+        selfLoveLetter: sessionNumber === 4 ? selfLoveLetter : undefined,
         summaryNote,
         submittedAt: new Date().toISOString(),
       }
@@ -148,7 +154,7 @@ export default function WorksheetForm({
           {sessionNumber === 1 && 'WORKSHEET LATIHAN MINDFUL BREATHING'}
           {sessionNumber === 2 && 'WORKSHEET EXPERIENCES CALENDER'}
           {sessionNumber === 3 && 'WORKSHEET DAILY THOUGHT RECORD'}
-          {sessionNumber === 4 && 'WORKSHEET EXPERIENCES CALENDER & INTEGRASI'}
+          {sessionNumber === 4 && 'WORKSHEET WELAS ASIH DIRI (SELF-COMPASSION) & INTEGRASI'}
         </h3>
         {sessionNumber === 2 && (
           <div className="max-w-2xl mx-auto pt-2 text-xs md:text-sm text-[#2b3a1a]/80 leading-relaxed italic bg-[#f3f6e8] p-3.5 rounded-2xl border border-[#d5dcc4]">
@@ -162,7 +168,7 @@ export default function WorksheetForm({
         )}
         {sessionNumber === 4 && (
           <div className="max-w-2xl mx-auto pt-2 text-xs md:text-sm text-[#2b3a1a]/80 leading-relaxed italic bg-[#f3f6e8] p-3.5 rounded-2xl border border-[#d5dcc4]">
-            &ldquo;Menerapkan welas asih diri (self-compassion) saat menghadapi momen sulit serta merangkul komitmen latihan kesadaran penuh dalam kehidupan sehari-hari.&rdquo;
+            &ldquo;Merayakan perjalanan kesadaran diri dengan menumbuhkan rasa syukur dan memeluk diri sendiri melalui surat kasih sayang yang tulus.&rdquo;
           </div>
         )}
       </div>
@@ -518,134 +524,156 @@ export default function WorksheetForm({
       )}
 
       {/* ========================================================= */}
-      {/* 4. SESI 4: INTEGRASI & WELAS ASIH DIRI TABLE */}
+      {/* 4. SESI 4: GRATITUDE (JURNAL SYUKUR) & SURAT CINTA DIRI */}
       {/* ========================================================= */}
       {sessionNumber === 4 && (
-        <div className="space-y-4">
-          <div className="overflow-x-auto rounded-2xl border border-[#1e2a14] shadow-xs bg-white">
-            <table className="w-full text-left border-collapse text-xs md:text-sm">
-              <thead>
-                <tr className="bg-[#e2e8f0]/60 border-b border-[#1e2a14] text-[#1e2a14] font-bold text-center">
-                  <th className="p-3 border-r border-[#1e2a14] w-[25%]">Ceritakan Momen / Pengalaman</th>
-                  <th className="p-3 border-r border-[#1e2a14] w-[25%]">Sensasi Tubuh yang Muncul</th>
-                  <th className="p-3 border-r border-[#1e2a14] w-[25%]">Respon Welas Asih Diri (Self-Compassion)</th>
-                  <th className="p-3 border-r border-[#1e2a14] w-[25%]">Komitmen Praktik Harian</th>
-                  {!isCompleted && <th className="p-2 w-8"></th>}
-                </tr>
-              </thead>
-              <tbody>
-                {integrationRows.map((row, idx) => (
-                  <tr key={row.id || idx} className="border-b border-[#1e2a14]/30 hover:bg-[#f8fafc]">
-                    <td className="p-2.5 border-r border-[#1e2a14] align-top">
-                      <textarea
-                        rows={3}
-                        disabled={isCompleted}
-                        value={row.experience}
-                        onChange={(e) => {
-                          const updated = [...integrationRows]
-                          updated[idx].experience = e.target.value
-                          setIntegrationRows(updated)
-                        }}
-                        placeholder="Tantangan atau momen berharga yang dialami..."
-                        className="w-full p-2 rounded-xl bg-transparent border border-slate-200 focus:border-[#3f5726] focus:bg-white outline-none resize-y disabled:border-none"
-                      />
-                    </td>
-                    <td className="p-2.5 border-r border-[#1e2a14] align-top">
-                      <textarea
-                        rows={3}
-                        disabled={isCompleted}
-                        value={row.sensations}
-                        onChange={(e) => {
-                          const updated = [...integrationRows]
-                          updated[idx].sensations = e.target.value
-                          setIntegrationRows(updated)
-                        }}
-                        placeholder="Sensasi fisik yang disadari..."
-                        className="w-full p-2 rounded-xl bg-transparent border border-slate-200 focus:border-[#3f5726] focus:bg-white outline-none resize-y disabled:border-none"
-                      />
-                    </td>
-                    <td className="p-2.5 border-r border-[#1e2a14] align-top">
-                      <textarea
-                        rows={3}
-                        disabled={isCompleted}
-                        value={row.selfCompassion}
-                        onChange={(e) => {
-                          const updated = [...integrationRows]
-                          updated[idx].selfCompassion = e.target.value
-                          setIntegrationRows(updated)
-                        }}
-                        placeholder="Kata-kata kebaikan untuk diri sendiri saat gagal/lelah..."
-                        className="w-full p-2 rounded-xl bg-transparent border border-slate-200 focus:border-[#3f5726] focus:bg-white outline-none resize-y disabled:border-none"
-                      />
-                    </td>
-                    <td className="p-2.5 border-r border-[#1e2a14] align-top">
-                      <textarea
-                        rows={3}
-                        disabled={isCompleted}
-                        value={row.commitment}
-                        onChange={(e) => {
-                          const updated = [...integrationRows]
-                          updated[idx].commitment = e.target.value
-                          setIntegrationRows(updated)
-                        }}
-                        placeholder="Langkah nyata menjaga ketenangan secara mandiri..."
-                        className="w-full p-2 rounded-xl bg-transparent border border-slate-200 focus:border-[#3f5726] focus:bg-white outline-none resize-y disabled:border-none"
-                      />
-                    </td>
-                    {!isCompleted && (
-                      <td className="p-2 text-center align-top">
-                        {integrationRows.length > 1 && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setIntegrationRows(integrationRows.filter((_, i) => i !== idx))
-                            }}
-                            className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer mt-2"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        )}
-                      </td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="space-y-6">
+          {/* Bagian 1: Gratitude (Menulis apa yang disyukuri) */}
+          <div className="bg-[#fefce8] p-5 sm:p-6 rounded-3xl border border-[#fef08a] shadow-xs space-y-4">
+            <div className="flex items-center justify-between gap-2 border-b border-[#fef08a] pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-2xl bg-amber-400/20 text-amber-800 flex items-center justify-center">
+                  <Smile className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm md:text-base font-bold font-serif text-[#1e2a14]">
+                    1. Jurnal Rasa Syukur (Gratitude)
+                  </h4>
+                  <p className="text-xs text-[#2b3a1a]/70">
+                    Tuliskan hal-hal yang kamu syukuri hari ini (hal kecil, orang berharga, atau kebaikan diri).
+                  </p>
+                </div>
+              </div>
+              <span className="text-[11px] font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-200 hidden sm:inline-block">
+                Refleksi Syukur
+              </span>
+            </div>
+
+            <div className="space-y-3 pt-1">
+              {gratitudeItems.map((item, idx) => (
+                <div key={item.id || idx} className="flex items-start gap-2.5">
+                  <span className="w-7 h-7 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center text-xs font-bold text-amber-900 shrink-0 mt-1">
+                    {idx + 1}
+                  </span>
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      disabled={isCompleted}
+                      value={item.text}
+                      onChange={(e) => {
+                        const updated = [...gratitudeItems]
+                        updated[idx].text = e.target.value
+                        setGratitudeItems(updated)
+                      }}
+                      placeholder={
+                        idx === 0
+                          ? 'Hari ini saya sangat bersyukur atas...'
+                          : idx === 1
+                          ? 'Satu hal menyenangkan yang membuat saya tersenyum adalah...'
+                          : 'Saya berterima kasih kepada diri saya karena sudah berusaha...'
+                      }
+                      className="w-full p-3 bg-white border border-amber-200 rounded-2xl text-xs md:text-sm text-[#1e2a14] placeholder-[#2b3a1a]/40 outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white disabled:bg-white/60"
+                    />
+                  </div>
+                  {!isCompleted && gratitudeItems.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setGratitudeItems(gratitudeItems.filter((_, i) => i !== idx))
+                      }}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-xl transition-colors cursor-pointer mt-1"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {!isCompleted && (
+              <button
+                type="button"
+                onClick={() => {
+                  setGratitudeItems([
+                    ...gratitudeItems,
+                    { id: String(Date.now()), text: '' },
+                  ])
+                }}
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-amber-100 text-amber-900 rounded-xl text-xs font-bold border border-amber-300 transition-all cursor-pointer shadow-2xs"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Tambah Hal yang Disyukuri</span>
+              </button>
+            )}
           </div>
 
-          {!isCompleted && (
-            <button
-              type="button"
-              onClick={() => {
-                setIntegrationRows([
-                  ...integrationRows,
-                  { id: String(Date.now()), experience: '', sensations: '', selfCompassion: '', commitment: '' },
-                ])
-              }}
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#f3f6e8] hover:bg-[#e6edd2] text-[#3f5726] rounded-xl text-xs font-bold border border-[#d5dcc4] transition-all cursor-pointer"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span>Tambah Baris Refleksi Integrasi</span>
-            </button>
-          )}
+          {/* Bagian 2: Surat Cinta untuk Diri Sendiri (Self-Love Letter) */}
+          <div className="bg-[#fffdfa] p-5 sm:p-6 rounded-3xl border border-[#f3cbb5] shadow-xs space-y-4">
+            <div className="flex items-center justify-between gap-2 border-b border-[#f3cbb5]/70 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center">
+                  <Heart className="w-5 h-5 fill-rose-100" />
+                </div>
+                <div>
+                  <h4 className="text-sm md:text-base font-bold font-serif text-[#1e2a14]">
+                    2. Surat Kasih Sayang & Cinta untuk Diri Sendiri
+                  </h4>
+                  <p className="text-xs text-[#2b3a1a]/70">
+                    Tuliskan surat apresiasi, maaf, dan penerimaan tulus untuk dirimu yang telah berjuang sejauh ini.
+                  </p>
+                </div>
+              </div>
+              <span className="text-[11px] font-bold text-rose-800 bg-rose-50 px-3 py-1 rounded-full border border-rose-200 hidden sm:inline-block">
+                Self-Compassion Letter
+              </span>
+            </div>
+
+            {/* Inspirasi Kata Kunci */}
+            <div className="p-3 bg-rose-50/70 rounded-2xl border border-rose-100 text-[11px] text-rose-900 space-y-1">
+              <p className="font-semibold flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-rose-600" />
+                Inspirasi Kalimat yang Dapat Kamu Tuliskan:
+              </p>
+              <ul className="list-disc list-inside space-y-0.5 text-rose-800/90 pl-1">
+                <li>&ldquo;Teruntuk diriku yang telah berjuang dan bertahan melewati hari-hari sulit...&rdquo;</li>
+                <li>&ldquo;Aku memaafkan diriku atas kesalahan dan rasa lelah di masa lalu...&rdquo;</li>
+                <li>&ldquo;Mulai hari ini, aku berjanji untuk lebih menyayangi dan bersikap lembut pada diriku sendiri...&rdquo;</li>
+              </ul>
+            </div>
+
+            {/* Editor Surat Cinta */}
+            <div className="relative">
+              <textarea
+                rows={7}
+                disabled={isCompleted}
+                value={selfLoveLetter}
+                onChange={(e) => setSelfLoveLetter(e.target.value)}
+                placeholder="Tuliskan surat cinta dan pelukan hangat untuk dirimu di sini..."
+                className="w-full p-4 bg-white border border-[#f3cbb5] rounded-2xl text-xs md:text-sm text-[#1e2a14] placeholder-[#2b3a1a]/40 outline-none focus:ring-2 focus:ring-rose-400 resize-y leading-relaxed font-sans shadow-2xs disabled:bg-white/60"
+                required
+              />
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Summary Note */}
-      <div className="bg-[#f8fafc] p-4 sm:p-5 rounded-2xl border border-[#d5dcc4] space-y-2">
-        <label htmlFor="summaryNote" className="text-xs sm:text-sm font-bold text-[#1e2a14] block">
-          Catatan & Kesimpulan Pembelajaran Sesi Ini (Opsional)
-        </label>
-        <textarea
-          id="summaryNote"
-          rows={2}
-          disabled={isCompleted}
-          value={summaryNote}
-          onChange={(e) => setSummaryNote(e.target.value)}
-          placeholder="Tuliskan wawasan atau hal penting yang ingin kamu ingat dari sesi ini..."
-          className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs md:text-sm text-[#1e2a14] placeholder-[#2b3a1a]/40 outline-none focus:ring-2 focus:ring-[#3f5726] disabled:border-none disabled:bg-transparent"
-        />
-      </div>
+      {/* Summary Note (Hanya untuk Sesi 1-3 jika dibutuhkan) */}
+      {sessionNumber !== 4 && (
+        <div className="bg-[#f8fafc] p-4 sm:p-5 rounded-2xl border border-[#d5dcc4] space-y-2">
+          <label htmlFor="summaryNote" className="text-xs sm:text-sm font-bold text-[#1e2a14] block">
+            Catatan & Kesimpulan Pembelajaran Sesi Ini (Opsional)
+          </label>
+          <textarea
+            id="summaryNote"
+            rows={2}
+            disabled={isCompleted}
+            value={summaryNote}
+            onChange={(e) => setSummaryNote(e.target.value)}
+            placeholder="Tuliskan wawasan atau hal penting yang ingin kamu ingat dari sesi ini..."
+            className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs md:text-sm text-[#1e2a14] placeholder-[#2b3a1a]/40 outline-none focus:ring-2 focus:ring-[#3f5726] disabled:border-none disabled:bg-transparent"
+          />
+        </div>
+      )}
 
       {/* Submit / Completed Feedback */}
       {!isCompleted ? (
@@ -668,7 +696,7 @@ export default function WorksheetForm({
             <div>
               <p className="font-bold text-xs md:text-sm">Lembar Kerja Tersimpan & Selesai!</p>
               <p className="text-[11px] text-green-700">
-                Poin progres telah diperbarui. Anda siap melanjutkan ke sesi berikutnya.
+                Poin progres dan refleksi welas asih Anda telah tersimpan dengan aman di jurnal pribadi.
               </p>
             </div>
           </div>
