@@ -9,6 +9,7 @@ import {
   Clock,
   PlayCircle,
   HeartHandshake,
+  Lock,
 } from 'lucide-react'
 import MoodTracker from '@/components/siswa/MoodTracker'
 
@@ -85,67 +86,76 @@ export default async function SiswaDashboard() {
     progressMap.set(p.session_id, p)
   })
 
+  // Calculate sequential progression lock
+  let canAccess = true
+  const sessionListWithLock = sessions.map((s: SessionItem, index: number) => {
+    const prog = s.id ? progressMap.get(s.id) : null
+    const isCompleted = prog?.status === 'completed'
+    const isLocked = !canAccess
+
+    if (!isCompleted) {
+      canAccess = false
+    }
+
+    return {
+      ...s,
+      prog,
+      isCompleted,
+      isLocked,
+      prevSessionNumber: index > 0 ? sessions[index - 1].session_number : null,
+    }
+  })
+
   // Calculate stats
   const completedCount = progressList?.filter((p) => p.status === 'completed').length || 0
   const progressPercent = Math.round((completedCount / 4) * 100)
 
-  // 4. Fetch Guru BK Info & Booking status
-  const { data: existingBooking } = await supabase
-    .from('counseling_bookings')
-    .select('*, counselor:counselor_id(full_name)')
-    .eq('student_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .single()
+  // 4. Daily Affirmation
+  const affirmations = [
+    'Tarik napas perlahan. Hadirlah utuh di saat ini, di sini.',
+    'Setiap tarikan napas adalah kesempatan baru untuk merasa tenang.',
+    'Kamu berharga, dan perasaanmu sepenuhnya valid.',
+    'Tidak apa-apa untuk beristirahat sejenak saat lelah.',
+  ]
+  const todayAffirmation = affirmations[new Date().getDay() % affirmations.length]
 
   return (
     <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-6">
       {/* 1. HERO GREETING BANNER */}
-      <section className="relative overflow-hidden rounded-3xl bg-[#3f5726] text-white p-6 md:p-8 shadow-md">
-        {/* Background ambient shapes */}
-        <div className="absolute -top-16 -right-16 w-60 h-60 rounded-full bg-[#c2db8f]/20 blur-2xl pointer-events-none" />
-        <div className="absolute -bottom-16 -left-16 w-60 h-60 rounded-full bg-black/20 blur-xl pointer-events-none" />
-
+      <section className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#3f5726] to-[#2b3a1a] p-6 md:p-8 text-white shadow-md">
         <div className="relative z-10 space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-xs text-xs font-semibold text-[#c2db8f]">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Ruang Tenang & Pengembangan Diri</span>
-              </div>
-              <h1 className="text-2xl md:text-3xl font-bold font-serif">
-                Halo, {firstName}! 🌱
-              </h1>
-            </div>
-
-            {/* Quick Badge */}
-            <div className="px-4 py-2 rounded-2xl bg-white/10 backdrop-blur-xs border border-white/20 text-right">
-              <p className="text-[11px] text-white/80">Progres Intervensi</p>
-              <p className="text-base font-bold font-serif text-[#c2db8f]">
-                {completedCount} dari 4 Sesi Selesai
-              </p>
-            </div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-xs font-medium text-[#c2db8f] border border-white/10">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Afirmasi Harian</span>
           </div>
 
-          {/* Daily Affirmation */}
-          <div className="p-4 rounded-2xl bg-black/20 border border-white/10 text-xs md:text-sm text-white/90 italic leading-relaxed">
-            &ldquo;Hadir seutuhnya di saat ini. Tarik napas dalam-dalam, lepaskan perlahan. Setiap detik adalah ruang baru untuk ketenangan dirimu.&rdquo;
+          <div className="space-y-1">
+            <h1 className="text-2xl md:text-3xl font-bold font-serif tracking-tight">
+              Selamat datang, {firstName} 🌿
+            </h1>
+            <p className="text-white/80 text-xs md:text-sm max-w-xl italic leading-relaxed">
+              &ldquo;{todayAffirmation}&rdquo;
+            </p>
           </div>
 
-          {/* Progress Bar */}
-          <div className="space-y-1.5 pt-1">
-            <div className="flex justify-between text-xs font-semibold text-white/80">
-              <span>Kelengkapan Modul</span>
-              <span>{progressPercent}%</span>
+          {/* Progress Bar in Hero */}
+          <div className="pt-2 max-w-md space-y-2">
+            <div className="flex justify-between text-xs font-semibold">
+              <span className="text-white/90">Progres 4 Sesi Mindfulness</span>
+              <span className="text-[#c2db8f] font-mono">{completedCount}/4 Sesi ({progressPercent}%)</span>
             </div>
-            <div className="w-full h-2.5 bg-white/20 rounded-full overflow-hidden">
+            <div className="w-full bg-black/30 h-2.5 rounded-full overflow-hidden p-0.5 border border-white/10">
               <div
-                className="h-full bg-[#c2db8f] transition-all duration-500 rounded-full"
+                className="bg-[#c2db8f] h-full rounded-full transition-all duration-500 shadow-xs"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
           </div>
         </div>
+
+        {/* Decorative background glows */}
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 -mb-10 w-40 h-40 rounded-full bg-[#c2db8f]/10 blur-xl pointer-events-none" />
       </section>
 
       {/* 2. INTERACTIVE DAILY MOOD CHECK-IN */}
@@ -159,7 +169,7 @@ export default async function SiswaDashboard() {
               4 Sesi Intervensi Mindfulness
             </h2>
             <p className="text-xs text-[#2b3a1a]/70">
-              Ikuti setiap tahapan materi video dan lembar kerja secara runtut.
+              Ikuti setiap tahapan materi video dan lembar kerja secara bertahap.
             </p>
           </div>
           <Link
@@ -172,15 +182,63 @@ export default async function SiswaDashboard() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {sessions.map((sess: SessionItem) => {
-            const prog = sess.id ? progressMap.get(sess.id) : null
-            const isCompleted = prog?.status === 'completed'
-            const isSubmitted = prog?.status === 'submitted'
-            const isWatched = prog?.is_video_watched
+          {sessionListWithLock.map((sess) => {
+            const isCompleted = sess.isCompleted
+            const isSubmitted = sess.prog?.status === 'submitted'
+            const isWatched = sess.prog?.is_video_watched
+            const isLocked = sess.isLocked
 
             const sessionHref = sess.id
               ? `/siswa/worksheet?session=${sess.id}`
               : '/siswa/worksheet'
+
+            if (isLocked) {
+              return (
+                <div
+                  key={sess.session_number}
+                  className="relative bg-white/80 rounded-3xl p-5 md:p-6 border border-gray-200 shadow-xs flex flex-col justify-between overflow-hidden"
+                >
+                  {/* Blurred card content */}
+                  <div className="filter blur-[2.5px] opacity-30 select-none pointer-events-none space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="px-3 py-1 rounded-full bg-gray-100 text-[11px] font-bold text-gray-400">
+                          Sesi {sess.session_number}
+                        </span>
+                        <span className="text-[11px] text-gray-400 font-medium">Terkunci</span>
+                      </div>
+                      <h3 className="font-serif font-bold text-base text-[#1e2a14]">
+                        {sess.title}
+                      </h3>
+                      <p className="text-xs text-[#2b3a1a]/70 line-clamp-2 leading-relaxed">
+                        {sess.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-2 border-t border-gray-200">
+                      <div className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-gray-400 bg-gray-100 text-center">
+                        Mulai Latihan
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Centered Lock Overlay */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-white/40 backdrop-blur-[2px] z-10">
+                    <div className="p-3.5 rounded-2xl bg-white/95 border border-amber-200/80 shadow-md flex items-center gap-2.5 text-xs font-bold text-amber-900">
+                      <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                        <Lock className="w-4 h-4" />
+                      </div>
+                      <div className="text-left">
+                        <p className="font-bold text-xs text-[#1e2a14]">Sesi Ini Masih Terkunci</p>
+                        <p className="text-[10px] font-normal text-[#2b3a1a]/70">
+                          Selesaikan Sesi {sess.prevSessionNumber} terlebih dahulu
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )
+            }
 
             return (
               <div
@@ -248,23 +306,18 @@ export default async function SiswaDashboard() {
             <h3 className="font-serif font-bold text-base text-[#1e2a14]">
               Ruang Konseling & Curhat Guru BK
             </h3>
-            <p className="text-xs text-[#2b3a1a]/70 leading-relaxed max-w-md">
-              Merasa terbebani atau butuh teman bercerita? Guru Bimbingan Konseling (BK) siap mendengarkan tanpa menghakimi.
+            <p className="text-xs text-[#2b3a1a]/70 max-w-lg leading-relaxed">
+              Memiliki hal yang mengganjal atau butuh bimbingan mendalam? Guru BK siap mendampingi perjalanan mindful-mu secara rahasia dan aman.
             </p>
-            {existingBooking && (
-              <p className="text-[11px] font-semibold text-[#3f5726] pt-1">
-                Status Janji Temu: <span className="uppercase">{existingBooking.status}</span>
-              </p>
-            )}
           </div>
         </div>
 
         <Link
           href="/siswa/chat"
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs md:text-sm font-semibold text-white bg-[#3f5726] hover:bg-[#2b3a1a] transition-all hover:shadow-md shrink-0 cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#f3f6e8] hover:bg-[#e4ebce] text-[#3f5726] text-xs font-bold transition-all border border-[#d5dcc4] shrink-0"
         >
           <MessageSquareQuote className="w-4 h-4" />
-          <span>Buka Chat Guru BK</span>
+          <span>Buka Chat & Janji Temu</span>
         </Link>
       </section>
     </div>
