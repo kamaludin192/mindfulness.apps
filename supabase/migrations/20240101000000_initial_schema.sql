@@ -13,7 +13,7 @@ CREATE TABLE public.profiles (
 
 -- 2. Cms_Contents Table
 CREATE TABLE public.cms_contents (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     session_number INTEGER NOT NULL CHECK (session_number >= 1 AND session_number <= 4),
     title TEXT NOT NULL,
     video_url TEXT,
@@ -22,7 +22,7 @@ CREATE TABLE public.cms_contents (
 
 -- 3. Assessments Table
 CREATE TABLE public.assessments (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     student_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
     mood_score INTEGER NOT NULL CHECK (mood_score >= 1 AND mood_score <= 5),
     notes TEXT,
@@ -33,7 +33,7 @@ CREATE TABLE public.assessments (
 CREATE TYPE exercise_status AS ENUM ('in_progress', 'completed');
 
 CREATE TABLE public.exercise_progress (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     student_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
     session_id UUID REFERENCES public.cms_contents(id) ON DELETE CASCADE NOT NULL,
     status exercise_status NOT NULL DEFAULT 'in_progress',
@@ -49,7 +49,7 @@ CREATE TABLE public.exercise_progress (
 CREATE TYPE booking_status AS ENUM ('pending', 'approved', 'rejected');
 
 CREATE TABLE public.counseling_bookings (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     student_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
     guru_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
     scheduled_at TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE public.counseling_bookings (
 
 -- 6. Chat_Messages Table
 CREATE TABLE public.chat_messages (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     sender_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
     receiver_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
     message TEXT NOT NULL,

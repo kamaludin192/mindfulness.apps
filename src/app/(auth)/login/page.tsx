@@ -283,8 +283,8 @@ export default function AuthPage() {
                   <Sparkles className="w-3 h-3" />
                   Akun Uji Coba Demo:
                 </p>
-                <p>Siswa: <span className="font-mono text-[#1e2a14]">siswa@example.com</span> | Sandi: <span className="font-mono text-[#1e2a14]">password123</span></p>
-                <p>Guru BK: <span className="font-mono text-[#1e2a14]">guru@example.com</span> | Sandi: <span className="font-mono text-[#1e2a14]">password123</span></p>
+                <p>Siswa: <span className="font-mono text-[#1e2a14] font-semibold">siswa@mindfulness.id</span> | Sandi: <span className="font-mono text-[#1e2a14]">password123</span></p>
+                <p>Guru BK: <span className="font-mono text-[#1e2a14] font-semibold">guru@mindfulness.id</span> | Sandi: <span className="font-mono text-[#1e2a14]">password123</span></p>
               </div>
             </form>
           )}
