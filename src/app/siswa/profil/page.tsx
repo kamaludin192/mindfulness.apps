@@ -1,12 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import ProfileEditor from '@/components/siswa/ProfileEditor'
 import {
   Mail,
   Shield,
   Calendar,
   Award,
-  LogOut,
   BookOpen,
   CheckCircle2,
   Clock,
@@ -48,13 +48,6 @@ export default async function SiswaProfilPage() {
   const completedCount = progressList?.filter((p) => p.status === 'completed').length || 0
   const submittedCount = progressList?.length || 0
 
-  async function handleLogout() {
-    'use server'
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    redirect('/login')
-  }
-
   const fullName = profile?.full_name || user.user_metadata?.full_name || 'Siswa'
   const email = user.email || '-'
   const joinedDate = new Date(profile?.created_at || user.created_at).toLocaleDateString('id-ID', {
@@ -90,15 +83,8 @@ export default async function SiswaProfilPage() {
           </p>
         </div>
 
-        <form action={handleLogout}>
-          <button
-            type="submit"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs md:text-sm font-semibold transition-all cursor-pointer shadow-xs"
-          >
-            <LogOut className="w-4 h-4" />
-            <span>Keluar</span>
-          </button>
-        </form>
+        {/* Edit Profile Action Button */}
+        <ProfileEditor initialName={fullName} email={email} />
       </div>
 
       {/* Stats Cards */}

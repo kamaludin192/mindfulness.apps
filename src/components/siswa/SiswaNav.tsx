@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, BookOpen, MessageSquareQuote, User, Leaf, PhoneCall } from 'lucide-react'
+import { Home, BookOpen, MessageSquareQuote, User, Leaf, PhoneCall, LogOut } from 'lucide-react'
+import { logoutAction } from '@/app/siswa/profil/actions'
 
 interface NavItem {
   href: string
@@ -63,15 +64,29 @@ export function SiswaSidebar() {
         </nav>
       </div>
 
-      {/* Ruang Aman / Crisis Hotline Widget */}
-      <div className="p-3.5 bg-[#f3f6e8] rounded-2xl border border-[#d5dcc4]/80 text-xs space-y-1.5">
-        <div className="flex items-center gap-1.5 text-[#3f5726] font-bold">
-          <PhoneCall className="w-3.5 h-3.5" />
-          <span>Ruang Aman Siswa</span>
+      {/* Bottom widgets & Logout */}
+      <div className="space-y-3 pt-4 border-t border-[#d5dcc4]/60">
+        {/* Ruang Aman / Crisis Hotline Widget */}
+        <div className="p-3.5 bg-[#f3f6e8] rounded-2xl border border-[#d5dcc4]/80 text-xs space-y-1.5">
+          <div className="flex items-center gap-1.5 text-[#3f5726] font-bold">
+            <PhoneCall className="w-3.5 h-3.5" />
+            <span>Ruang Aman Siswa</span>
+          </div>
+          <p className="text-[11px] text-[#2b3a1a]/70 leading-snug">
+            Butuh bantuan mendesak? Layanan konseling krisis nasional siap 24/7 di Hotline <strong>119</strong>.
+          </p>
         </div>
-        <p className="text-[11px] text-[#2b3a1a]/70 leading-snug">
-          Butuh bantuan mendesak? Layanan konseling krisis nasional siap 24/7 di Hotline <strong>119</strong>.
-        </p>
+
+        {/* Logout button */}
+        <form action={logoutAction}>
+          <button
+            type="submit"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-2xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold transition-all cursor-pointer shadow-2xs"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Keluar Akun</span>
+          </button>
+        </form>
       </div>
     </aside>
   )
