@@ -23,25 +23,25 @@ const DEFAULT_SESSIONS: CmsSessionItem[] = [
   {
     session_number: 1,
     title: 'Sesi 1: Menyadari Napas & Tubuh (Mindful Breathing)',
-    video_url: 'https://www.youtube.com/watch?v=inpok4MKVLM',
+    video_url: '',
     description: 'Modul dasar untuk melatih fokus pernapasan, relaksasi otot, dan penenangan sistem saraf.',
   },
   {
     session_number: 2,
     title: 'Sesi 2: Pengenalan Pikiran & Regulasi Emosi',
-    video_url: 'https://www.youtube.com/watch?v=inpok4MKVLM',
+    video_url: '',
     description: 'Memahami bagaimana pola pikir mempengaruhi emosi dan teknik mengamati pikiran tanpa menghakimi.',
   },
   {
     session_number: 3,
     title: 'Sesi 3: Mengelola Stres Akademik & Kecemasan',
-    video_url: 'https://www.youtube.com/watch?v=inpok4MKVLM',
+    video_url: '',
     description: 'Strategi praktis menghadapi tekanan ujian, beban tugas, dan ketakutan akan masa depan.',
   },
   {
     session_number: 4,
     title: 'Sesi 4: Welas Asih Diri (Self-Compassion) & Rasa Syukur',
-    video_url: 'https://www.youtube.com/watch?v=inpok4MKVLM',
+    video_url: '',
     description: 'Menulis jurnal syukur, menerima ketidaksempurnaan diri, dan menulis surat cinta kasih untuk diri sendiri.',
   },
 ]

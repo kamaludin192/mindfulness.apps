@@ -15,28 +15,28 @@ const DEFAULT_SESSIONS = [
     session_number: 1,
     title: 'Menyadari Napas & Tubuh (Mindful Breathing & Body Scan)',
     description: 'Latihan dasar pernapasan sadar dan pemindaian sensasi tubuh untuk meredakan ketegangan fisik.',
-    video_url: 'https://www.youtube.com/watch?v=inpok4MKVLM',
+    video_url: '',
   },
   {
     id: '22222222-2222-2222-2222-222222222222',
     session_number: 2,
     title: 'Pengenalan Pikiran & Regulasi Emosi',
     description: 'Memahami cara mengamati pikiran tanpa terbawa arus emosi dan menciptakan ruang jeda sebelum merespons.',
-    video_url: 'https://www.youtube.com/watch?v=inpok4MKVLM',
+    video_url: '',
   },
   {
     id: '33333333-3333-3333-3333-333333333333',
     session_number: 3,
     title: 'Mengelola Stres Akademik & Kecemasan',
     description: 'Strategi praktis defusi kognitif dan teknik STOP saat menghadapi beban ujian dan tugas sekolah.',
-    video_url: 'https://www.youtube.com/watch?v=inpok4MKVLM',
+    video_url: '',
   },
   {
     id: '44444444-4444-4444-4444-444444444444',
     session_number: 4,
     title: 'Welas Asih Diri (Self-Compassion) & Integrasi',
     description: 'Melatih kebaikan hati pada diri sendiri, merangkul kegagalan dengan bijak, dan membiasakan mindfulness mandiri.',
-    video_url: 'https://www.youtube.com/watch?v=inpok4MKVLM',
+    video_url: '',
   },
 ]
 
