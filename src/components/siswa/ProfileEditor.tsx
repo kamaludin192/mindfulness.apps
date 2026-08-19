@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
+import { useRouter } from 'next/navigation'
 import {
   User,
   Mail,
@@ -39,6 +40,7 @@ function SaveButton() {
 const initialProfileState: ProfileActionState = {
   error: null,
   success: null,
+  updatedName: null,
 }
 
 export default function ProfileEditor({
@@ -48,11 +50,22 @@ export default function ProfileEditor({
   initialName: string
   email: string
 }) {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
+  const [currentName, setCurrentName] = useState(initialName)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const [state, formAction] = useFormState(updateProfile, initialProfileState)
+
+  useEffect(() => {
+    if (state.success) {
+      if (state.updatedName) {
+        setCurrentName(state.updatedName)
+      }
+      router.refresh()
+    }
+  }, [state, router])
 
   return (
     <div className="space-y-4">
@@ -139,7 +152,8 @@ export default function ProfileEditor({
                     name="fullName"
                     type="text"
                     required
-                    defaultValue={initialName}
+                    value={currentName}
+                    onChange={(e) => setCurrentName(e.target.value)}
                     className="block w-full pl-10 pr-3.5 py-3 border border-[#d5dcc4] rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#3f5726] text-xs md:text-sm text-[#1e2a14] bg-[#f8fafc]"
                   />
                 </div>

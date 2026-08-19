@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation'
 export interface ProfileActionState {
   error: string | null
   success: string | null
+  updatedName?: string | null
 }
 
 export async function logoutAction() {
@@ -36,26 +37,32 @@ export async function updateProfile(
     return { error: 'Sesi Anda telah berakhir. Silakan login kembali.', success: null }
   }
 
-  // 1. Update full_name in public.profiles and auth user metadata
+  // 1. Upsert into public.profiles (guarantees update even if row was created via OAuth/raw auth)
   const { error: profileError } = await supabase
     .from('profiles')
-    .update({ full_name: fullName })
-    .eq('id', user.id)
+    .upsert({
+      id: user.id,
+      full_name: fullName,
+      role: user.user_metadata?.role || 'siswa',
+    })
 
   if (profileError) {
+    console.error('Error updating profile:', profileError)
     return { error: `Gagal memperbarui profil: ${profileError.message}`, success: null }
   }
 
+  // 2. Also update user metadata in GoTrue Auth
   await supabase.auth.updateUser({
     data: { full_name: fullName },
   })
 
-  // 2. If password change is requested
+  // 3. If password change is requested
   if (newPassword) {
     if (newPassword.length < 6) {
       return {
         error: 'Nama berhasil diubah, namun kata sandi baru minimal harus 6 karakter.',
         success: null,
+        updatedName: fullName,
       }
     }
 
@@ -63,6 +70,7 @@ export async function updateProfile(
       return {
         error: 'Nama berhasil diubah, namun konfirmasi kata sandi tidak cocok.',
         success: null,
+        updatedName: fullName,
       }
     }
 
@@ -74,6 +82,7 @@ export async function updateProfile(
       return {
         error: `Nama berhasil diubah, namun gagal memperbarui kata sandi: ${passwordError.message}`,
         success: null,
+        updatedName: fullName,
       }
     }
 
@@ -82,6 +91,7 @@ export async function updateProfile(
     return {
       error: null,
       success: 'Profil dan kata sandi baru Anda berhasil diperbarui!',
+      updatedName: fullName,
     }
   }
 
@@ -90,5 +100,6 @@ export async function updateProfile(
   return {
     error: null,
     success: 'Profil Anda berhasil diperbarui!',
+    updatedName: fullName,
   }
 }
