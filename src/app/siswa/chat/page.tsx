@@ -84,7 +84,7 @@ export default async function ChatPage() {
         />
 
         {/* Emergency Crisis Hotline Banner */}
-        <div className="max-w-lg mx-auto p-3.5 bg-[#f3f6e8] rounded-2xl border border-[#d5dcc4] text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="w-full p-3.5 bg-[#f3f6e8] rounded-2xl border border-[#d5dcc4] text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-[#2b3a1a]/80">
             <PhoneCall className="w-4 h-4 text-[#3f5726] shrink-0" />
             <span>Butuh bantuan krisis darurat segera?</span>

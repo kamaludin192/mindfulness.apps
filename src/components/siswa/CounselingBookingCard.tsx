@@ -78,7 +78,7 @@ export default function CounselingBookingCard({
   }
 
   return (
-    <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#e2e8f0] shadow-sm max-w-lg mx-auto space-y-6">
+    <div className="bg-white rounded-3xl p-6 md:p-8 border border-[#d5dcc4] shadow-xs w-full space-y-6">
       {/* Header */}
       <div className="space-y-1">
         <h2 className="text-xl sm:text-2xl font-bold text-[#0f172a] font-serif tracking-tight">
@@ -91,13 +91,13 @@ export default function CounselingBookingCard({
 
       {/* If booking already exists */}
       {existingBooking ? (
-        <div className="p-5 rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] space-y-4 animate-in fade-in duration-300">
+        <div className="p-5 sm:p-6 rounded-2xl bg-[#f8fafc] border border-[#d5dcc4] space-y-4 animate-in fade-in duration-300">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-[#475569] uppercase tracking-wider">
               Status Jadwal Anda
             </span>
             <span
-              className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border ${
+              className={`px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border ${
                 existingBooking.status === 'approved'
                   ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                   : existingBooking.status === 'rejected'
@@ -113,7 +113,7 @@ export default function CounselingBookingCard({
             </span>
           </div>
 
-          <div className="space-y-1 text-xs sm:text-sm text-[#1e293b]">
+          <div className="space-y-1.5 text-xs sm:text-sm text-[#1e293b]">
             <p className="flex items-center gap-2">
               <Calendar className="w-4 h-4 text-[#057a44]" />
               <span>
@@ -145,7 +145,7 @@ export default function CounselingBookingCard({
             type="button"
             onClick={handleCancel}
             disabled={canceling}
-            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold transition-all cursor-pointer disabled:opacity-50"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 py-2.5 px-5 rounded-2xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold transition-all cursor-pointer disabled:opacity-50"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>{canceling ? 'Membatalkan...' : 'Batalkan / Ajukan Jadwal Baru'}</span>
@@ -177,7 +177,7 @@ export default function CounselingBookingCard({
                 value={selectedDate}
                 min={new Date().toISOString().split('T')[0]}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="w-full pl-4 pr-10 py-3.5 bg-[#f8fafc] border border-[#e2e8f0] rounded-2xl text-xs sm:text-sm text-[#0f172a] font-medium focus:outline-none focus:ring-2 focus:ring-[#057a44] focus:border-transparent transition-all cursor-pointer"
+                className="w-full pl-4 pr-10 py-3.5 bg-[#f8fafc] border border-[#d5dcc4] rounded-2xl text-xs sm:text-sm text-[#0f172a] font-medium focus:outline-none focus:ring-2 focus:ring-[#057a44] focus:border-transparent transition-all cursor-pointer"
               />
               <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-[#64748b]">
                 <CalendarDays className="w-4 h-4" />
@@ -185,12 +185,12 @@ export default function CounselingBookingCard({
             </div>
           </div>
 
-          {/* 2. PILIH JAM KETERSEDIAAN */}
+          {/* 2. PILIH JAM KETERSEDIAAN (Responsive 2 cols on mobile, 4 cols on desktop) */}
           <div className="space-y-2.5">
             <label className="text-[11px] font-bold text-[#334155] uppercase tracking-wider block">
               PILIH JAM KETERSEDIAAN
             </label>
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
               {DEFAULT_SLOTS.map((slot) => {
                 const isSelected = selectedSlot === slot.id
                 const isBooked = slot.isBooked
@@ -201,7 +201,7 @@ export default function CounselingBookingCard({
                       key={slot.id}
                       type="button"
                       disabled
-                      className="py-3 px-3 rounded-2xl border border-[#e2e8f0] bg-[#f1f5f9] text-[#94a3b8] text-xs sm:text-sm font-medium line-through cursor-not-allowed flex items-center justify-center select-none"
+                      className="py-3.5 px-3 rounded-2xl border border-[#d5dcc4]/70 bg-[#f1f5f9] text-[#94a3b8] text-xs sm:text-sm font-medium line-through cursor-not-allowed flex items-center justify-center select-none"
                     >
                       {slot.timeRange} (Booked)
                     </button>
@@ -213,10 +213,10 @@ export default function CounselingBookingCard({
                     key={slot.id}
                     type="button"
                     onClick={() => setSelectedSlot(slot.id)}
-                    className={`py-3 px-3 rounded-2xl text-xs sm:text-sm transition-all flex items-center justify-center cursor-pointer ${
+                    className={`py-3.5 px-3 rounded-2xl text-xs sm:text-sm transition-all flex items-center justify-center cursor-pointer ${
                       isSelected
                         ? 'border-2 border-[#86efac] bg-[#e6f9f0] text-[#065f46] font-bold shadow-xs'
-                        : 'border border-[#e2e8f0] bg-white hover:bg-[#f8fafc] text-[#334155] font-medium'
+                        : 'border border-[#d5dcc4] bg-white hover:bg-[#f8fafc] text-[#334155] font-medium'
                     }`}
                   >
                     {slot.timeRange}
