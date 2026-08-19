@@ -73,18 +73,11 @@ export default async function WorksheetPage({
     progressMap.set(p.session_id, p)
   })
 
-  // 3. Compute sequential locking status:
-  // Sesi 1 is always unlocked. Sesi N is unlocked only if Sesi N-1 is completed.
-  let canAccess = true
+  // 3. Compute sequential locking status (Temporarily unlocked for assessment)
   const sessionListWithLock = sessions.map((s, index) => {
     const p = progressMap.get(s.id)
     const isCompleted = p?.status === 'completed'
-    const isLocked = !canAccess
-
-    // If this session is not completed, next sessions are locked
-    if (!isCompleted) {
-      canAccess = false
-    }
+    const isLocked = false // Unlocked for evaluation
 
     return {
       ...s,
@@ -98,11 +91,11 @@ export default async function WorksheetPage({
 
   const activeSessionId = searchParams.session || sessions[0].id
   const activeSession = sessionListWithLock.find((s) => s.id === activeSessionId) || sessionListWithLock[0]
-  const isCurrentSessionLocked = activeSession.isLocked
+  const isCurrentSessionLocked = false // Unlocked for evaluation
 
   // Current active session progress
   const currentProgress = progressMap.get(activeSession.id)
-  const isVideoWatched = currentProgress?.is_video_watched || false
+  const isVideoWatched = currentProgress?.is_video_watched || true // Enabled for review
   const worksheetData = currentProgress?.worksheet_data || null
   const status = currentProgress?.status || null
 

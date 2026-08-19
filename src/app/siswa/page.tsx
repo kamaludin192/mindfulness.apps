@@ -86,16 +86,11 @@ export default async function SiswaDashboard() {
     progressMap.set(p.session_id, p)
   })
 
-  // Calculate sequential progression lock
-  let canAccess = true
+  // Calculate sequential progression lock (Temporarily unlocked for assessment)
   const sessionListWithLock = sessions.map((s: SessionItem, index: number) => {
     const prog = s.id ? progressMap.get(s.id) : null
     const isCompleted = prog?.status === 'completed'
-    const isLocked = !canAccess
-
-    if (!isCompleted) {
-      canAccess = false
-    }
+    const isLocked = false // Unlocked for evaluation
 
     return {
       ...s,
