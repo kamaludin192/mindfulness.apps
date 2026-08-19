@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Users,
   CalendarCheck2,
+  Clock,
   LogOut,
   Leaf,
   Menu,
@@ -32,6 +33,12 @@ const NAV_ITEMS = [
     href: '/guru/counseling',
     label: 'Jadwal & Konseling BK',
     icon: CalendarCheck2,
+    exact: false,
+  },
+  {
+    href: '/guru/jadwal',
+    label: 'CMS Ketersediaan Jadwal',
+    icon: Clock,
     exact: false,
   },
 ]

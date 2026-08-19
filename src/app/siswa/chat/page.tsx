@@ -59,18 +59,25 @@ export default async function ChatPage() {
     status: 'pending' | 'approved' | 'rejected'
   } | undefined
 
+  // 4. Fetch Counselor Availability Settings
+  const { data: availabilitySettings } = await supabase
+    .from('counselor_availability_settings')
+    .select('*')
+    .eq('guru_id', guru.id)
+    .single()
+
   return (
     <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-6">
       {/* Top Header Card */}
-      <div className="bg-white rounded-3xl p-6 md:p-8 border border-[#d5dcc4] shadow-xs space-y-2">
-        <div className="flex items-center gap-2 text-xs font-bold text-[#3f5726] uppercase tracking-wider">
+      <div className="bg-white rounded-3xl p-6 md:p-8 border-2 border-[#d5dcc4] shadow-xs space-y-2">
+        <div className="flex items-center gap-2 text-xs font-extrabold text-[#057a44] uppercase tracking-wider">
           <MessageSquareQuote className="w-4 h-4" />
           <span>Layanan Bimbingan & Konseling Sekolah</span>
         </div>
-        <h1 className="text-xl md:text-2xl font-bold font-serif text-[#1e2a14]">
+        <h1 className="text-xl md:text-2xl font-extrabold font-serif text-[#0f172a]">
           Ruang Konseling & Chat Guru BK
         </h1>
-        <p className="text-xs md:text-sm text-[#2b3a1a]/70">
+        <p className="text-xs sm:text-sm text-[#334155] font-medium">
           Gunakan ruang ini untuk berkonsultasi secara aman dan mengajukan jadwal temu bimbingan tatap muka bersama Guru BK.
         </p>
       </div>
@@ -81,6 +88,7 @@ export default async function ChatPage() {
           guruId={guru.id}
           guruName={counselorName}
           existingBooking={existingBooking}
+          availability={availabilitySettings}
         />
 
         {/* Emergency Crisis Hotline Banner */}
