@@ -3,22 +3,30 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { sendMessage } from '@/app/siswa/chat/actions'
-import { Send } from 'lucide-react'
+import { Send, MessageSquareQuote, Shield } from 'lucide-react'
 
-export default function ChatInterface({ 
+export default function ChatInterface({
   currentUserId,
   guruId,
-  initialMessages 
-}: { 
+  guruName,
+  initialMessages,
+}: {
   currentUserId: string
   guruId: string
-  initialMessages: Array<{ id: string; sender_id: string; receiver_id: string; message: string; created_at?: string }>
+  guruName: string
+  initialMessages: Array<{
+    id: string
+    sender_id: string
+    receiver_id: string
+    message: string
+    created_at?: string
+  }>
 }) {
   const [messages, setMessages] = useState(initialMessages)
   const [newMessage, setNewMessage] = useState('')
   const [sending, setSending] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  
+
   const supabase = useMemo(() => createClient(), [])
 
   useEffect(() => {
@@ -36,13 +44,19 @@ export default function ChatInterface({
           table: 'chat_messages',
         },
         (payload) => {
-          const newMsg = payload.new as { id: string; sender_id: string; receiver_id: string; message: string; created_at?: string }
+          const newMsg = payload.new as {
+            id: string
+            sender_id: string
+            receiver_id: string
+            message: string
+            created_at?: string
+          }
           if (
             (newMsg.sender_id === currentUserId && newMsg.receiver_id === guruId) ||
             (newMsg.sender_id === guruId && newMsg.receiver_id === currentUserId)
           ) {
             setMessages((prev) => {
-              if (prev.some(m => m.id === newMsg.id)) return prev;
+              if (prev.some((m) => m.id === newMsg.id)) return prev
               return [...prev, newMsg]
             })
           }
@@ -73,25 +87,72 @@ export default function ChatInterface({
   }
 
   return (
-    <div className="flex flex-col h-[500px] bg-white rounded-3xl shadow-sm border border-brand-50 overflow-hidden">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-brand-50/30">
+    <div className="flex flex-col h-[520px] bg-white rounded-3xl border border-[#d5dcc4] shadow-xs overflow-hidden">
+      {/* Chat Window Header */}
+      <div className="bg-[#f3f6e8] px-5 py-3.5 border-b border-[#d5dcc4] flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-full bg-[#3f5726] text-white flex items-center justify-center text-sm font-bold">
+            {guruName.charAt(0).toUpperCase()}
+          </div>
+          <div>
+            <h4 className="text-xs md:text-sm font-bold text-[#1e2a14]">{guruName}</h4>
+            <p className="text-[10px] text-[#3f5726] font-medium flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#3f5726] animate-pulse" />
+              Guru Bimbingan Konseling
+            </p>
+          </div>
+        </div>
+
+        <span className="text-[11px] text-[#2b3a1a]/60 hidden sm:flex items-center gap-1">
+          <Shield className="w-3.5 h-3.5 text-[#3f5726]" />
+          Enkripsi Privat
+        </span>
+      </div>
+
+      {/* Messages List Area */}
+      <div className="flex-1 overflow-y-auto p-4 md:p-5 space-y-3 bg-[#f8fafc]/50">
         {messages.length === 0 ? (
-          <div className="text-center text-gray-500 mt-10">
-            Belum ada pesan. Mulai percakapan dengan Guru BK.
+          <div className="flex flex-col items-center justify-center h-full text-center p-6 text-[#2b3a1a]/60 space-y-2">
+            <div className="w-12 h-12 rounded-2xl bg-[#f3f6e8] border border-[#d5dcc4] flex items-center justify-center text-[#3f5726]">
+              <MessageSquareQuote className="w-6 h-6" />
+            </div>
+            <p className="text-sm font-bold text-[#1e2a14]">Ruang Obrolan Terbuka</p>
+            <p className="text-xs max-w-xs leading-relaxed">
+              Mulai percakapan atau tanyakan hal apa pun yang ingin kamu diskusikan bersama {guruName}.
+            </p>
           </div>
         ) : (
           messages.map((msg, idx) => {
             const isMe = msg.sender_id === currentUserId
+            const timeStr = msg.created_at
+              ? new Date(msg.created_at).toLocaleTimeString('id-ID', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })
+              : ''
+
             return (
-              <div key={msg.id || idx} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
-                <div 
-                  className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
-                    isMe 
-                      ? 'bg-brand-500 text-white rounded-br-sm' 
-                      : 'bg-white text-brand-900 rounded-bl-sm border border-brand-50 shadow-sm'
+              <div
+                key={msg.id || idx}
+                className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`max-w-[85%] md:max-w-[75%] rounded-2xl px-4 py-2.5 text-xs md:text-sm shadow-xs space-y-1 ${
+                    isMe
+                      ? 'bg-[#3f5726] text-white rounded-br-xs'
+                      : 'bg-white text-[#1e2a14] border border-[#d5dcc4] rounded-bl-xs'
                   }`}
                 >
-                  <p>{msg.message}</p>
+                  <p className="leading-relaxed whitespace-pre-wrap">{msg.message}</p>
+                  {timeStr && (
+                    <p
+                      className={`text-[9px] text-right ${
+                        isMe ? 'text-white/70' : 'text-[#2b3a1a]/50'
+                      }`}
+                    >
+                      {timeStr}
+                    </p>
+                  )}
                 </div>
               </div>
             )
@@ -100,20 +161,25 @@ export default function ChatInterface({
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSend} className="p-3 bg-white border-t border-brand-50 flex gap-2">
-        <input 
+      {/* Input Form Bar */}
+      <form
+        onSubmit={handleSend}
+        className="p-3 md:p-4 bg-white border-t border-[#d5dcc4] flex items-center gap-2"
+      >
+        <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Tulis pesan..."
-          className="flex-1 rounded-full px-4 py-2 border border-brand-300 focus:ring-2 focus:ring-brand-500 outline-none bg-brand-50/50"
+          placeholder="Tulis pesan atau pertanyaanmu di sini..."
+          className="flex-1 px-4 py-3 rounded-2xl border border-[#d5dcc4] bg-[#f8fafc] text-xs md:text-sm text-[#1e2a14] placeholder-[#2b3a1a]/40 focus:outline-none focus:ring-2 focus:ring-[#3f5726] focus:border-transparent transition-all"
         />
-        <button 
+        <button
           type="submit"
           disabled={!newMessage.trim() || sending}
-          className="w-10 h-10 rounded-full bg-brand-900 text-white flex items-center justify-center hover:bg-brand-700 transition-colors disabled:opacity-50 shrink-0"
+          className="p-3 bg-[#3f5726] hover:bg-[#2b3a1a] text-white rounded-2xl transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-xs shrink-0"
+          aria-label="Kirim Pesan"
         >
-          <Send className="w-5 h-5 -ml-0.5" />
+          <Send className="w-4 h-4" />
         </button>
       </form>
     </div>

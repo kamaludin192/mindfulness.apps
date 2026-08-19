@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { submitWorksheet } from '@/app/siswa/worksheet/actions'
-import { CheckCircle2, Save } from 'lucide-react'
+import { CheckCircle2, Save, FileEdit } from 'lucide-react'
 
 interface WorksheetFormProps {
   sessionId: string
@@ -14,12 +14,14 @@ export default function WorksheetForm({ sessionId, initialData, status }: Worksh
   const [loading, setLoading] = useState(false)
   const [reflection, setReflection] = useState(initialData?.reflection || '')
   const [actionPlan, setActionPlan] = useState(initialData?.actionPlan || '')
+  const [savedSuccess, setSavedSuccess] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     try {
       await submitWorksheet(sessionId, JSON.stringify({ reflection, actionPlan }))
+      setSavedSuccess(true)
     } catch (e) {
       console.error(e)
     } finally {
@@ -27,17 +29,29 @@ export default function WorksheetForm({ sessionId, initialData, status }: Worksh
     }
   }
 
-  const isCompleted = status === 'completed'
+  const isCompleted = status === 'completed' || savedSuccess
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-6">
-      <h3 className="text-xl font-bold text-brand-900 mb-2">Lembar Kerja Siswa</h3>
-      
-      <div className="bg-surface rounded-2xl shadow-sm border border-brand-50 overflow-hidden flex flex-col">
-        <div className="bg-brand-50 px-4 py-3 border-b border-brand-50">
-          <label htmlFor="reflection" className="font-semibold text-brand-900 block">
-            Refleksi Diri
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-6 pt-6 border-t border-[#d5dcc4]">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-base md:text-lg font-bold font-serif text-[#1e2a14] flex items-center gap-2">
+            <FileEdit className="w-5 h-5 text-[#3f5726]" />
+            Lembar Kerja & Refleksi Digital
+          </h3>
+          <p className="text-xs text-[#2b3a1a]/70">
+            Tuliskan perasaan dan rencanamu dengan jujur. Catatan ini aman dan privat.
+          </p>
+        </div>
+      </div>
+
+      {/* Field 1: Refleksi Diri */}
+      <div className="bg-[#f8fafc] rounded-2xl border border-[#d5dcc4] overflow-hidden focus-within:border-[#3f5726] focus-within:ring-2 focus-within:ring-[#3f5726]/20 transition-all">
+        <div className="bg-[#f3f6e8] px-4 py-3 border-b border-[#d5dcc4] flex items-center justify-between">
+          <label htmlFor="reflection" className="text-xs md:text-sm font-bold text-[#1e2a14]">
+            1. Refleksi Diri (Apa yang kamu rasakan & pelajari?)
           </label>
+          <span className="text-[11px] text-[#3f5726] font-medium">Wajib Diisi</span>
         </div>
         <div className="p-4">
           <textarea
@@ -45,18 +59,21 @@ export default function WorksheetForm({ sessionId, initialData, status }: Worksh
             value={reflection}
             onChange={(e) => setReflection(e.target.value)}
             disabled={isCompleted}
-            placeholder="Apa yang kamu pelajari dari video tersebut?"
-            className="w-full min-h-[100px] p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-300 focus:border-brand-500 outline-none transition-all resize-y text-gray-800 disabled:bg-gray-50"
+            placeholder="Ceritakan pengalamanmu saat mempraktikkan latihan mindfulness dalam video ini..."
+            rows={4}
+            className="w-full p-2 bg-transparent text-xs md:text-sm text-[#1e2a14] placeholder-[#2b3a1a]/40 outline-none resize-y disabled:opacity-75"
             required
           />
         </div>
       </div>
 
-      <div className="bg-surface rounded-2xl shadow-sm border border-brand-50 overflow-hidden flex flex-col">
-        <div className="bg-brand-50 px-4 py-3 border-b border-brand-50">
-          <label htmlFor="actionPlan" className="font-semibold text-brand-900 block">
-            Rencana Aksi
+      {/* Field 2: Rencana Aksi */}
+      <div className="bg-[#f8fafc] rounded-2xl border border-[#d5dcc4] overflow-hidden focus-within:border-[#3f5726] focus-within:ring-2 focus-within:ring-[#3f5726]/20 transition-all">
+        <div className="bg-[#f3f6e8] px-4 py-3 border-b border-[#d5dcc4] flex items-center justify-between">
+          <label htmlFor="actionPlan" className="text-xs md:text-sm font-bold text-[#1e2a14]">
+            2. Rencana Aksi (Langkah kecil yang akan kamu coba hari ini)
           </label>
+          <span className="text-[11px] text-[#3f5726] font-medium">Wajib Diisi</span>
         </div>
         <div className="p-4">
           <textarea
@@ -64,26 +81,37 @@ export default function WorksheetForm({ sessionId, initialData, status }: Worksh
             value={actionPlan}
             onChange={(e) => setActionPlan(e.target.value)}
             disabled={isCompleted}
-            placeholder="Tindakan apa yang akan kamu lakukan?"
-            className="w-full min-h-[100px] p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-300 focus:border-brand-500 outline-none transition-all resize-y text-gray-800 disabled:bg-gray-50"
+            placeholder="Contoh: Saya akan meluangkan waktu 2 menit mengambil napas sadar sebelum mulai belajar..."
+            rows={3}
+            className="w-full p-2 bg-transparent text-xs md:text-sm text-[#1e2a14] placeholder-[#2b3a1a]/40 outline-none resize-y disabled:opacity-75"
             required
           />
         </div>
       </div>
 
+      {/* Submit / Completed Feedback */}
       {!isCompleted ? (
         <button
           type="submit"
           disabled={loading}
-          className="mt-2 w-full py-3.5 px-4 bg-brand-900 hover:bg-brand-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-70 shadow-sm"
+          className="w-full py-3.5 px-5 bg-[#3f5726] hover:bg-[#2b3a1a] text-white font-semibold text-xs md:text-sm rounded-2xl transition-all flex items-center justify-center gap-2 shadow-xs hover:shadow-md hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
-          <Save className="w-5 h-5" />
-          {loading ? 'Menyimpan LKS...' : 'Simpan LKS & Selesaikan Sesi'}
+          {loading ? (
+            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          ) : (
+            <Save className="w-4 h-4" />
+          )}
+          <span>{loading ? 'Menyimpan Jawaban...' : 'Simpan Lembar Kerja & Selesaikan Sesi'}</span>
         </button>
       ) : (
-        <div className="mt-2 w-full py-3 px-4 bg-green-50 text-green-700 font-medium rounded-xl flex items-center justify-center gap-2 border border-green-200">
-          <CheckCircle2 className="w-5 h-5" />
-          Sesi Ini Telah Diselesaikan
+        <div className="p-4 bg-green-50 rounded-2xl border border-green-200 text-green-800 text-xs md:text-sm flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+            <div>
+              <p className="font-bold">Lembar Kerja Sesi Ini Telah Berhasil Diselesaikan</p>
+              <p className="text-[11px] text-green-700">Jawabanmu telah tersimpan dan dapat ditinjau oleh Guru BK.</p>
+            </div>
+          </div>
         </div>
       )}
     </form>
