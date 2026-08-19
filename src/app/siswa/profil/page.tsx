@@ -11,7 +11,9 @@ import {
   CheckCircle2,
   Clock,
   ArrowRight,
+  LogOut,
 } from 'lucide-react'
+import { logoutAction } from './actions'
 
 export const metadata = {
   title: 'Profil Siswa - Mindfulness Intervention',
@@ -159,12 +161,12 @@ export default async function SiswaProfilPage() {
 
                 {isFinished ? (
                   <span className="inline-flex items-center gap-1 text-[11px] font-bold text-green-700 bg-green-50 px-2.5 py-0.5 rounded-full border border-green-200 shrink-0">
-                    <CheckCircle2 className="w-3 h-3" />
+                    <CheckCircle2 className="w-3.5 h-3.5" />
                     Selesai
                   </span>
                 ) : (
                   <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#2b3a1a]/60 shrink-0">
-                    <Clock className="w-3 h-3" />
+                    <Clock className="w-3.5 h-3.5" />
                     Belum Selesai
                   </span>
                 )}
@@ -183,6 +185,19 @@ export default async function SiswaProfilPage() {
         <p className="leading-relaxed">
           Seluruh catatan latihan mindfulness, lembar refleksi emosi, dan percakapan bimbingan konseling Anda terlindungi dengan enkripsi privat dan hanya dapat diakses oleh Anda serta Guru BK sekolah yang bertugas.
         </p>
+      </div>
+
+      {/* Mobile-Only Logout Button (Visible only on mobile devices, hidden on desktop md:hidden) */}
+      <div className="block md:hidden pt-2">
+        <form action={logoutAction}>
+          <button
+            type="submit"
+            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs sm:text-sm font-bold transition-all shadow-xs cursor-pointer active:scale-[0.99]"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Keluar Akun</span>
+          </button>
+        </form>
       </div>
     </div>
   )
