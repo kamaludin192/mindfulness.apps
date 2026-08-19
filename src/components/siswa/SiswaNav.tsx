@@ -26,14 +26,14 @@ export function SiswaSidebar() {
       <div className="space-y-6">
         {/* Brand Logo */}
         <Link href="/siswa" className="flex items-center gap-2.5 px-2">
-          <span className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#3f5726] text-white shadow-xs">
+          <span className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#3f5726] text-white shadow-xs shrink-0">
             <Leaf className="w-5 h-5" />
           </span>
           <div className="flex flex-col">
-            <span className="font-serif font-bold text-sm text-[#1e2a14] leading-tight">
-              mindfulness
+            <span className="font-serif font-bold text-xs tracking-tight text-[#1e2a14] leading-tight">
+              mindfulnessintervention<span className="text-[#3f5726]">.id</span>
             </span>
-            <span className="text-[11px] text-[#3f5726] font-medium">Portal Siswa</span>
+            <span className="text-[10px] text-[#3f5726] font-medium">Portal Siswa</span>
           </div>
         </Link>
 

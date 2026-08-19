@@ -5,120 +5,190 @@ import BottomCta from "@/components/public/BottomCta";
 import {
   ArrowRight,
   ShieldCheck,
-  Brain,
   BookOpen,
-  Leaf,
   CheckCircle2,
-  Users,
+  MessageSquareQuote,
 } from "lucide-react";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen font-sans bg-[#f3f6e8] text-[#2b3a1a] flex flex-col selection:bg-[#c2db8f]/40">
+    <div className="min-h-screen font-sans bg-[#f5f8ec] text-[#2b3a1a] flex flex-col selection:bg-[#c2db8f]/40 relative overflow-x-hidden">
       <Navbar />
 
       <main className="flex-1">
         {/* 1. HERO SECTION */}
-        <section className="px-4 pt-20 pb-24 md:pt-28 md:pb-32 flex flex-col items-center text-center max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 text-[#3f5726] text-xs md:text-sm font-semibold mb-6 shadow-xs border border-[#d5dcc4]">
-            <ShieldCheck className="w-4 h-4 text-[#3f5726]" />
-            <span>Ruang Aman & Terverifikasi untuk Pelajar</span>
-          </div>
+        <section className="relative px-4 pt-16 pb-20 md:pt-24 md:pb-28 overflow-hidden">
+          {/* Ambient Lighting Circles */}
+          <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-linear-to-b from-[#c8e29a]/35 via-[#dfecc7]/20 to-transparent blur-3xl pointer-events-none -z-10 rounded-full" />
+          <div className="absolute top-40 -left-20 w-80 h-80 bg-[#3f5726]/10 blur-3xl pointer-events-none -z-10 rounded-full" />
+          <div className="absolute top-40 -right-20 w-80 h-80 bg-[#c2db8f]/20 blur-3xl pointer-events-none -z-10 rounded-full" />
 
-          <h1 className="text-3xl md:text-6xl font-bold font-serif mb-6 leading-tight max-w-4xl">
-            Mindfulness-Based Intervention (MBI)
-            <br />
-            <span className="text-[#3f5726]">untuk Siswa</span>
-          </h1>
-
-          <p className="text-base md:text-xl text-[#2b3a1a]/80 mb-10 max-w-3xl leading-relaxed">
-            Intervensi berbasis kesadaran yang melatih Anda untuk hadir secara utuh pada momen saat ini. Platform ini dirancang khusus untuk memudahkan siswa dalam memperoleh bantuan layanan konseling secara optimal.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-            <Link
-              href="/login"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#3f5726] text-white px-8 py-3.5 rounded-full font-semibold hover:bg-[#2b3a1a] transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer text-sm md:text-base"
-            >
-              <span>Mulai Sesi Pertama</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-
-            <Link
-              href="/program"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-[#3f5726] border border-[#d5dcc4] px-7 py-3.5 rounded-full font-semibold hover:bg-[#e8ece1] transition-all hover:shadow-xs cursor-pointer text-sm md:text-base"
-            >
-              <span>Pelajari 4 Sesi Program</span>
-              <BookOpen className="w-4 h-4" />
-            </Link>
-          </div>
-
-          {/* Quick stats strip */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl text-left">
-            <div className="bg-white/80 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4]/60 shadow-xs">
-              <p className="text-2xl md:text-3xl font-bold font-serif text-[#3f5726]">4 Sesi</p>
-              <p className="text-xs md:text-sm text-[#2b3a1a]/70">Latihan Video & LKS</p>
+          <div className="max-w-5xl mx-auto flex flex-col items-center text-center space-y-8">
+            {/* Trust / Official Badge */}
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/90 text-[#243513] text-xs md:text-sm font-semibold shadow-xs border border-[#d5dcc4] backdrop-blur-md hover:border-[#3f5726]/50 transition-all">
+              <span className="w-2 h-2 rounded-full bg-[#3f5726] animate-pulse" />
+              <ShieldCheck className="w-4 h-4 text-[#3f5726]" />
+              <span>mindfulnessintervention.id • Ruang Aman & Terverifikasi Siswa</span>
             </div>
-            <div className="bg-white/80 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4]/60 shadow-xs">
-              <p className="text-2xl md:text-3xl font-bold font-serif text-[#3f5726]">1-on-1</p>
-              <p className="text-xs md:text-sm text-[#2b3a1a]/70">Konseling Guru BK</p>
+
+            {/* Headline */}
+            <div className="space-y-3 max-w-4xl">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold font-serif leading-[1.15] tracking-tight text-[#141f0d]">
+                Intervensi Kesadaran Penuh{" "}
+                <br className="hidden sm:inline" />
+                <span className="bg-linear-to-r from-[#2e4219] via-[#3f5726] to-[#557332] bg-clip-text text-transparent">
+                  & Ruang Konseling Siswa
+                </span>
+              </h1>
+              <p className="text-base sm:text-lg md:text-xl text-[#2b3a1a]/80 max-w-3xl mx-auto leading-relaxed pt-2">
+                Platform intervensi berbasis kesadaran (MBI) yang melatih siswa untuk hadir utuh, mengelola stres akademik, dan memudahkan sesi bimbingan konseling bersama Guru BK secara terstruktur dan aman.
+              </p>
             </div>
-            <div className="bg-white/80 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4]/60 shadow-xs">
-              <p className="text-2xl md:text-3xl font-bold font-serif text-[#3f5726]">100%</p>
-              <p className="text-xs md:text-sm text-[#2b3a1a]/70">Privasi Terjaga</p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto pt-2">
+              <Link
+                href="/login"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-[#2f431b] hover:bg-[#1e2a14] text-white px-8 py-4 rounded-full font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer text-sm md:text-base"
+              >
+                <span>Mulai Sesi Pertama Sekarang</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+
+              <Link
+                href="/program"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/90 hover:bg-white text-[#2b3a1a] border border-[#d5dcc4] hover:border-[#3f5726]/40 px-7 py-4 rounded-full font-semibold transition-all shadow-2xs hover:shadow-xs cursor-pointer text-sm md:text-base backdrop-blur-xs"
+              >
+                <BookOpen className="w-4 h-4 text-[#3f5726]" />
+                <span>Jelajahi 4 Modul Sesi</span>
+              </Link>
             </div>
-            <div className="bg-white/80 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4]/60 shadow-xs">
-              <p className="text-2xl md:text-3xl font-bold font-serif text-[#3f5726]">Klinis</p>
-              <p className="text-xs md:text-sm text-[#2b3a1a]/70">Berbasis Bukti MBCT</p>
+
+            {/* Interactive Hero Showcase Card */}
+            <div className="w-full max-w-4xl pt-6">
+              <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#d5dcc4] shadow-sm text-left grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                {/* Left Side: 4 Module Highlights */}
+                <div className="md:col-span-7 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#f3f6e8] text-[#3f5726] font-bold text-[11px] border border-[#d5dcc4]">
+                      ALUR MODUL
+                    </span>
+                    <span className="text-xs text-[#2b3a1a]/60">4 Tahapan Belajar</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-bold font-serif text-[#1e2a14]">
+                    Perjalanan Latihan Mindfulness Anda
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div className="p-3 rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] flex items-center gap-2.5 text-xs font-semibold text-[#1e2a14]">
+                      <span className="w-6 h-6 rounded-xl bg-[#e6f9f0] text-[#057a44] flex items-center justify-center text-[11px] font-bold shrink-0">1</span>
+                      <span>Napas & Pemindaian Tubuh</span>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] flex items-center gap-2.5 text-xs font-semibold text-[#1e2a14]">
+                      <span className="w-6 h-6 rounded-xl bg-[#e6f9f0] text-[#057a44] flex items-center justify-center text-[11px] font-bold shrink-0">2</span>
+                      <span>Regulasi Pikiran & Emosi</span>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] flex items-center gap-2.5 text-xs font-semibold text-[#1e2a14]">
+                      <span className="w-6 h-6 rounded-xl bg-[#e6f9f0] text-[#057a44] flex items-center justify-center text-[11px] font-bold shrink-0">3</span>
+                      <span>Kelola Stres & Cemas</span>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] flex items-center gap-2.5 text-xs font-semibold text-[#1e2a14]">
+                      <span className="w-6 h-6 rounded-xl bg-[#e6f9f0] text-[#057a44] flex items-center justify-center text-[11px] font-bold shrink-0">4</span>
+                      <span>Welas Asih & Jurnal Syukur</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Side: Feature snapshot */}
+                <div className="md:col-span-5 bg-[#f3f6e8] rounded-2xl p-4.5 border border-[#d5dcc4] space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#1e2a14] flex items-center gap-1.5">
+                      <MessageSquareQuote className="w-4 h-4 text-[#3f5726]" />
+                      Konseling Guru BK
+                    </span>
+                    <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                      Aktif
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#2b3a1a]/70 leading-relaxed">
+                    Ajukan jadwal privat atau konsultasi melalui chat langsung dengan konselor sekolah Anda kapan saja.
+                  </p>
+                  <div className="pt-1 flex items-center gap-2 text-xs font-bold text-[#3f5726]">
+                    <CheckCircle2 className="w-4 h-4 text-[#3f5726]" />
+                    <span>Lembar Kerja Sesuai Modul Resmi</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Stats Strip */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 w-full max-w-4xl text-left pt-2">
+              <div className="bg-white/85 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4] shadow-2xs">
+                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">4 Sesi</p>
+                <p className="text-xs text-[#2b3a1a]/70 font-medium">Video & Lembar Kerja</p>
+              </div>
+              <div className="bg-white/85 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4] shadow-2xs">
+                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">1-on-1</p>
+                <p className="text-xs text-[#2b3a1a]/70 font-medium">Jadwal Guru BK</p>
+              </div>
+              <div className="bg-white/85 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4] shadow-2xs">
+                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">100%</p>
+                <p className="text-xs text-[#2b3a1a]/70 font-medium">Privasi Terjaga</p>
+              </div>
+              <div className="bg-white/85 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4] shadow-2xs">
+                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">Klinis</p>
+                <p className="text-xs text-[#2b3a1a]/70 font-medium">Berbasis Bukti MBCT</p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* 2. METODOLOGI SECTION (Ringkasan) */}
-        <section className="bg-white px-4 py-20 border-y border-[#d5dcc4]/40">
+        {/* 2. METODOLOGI SECTION */}
+        <section className="bg-white px-4 py-20 border-y border-[#d5dcc4]/60">
           <div className="max-w-6xl mx-auto">
             <div className="grid md:grid-cols-4 gap-10 items-start">
               <div className="md:col-span-1 space-y-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#5a7a35]">Metodologi Ilmiah</span>
-                <h2 className="text-2xl md:text-3xl font-bold font-serif leading-snug">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#3f5726]">Metodologi Ilmiah</span>
+                <h2 className="text-2xl md:text-3xl font-bold font-serif leading-snug text-[#1e2a14]">
                   Membangun Kesadaran Secara Bertahap
                 </h2>
                 <p className="text-xs text-[#2b3a1a]/70 leading-relaxed">
-                  Dirancang terstruktur agar tidak membebani mental pelajar.
+                  Dirancang terstruktur dan ramah pelajar agar tidak membebani mental siswa.
                 </p>
               </div>
 
               <div className="md:col-span-3 grid md:grid-cols-3 gap-6">
                 {/* Step 1 */}
-                <div className="bg-[#f3f6e8]/60 p-6 rounded-2xl border border-[#d5dcc4]/40">
-                  <div className="w-9 h-9 rounded-full bg-[#c2db8f] flex items-center justify-center font-bold text-[#1e2a14] mb-4 text-sm shadow-xs">
+                <div className="bg-[#f8fafc] p-6 rounded-3xl border border-[#e2e8f0] space-y-2">
+                  <div className="w-9 h-9 rounded-2xl bg-[#3f5726]/10 text-[#3f5726] flex items-center justify-center font-bold mb-3 text-sm">
                     1
                   </div>
-                  <h3 className="font-bold text-base mb-2">Asesmen Awal</h3>
+                  <h3 className="font-bold text-base text-[#1e2a14]">Asesmen & Pengenalan</h3>
                   <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
-                    Mengidentifikasi kondisi awal Anda untuk memastikan kesesuaian layanan pendampingan yang akan diberikan.
+                    Mengenali kondisi awal emosi dan pernapasan Anda untuk memastikan kesiapan dalam mengikuti latihan.
                   </p>
                 </div>
 
                 {/* Step 2 */}
-                <div className="bg-[#f3f6e8]/60 p-6 rounded-2xl border border-[#d5dcc4]/40">
-                  <div className="w-9 h-9 rounded-full bg-[#3f5726] flex items-center justify-center font-bold text-white mb-4 text-sm shadow-xs">
+                <div className="bg-[#f8fafc] p-6 rounded-3xl border border-[#e2e8f0] space-y-2">
+                  <div className="w-9 h-9 rounded-2xl bg-[#3f5726] text-white flex items-center justify-center font-bold mb-3 text-sm shadow-xs">
                     2
                   </div>
-                  <h3 className="font-bold text-base mb-2">Latihan Rutin</h3>
+                  <h3 className="font-bold text-base text-[#1e2a14]">Latihan Rutin & LKS</h3>
                   <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
-                    Menumbuhkan kebiasaan baru agar praktik mindfulness dapat diterapkan secara konsisten dalam kehidupan sehari-hari.
+                    Mempraktikkan video mindfulness dan mengisi lembar kerja digital untuk mengintegrasikan pengalaman.
                   </p>
                 </div>
 
                 {/* Step 3 */}
-                <div className="bg-[#f3f6e8]/60 p-6 rounded-2xl border border-[#d5dcc4]/40">
-                  <div className="w-9 h-9 rounded-full bg-[#75845c] flex items-center justify-center font-bold text-white mb-4 text-sm shadow-xs">
+                <div className="bg-[#f8fafc] p-6 rounded-3xl border border-[#e2e8f0] space-y-2">
+                  <div className="w-9 h-9 rounded-2xl bg-[#75845c] text-white flex items-center justify-center font-bold mb-3 text-sm shadow-xs">
                     3
                   </div>
-                  <h3 className="font-bold text-base mb-2">Evaluasi Progress</h3>
+                  <h3 className="font-bold text-base text-[#1e2a14]">Evaluasi & Konseling BK</h3>
                   <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
-                    Memantau perkembangan diri secara berkala dan melihat sejauh mana efektivitas latihan yang telah dilakukan.
+                    Memantau perkembangan diri dan berdiskusi tatap muka bersama Guru BK saat membutuhkan bimbingan mendalam.
                   </p>
                 </div>
               </div>
@@ -127,12 +197,12 @@ export default function HomePage() {
         </section>
 
         {/* 3. SEKILAS 4 SESI MINDFULNESS */}
-        <section className="bg-[#f3f6e8] px-4 py-20">
+        <section className="bg-[#f5f8ec] px-4 py-20">
           <div className="max-w-6xl mx-auto space-y-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#5a7a35]">Modul Latihan</span>
-                <h2 className="text-2xl md:text-3xl font-bold font-serif mt-1">4 Sesi Mindfulness Interaktif</h2>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#3f5726]">Modul Latihan</span>
+                <h2 className="text-2xl md:text-3xl font-bold font-serif text-[#1e2a14] mt-1">4 Sesi Mindfulness Interaktif</h2>
               </div>
               <Link
                 href="/program"
@@ -145,105 +215,77 @@ export default function HomePage() {
 
             <div className="grid md:grid-cols-2 gap-6">
               {/* Sesi 1 */}
-              <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#e8ece1] hover:-translate-y-1 transition-all">
-                <span className="inline-block px-3 py-1 bg-[#e8ece1] rounded-full text-xs font-semibold mb-3 text-[#3f5726]">
+              <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4] hover:-translate-y-1 transition-all">
+                <span className="inline-block px-3 py-1 bg-[#f3f6e8] rounded-full text-xs font-semibold mb-3 text-[#3f5726] border border-[#d5dcc4]">
                   Sesi 1
                 </span>
-                <h3 className="text-lg font-bold mb-2">Mindful Breathing</h3>
-                <p className="text-xs md:text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Latihan pernapasan sadar yang dilengkapi materi psikoedukasi untuk melatih fokus dan ketenangan.
+                <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
+                  Menyadari Napas & Tubuh (Mindful Breathing)
+                </h3>
+                <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
+                  Mempelajari dasar pernapasan sadar dan pemindaian tubuh (*body scan*) untuk menenangkan sistem saraf.
                 </p>
+                <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Worksheet Latihan Mindful Breathing</span>
+                </div>
               </div>
 
               {/* Sesi 2 */}
-              <div className="bg-[#3f5726] text-white rounded-3xl p-8 shadow-xs hover:-translate-y-1 transition-all">
-                <div className="flex justify-between items-start mb-3">
-                  <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-xs font-semibold">
-                    Sesi 2
-                  </span>
-                  <Leaf className="w-5 h-5 text-[#c2db8f]" />
-                </div>
-                <h3 className="text-lg font-bold mb-2">Mindful Sitting & Listening</h3>
-                <p className="text-xs md:text-sm text-white/90 leading-relaxed">
-                  Berlatih mengobservasi sekeliling dengan kesadaran penuh serta worksheet experience calendar.
+              <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4] hover:-translate-y-1 transition-all">
+                <span className="inline-block px-3 py-1 bg-[#f3f6e8] rounded-full text-xs font-semibold mb-3 text-[#3f5726] border border-[#d5dcc4]">
+                  Sesi 2
+                </span>
+                <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
+                  Pengenalan Pikiran & Regulasi Emosi
+                </h3>
+                <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
+                  Mengamati pikiran yang datang dan pergi tanpa menghakimi, menciptakan ruang jeda sebelum merespons.
                 </p>
+                <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Worksheet Experiences Calender</span>
+                </div>
               </div>
 
               {/* Sesi 3 */}
-              <div className="bg-[#e8ece1] rounded-3xl p-8 shadow-xs hover:-translate-y-1 transition-all">
-                <div className="flex justify-between items-start mb-3">
-                  <span className="inline-block px-3 py-1 bg-white rounded-full text-xs font-semibold text-[#3f5726]">
-                    Sesi 3
-                  </span>
-                  <Brain className="w-5 h-5 text-[#3f5726]" />
-                </div>
-                <h3 className="text-lg font-bold mb-2">Body Scanning</h3>
-                <p className="text-xs md:text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Kenali ketegangan fisik melalui pemindaian tubuh dan latihan daily thought record.
+              <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4] hover:-translate-y-1 transition-all">
+                <span className="inline-block px-3 py-1 bg-[#f3f6e8] rounded-full text-xs font-semibold mb-3 text-[#3f5726] border border-[#d5dcc4]">
+                  Sesi 3
+                </span>
+                <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
+                  Mengelola Stres Akademik & Kecemasan
+                </h3>
+                <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
+                  Strategi praktis meredakan kepanikan saat ujian, defusi kognitif, dan teknik relaksasi mandiri.
                 </p>
+                <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Worksheet Daily Thought Record</span>
+                </div>
               </div>
 
               {/* Sesi 4 */}
-              <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#e8ece1] hover:-translate-y-1 transition-all">
-                <span className="inline-block px-3 py-1 bg-[#e8ece1] rounded-full text-xs font-semibold mb-3 text-[#3f5726]">
+              <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4] hover:-translate-y-1 transition-all">
+                <span className="inline-block px-3 py-1 bg-[#f3f6e8] rounded-full text-xs font-semibold mb-3 text-[#3f5726] border border-[#d5dcc4]">
                   Sesi 4
                 </span>
-                <h3 className="text-lg font-bold mb-2">Gratitude & Loving Kindness</h3>
-                <p className="text-xs md:text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Tumbuhkan rasa syukur dan welas asih diri melalui penugasan gratitude journal.
+                <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
+                  Welas Asih Diri (Self-Compassion) & Integrasi
+                </h3>
+                <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
+                  Membiasakan sikap ramah pada diri sendiri saat gagal dan menumbuhkan rasa syukur dalam kehidupan.
                 </p>
+                <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Jurnal Rasa Syukur & Surat Cinta Diri</span>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 4. TENTANG KAMI SNAPSHOT */}
-        <section className="bg-white px-4 py-20 border-t border-[#d5dcc4]/40">
-          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-            <div className="space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#5a7a35]">Di Balik Layar</span>
-              <h2 className="text-2xl md:text-3xl font-bold font-serif leading-snug">
-                Dikembangkan Bersama Pakar Bimbingan & Psikologi
-              </h2>
-              <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                Platform ini merupakan hasil riset integrasi *cybercounseling* dan terapi kognitif berbasis kesadaran (MBCT) oleh tim akademisi konseling terpercaya.
-              </p>
-              <div className="pt-2">
-                <Link
-                  href="/tentang-kami"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold bg-[#3f5726] text-white hover:bg-[#2b3a1a] transition-all"
-                >
-                  <Users className="w-4 h-4" />
-                  <span>Kenali Tim Peneliti Kami</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-
-            <div className="bg-[#f3f6e8] p-8 rounded-3xl border border-[#d5dcc4]/60 space-y-4">
-              <h3 className="font-bold text-base flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-[#3f5726]" />
-                Keunggulan Layanan
-              </h3>
-              <ul className="space-y-3 text-xs md:text-sm text-[#2b3a1a]/80">
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#3f5726] mt-1.5" />
-                  <span>Pendampingan konseling terintegrasi langsung dengan Guru BK sekolah.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#3f5726] mt-1.5" />
-                  <span>Pantauan suasana hati harian & perkembangan intervensi berkala.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#3f5726] mt-1.5" />
-                  <span>Akses mandiri latihan mindfulness dari gawai mana saja.</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* 5. BOTTOM CTA BANNER */}
+        {/* 4. BOTTOM CTA */}
         <BottomCta />
       </main>
 

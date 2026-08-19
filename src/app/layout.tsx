@@ -14,8 +14,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Mindfulness Intervention App",
-  description: "Platform Mindfulness untuk Siswa dan Guru BK",
+  title: "mindfulnessintervention.id - Platform Mindfulness Siswa & Guru BK",
+  description: "Platform Mindfulness-Based Intervention (MBI) berbasis bukti untuk siswa dan bimbingan konseling Guru BK.",
 };
 
 export default function RootLayout({
