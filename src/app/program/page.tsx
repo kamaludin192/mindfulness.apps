@@ -68,7 +68,7 @@ export default function ProgramPage() {
                 </div>
                 <h3 className="font-bold text-lg mb-3">Latihan Rutin</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Menumbuhkan kebiasaan baru melalui 4 modul video interaktif dan pengisian Lembar Kerja Siswa (LKS) reflektif secara konsisten.
+                  Menumbuhkan kebiasaan baru melalui 4 modul video interaktif dan pengisian digital worksheet reflektif secara konsisten.
                 </p>
               </div>
 
