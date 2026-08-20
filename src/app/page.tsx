@@ -7,7 +7,6 @@ import {
   ShieldCheck,
   BookOpen,
   CheckCircle2,
-  MessageSquareQuote,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -59,64 +58,6 @@ export default function HomePage() {
                 <BookOpen className="w-4 h-4 text-[#3f5726]" />
                 <span>Jelajahi 4 Modul Sesi</span>
               </Link>
-            </div>
-
-            {/* Interactive Hero Showcase Card */}
-            <div className="w-full max-w-4xl pt-6">
-              <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#d5dcc4] shadow-sm text-left grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                {/* Left Side: 4 Module Highlights */}
-                <div className="md:col-span-7 space-y-4">
-                  <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#f3f6e8] text-[#3f5726] font-bold text-[11px] border border-[#d5dcc4]">
-                      ALUR MODUL
-                    </span>
-                    <span className="text-xs text-[#2b3a1a]/60">4 Tahapan Belajar</span>
-                  </div>
-                  <h3 className="text-base sm:text-lg font-bold font-serif text-[#1e2a14]">
-                    Perjalanan Latihan Mindfulness Anda
-                  </h3>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    <div className="p-3 rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] flex items-center gap-2.5 text-xs font-semibold text-[#1e2a14]">
-                      <span className="w-6 h-6 rounded-xl bg-[#e6f9f0] text-[#057a44] flex items-center justify-center text-[11px] font-bold shrink-0">1</span>
-                      <span>Napas & Pemindaian Tubuh</span>
-                    </div>
-                    <div className="p-3 rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] flex items-center gap-2.5 text-xs font-semibold text-[#1e2a14]">
-                      <span className="w-6 h-6 rounded-xl bg-[#e6f9f0] text-[#057a44] flex items-center justify-center text-[11px] font-bold shrink-0">2</span>
-                      <span>Regulasi Pikiran & Emosi</span>
-                    </div>
-                    <div className="p-3 rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] flex items-center gap-2.5 text-xs font-semibold text-[#1e2a14]">
-                      <span className="w-6 h-6 rounded-xl bg-[#e6f9f0] text-[#057a44] flex items-center justify-center text-[11px] font-bold shrink-0">3</span>
-                      <span>Kelola Stres & Cemas</span>
-                    </div>
-                    <div className="p-3 rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] flex items-center gap-2.5 text-xs font-semibold text-[#1e2a14]">
-                      <span className="w-6 h-6 rounded-xl bg-[#e6f9f0] text-[#057a44] flex items-center justify-center text-[11px] font-bold shrink-0">4</span>
-                      <span>Welas Asih & Jurnal Syukur</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Side: Feature snapshot */}
-                <div className="md:col-span-5 bg-[#f3f6e8] rounded-2xl p-4.5 border border-[#d5dcc4] space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-[#1e2a14] flex items-center gap-1.5">
-                      <MessageSquareQuote className="w-4 h-4 text-[#3f5726]" />
-                      Konseling Guru BK
-                    </span>
-                    <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                      Aktif
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-[#2b3a1a]/70 leading-relaxed">
-                    Ajukan jadwal privat atau konsultasi melalui chat langsung dengan konselor sekolah Anda kapan saja.
-                  </p>
-                  <div className="pt-1 flex items-center gap-2 text-xs font-bold text-[#3f5726]">
-                    <CheckCircle2 className="w-4 h-4 text-[#3f5726]" />
-                    <span>Lembar Kerja Sesuai Modul Resmi</span>
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Quick Stats Strip */}
