@@ -34,14 +34,11 @@ export default function HomePage() {
             {/* Headline */}
             <div className="space-y-3 max-w-4xl">
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold font-serif leading-[1.15] tracking-tight text-[#141f0d]">
-                Intervensi Kesadaran Penuh{" "}
-                <br className="hidden sm:inline" />
-                <span className="text-[#3f5726]">
-                  & Ruang Konseling Siswa
-                </span>
+                Mindfulness-Based <br className="hidden sm:inline" />
+                <span className="text-[#3f5726]">Intervention</span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-[#243316] font-medium max-w-3xl mx-auto leading-relaxed pt-2">
-                Platform intervensi berbasis kesadaran (MBI) yang melatih siswa untuk hadir utuh, mengelola stres akademik, dan memudahkan sesi bimbingan konseling bersama Guru BK secara terstruktur dan aman.
+                Mindfulness-Based Intervention adalah intervensi berbasis kesadaran yang melatih hadir secara utuh pada momen saat ini secara sengaja. Platform ini digunakan sebagai optimalisasi media layanan Bimbingan dan Konseling untuk memudahkan siswa SMA dalam memperoleh bantuan layanan.
               </p>
             </div>
 
