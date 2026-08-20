@@ -75,8 +75,8 @@ export default function HomePage() {
                 <p className="text-xs text-[#2b3a1a]/70 font-medium">Privasi Terjaga</p>
               </div>
               <div className="bg-white/85 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4] shadow-2xs">
-                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">Klinis</p>
-                <p className="text-xs text-[#2b3a1a]/70 font-medium">Berbasis Bukti MBCT</p>
+                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">Edukasi</p>
+                <p className="text-xs text-[#2b3a1a]/70 font-medium">Psikoedukasi Terstruktur</p>
               </div>
             </div>
           </div>

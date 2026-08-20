@@ -32,7 +32,7 @@ export default function ProgramPage() {
           </h1>
 
           <p className="text-base md:text-lg text-[#2b3a1a]/80 max-w-3xl mx-auto leading-relaxed">
-            Metode teruji klinis yang dirancang bertahap untuk membantu siswa mengamati pikiran, mereduksi kecemasan, dan mengelola emosi dalam suasana belajar yang aman.
+            Metode psikoedukasi terstruktur yang dirancang bertahap untuk membantu siswa mengamati pikiran, mereduksi kecemasan, dan mengelola emosi dalam suasana belajar yang aman.
           </p>
         </section>
 

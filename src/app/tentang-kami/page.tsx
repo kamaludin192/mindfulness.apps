@@ -21,14 +21,14 @@ export default function TentangKamiPage() {
         <section className="px-4 pt-16 pb-16 md:pt-24 md:pb-20 max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 text-[#3f5726] text-xs md:text-sm font-semibold mb-6 shadow-xs border border-[#d5dcc4]">
             <ShieldCheck className="w-4 h-4 text-[#3f5726]" />
-            <span>Inisiatif Berbasis Riset Klinis</span>
+            <span>Inisiatif Berbasis Riset Edukasi</span>
           </div>
 
           <h4 className="text-xs font-bold tracking-widest uppercase text-[#5a7a35] mb-2">TENTANG KAMI</h4>
           <h1 className="text-3xl md:text-5xl font-bold font-serif mb-6 leading-tight">
             Membangun Resiliensi Digital Pelajar
             <br />
-            <span className="text-[#3f5726]">Melalui Intervensi Klinis</span>
+            <span className="text-[#3f5726]">Melalui Psikoedukasi Terstruktur</span>
           </h1>
 
           <p className="text-base md:text-lg text-[#2b3a1a]/80 max-w-3xl mx-auto leading-relaxed">
@@ -66,7 +66,7 @@ export default function TentangKamiPage() {
                       />
                       <text className="text-[11px] font-bold tracking-[0.25em] uppercase fill-[#c2db8f]">
                         <textPath href="#textCircle" startOffset="0%">
-                          KLINIS • TERUKUR • BERBASIS BUKTI •
+                          EDUKATIF • TERUKUR • BERBASIS RISET •
                         </textPath>
                       </text>
                     </svg>

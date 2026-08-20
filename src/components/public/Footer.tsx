@@ -20,7 +20,7 @@ export default function Footer() {
           </p>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3f5726]/50 text-xs text-[#c2db8f] border border-[#c2db8f]/20">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Klinis • Terukur • Berbasis Bukti</span>
+            <span>Edukatif • Terukur • Berbasis Riset</span>
           </div>
         </div>
 
