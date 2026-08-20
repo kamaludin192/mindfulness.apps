@@ -56,7 +56,7 @@ export default function HomePage() {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/90 hover:bg-white text-[#2b3a1a] border border-[#d5dcc4] hover:border-[#3f5726]/40 px-7 py-4 rounded-full font-semibold transition-all shadow-2xs hover:shadow-xs cursor-pointer text-sm md:text-base backdrop-blur-xs"
               >
                 <BookOpen className="w-4 h-4 text-[#3f5726]" />
-                <span>Jelajahi 4 Modul Sesi</span>
+                <span>Jelajahi 4 Sesi Latihan</span>
               </Link>
             </div>
 
