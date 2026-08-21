@@ -67,7 +67,7 @@ export default async function AdminDashboardOverview() {
         <div className="space-y-2 max-w-2xl">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/20 text-xs font-extrabold text-amber-300 border border-amber-500/40">
             <Sparkles className="w-4 h-4 text-amber-400" />
-            <span>Pusat Kendali Utama Superadmin</span>
+            <span>ADMIN</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold font-serif tracking-tight text-white">
             Panel Kontrol & Manajemen Sistem 🛡️
@@ -121,7 +121,7 @@ export default async function AdminDashboardOverview() {
 
         <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-slate-200 shadow-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-extrabold text-[#475569]">LKS Terselesaikan</span>
+            <span className="text-xs font-extrabold text-[#475569]">Worksheet Terselesaikan</span>
             <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
               <CheckCircle2 className="w-4 h-4" />
             </div>
