@@ -84,7 +84,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-4 gap-10 items-start">
               <div className="md:col-span-1 space-y-3">
                 <h2 className="text-2xl md:text-3xl font-bold font-serif leading-snug text-[#1e2a14]">
-                  Membangun Kesadaran Secara Bertahap
+                  Tahapan Membangun Kesadaran
                 </h2>
               </div>
 
@@ -116,7 +116,7 @@ export default function HomePage() {
                   <div className="w-9 h-9 rounded-2xl bg-[#75845c] text-white flex items-center justify-center font-bold mb-3 text-sm shadow-xs">
                     3
                   </div>
-                  <h3 className="font-bold text-base text-[#1e2a14]">Evaluasi & Konseling BK</h3>
+                  <h3 className="font-bold text-base text-[#1e2a14]">Evaluasi & Konseling</h3>
                   <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
                     Memantau perkembangan diri dan berdiskusi tatap muka bersama Guru BK saat membutuhkan bimbingan mendalam.
                   </p>
