@@ -95,7 +95,7 @@ export default async function GuruDashboard() {
         <div className="space-y-2 max-w-2xl">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/40 text-xs font-bold text-[#bbf7d0] border border-[#86efac]/40">
             <Sparkles className="w-4 h-4 text-[#a3e635]" />
-            <span>Dashboard Pembina BK</span>
+            <span>Dashboard Guru BK</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold font-serif tracking-tight text-white">
             Selamat Datang di Portal Guru BK 🌿

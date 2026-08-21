@@ -116,7 +116,7 @@ export default async function AdminDashboardOverview() {
             </div>
           </div>
           <p className="text-2xl sm:text-3xl font-extrabold font-serif text-[#0f172a]">{guruCount}</p>
-          <p className="text-[11px] text-[#057a44] font-bold">Konselor Pembina</p>
+          <p className="text-[11px] text-[#057a44] font-bold">Guru Terdaftar</p>
         </div>
 
         <div className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-slate-200 shadow-xs space-y-2">

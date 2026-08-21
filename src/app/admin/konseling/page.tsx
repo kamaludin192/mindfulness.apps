@@ -80,7 +80,7 @@ export default async function AdminCounselingPage() {
             <thead>
               <tr className="bg-[#f8fafc] border-b border-slate-200 text-[#0f172a] font-bold">
                 <th className="px-6 py-4">Nama Siswa</th>
-                <th className="px-6 py-4">Guru BK Pembina</th>
+                <th className="px-6 py-4">Guru BK</th>
                 <th className="px-6 py-4">Waktu Sesi yang Dipilih</th>
                 <th className="px-6 py-4 text-center">Status Jadwal</th>
                 <th className="px-6 py-4 text-center">Tanggal Pengajuan</th>
