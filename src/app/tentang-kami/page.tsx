@@ -90,24 +90,6 @@ export default function TentangKamiPage() {
                       <CheckCircle2 className="w-5 h-5 text-[#3f5726]" />
                     </div>
                     <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                      <strong>Intervensi Tervalidasi:</strong> Menyediakan program intervensi berbasis kesadaran yang tervalidasi untuk mendukung regulasi emosi usia muda.
-                    </p>
-                  </li>
-
-                  <li className="flex gap-4 items-start">
-                    <div className="mt-1">
-                      <CheckCircle2 className="w-5 h-5 text-[#3f5726]" />
-                    </div>
-                    <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                      <strong>Akses Terintegrasi:</strong> Memfasilitasi akses bimbingan psikologis yang terintegrasi langsung dengan fasilitator pendidikan dan Guru BK.
-                    </p>
-                  </li>
-
-                  <li className="flex gap-4 items-start">
-                    <div className="mt-1">
-                      <CheckCircle2 className="w-5 h-5 text-[#3f5726]" />
-                    </div>
-                    <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
                       <strong>Evaluasi Digital:</strong> Mengembangkan instrumen digital untuk membantu evaluasi dan pemantauan kesejahteraan mental secara berkala.
                     </p>
                   </li>
