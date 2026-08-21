@@ -149,144 +149,151 @@ export default function ScheduleCmsForm({
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       {/* Left Column: CMS Control Panels */}
       <div className="lg:col-span-7 space-y-6">
-        {/* 1. Panel Hari Layanan */}
-        <div className="bg-white p-6 sm:p-7 rounded-3xl border-2 border-[#d5dcc4] shadow-xs space-y-4">
+        {/* 1. Panel Terpadu: Jadwal Layanan Rutin (Hari & Jam Konseling) */}
+        <div className="bg-white p-6 sm:p-7 rounded-3xl border-2 border-[#d5dcc4] shadow-xs space-y-6">
+          {/* Header Panel */}
           <div className="flex items-center gap-2.5 border-b border-[#e2e8f0] pb-3">
             <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#057a44] flex items-center justify-center font-bold">
               <Calendar className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-extrabold font-serif text-[#0f172a]">
-                1. Hari Ketersediaan Layanan BK
+                1. Jadwal Layanan Rutin (Hari & Jam Konseling)
               </h2>
               <p className="text-xs text-[#475569]">
-                Pilih hari-hari ketika Anda membuka layanan konseling tatap muka untuk siswa.
+                Tentukan hari aktif kerja dan jam sesi bimbingan tatap muka yang dapat dipilih siswa.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2.5 pt-1">
-            {DAYS_OF_WEEK.map((day) => {
-              const isSelected = activeDays.includes(day)
-              return (
-                <button
-                  key={day}
-                  type="button"
-                  onClick={() => toggleDay(day)}
-                  className={`px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer flex items-center gap-1.5 ${
-                    isSelected
-                      ? 'bg-[#057a44] text-white shadow-xs'
-                      : 'bg-[#f8fafc] text-[#475569] border border-slate-200 hover:bg-[#f1f5f9]'
-                  }`}
-                >
-                  {isSelected && <Check className="w-3.5 h-3.5" />}
-                  <span>{day}</span>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* 2. Panel Slot Jam Konseling */}
-        <div className="bg-white p-6 sm:p-7 rounded-3xl border-2 border-[#d5dcc4] shadow-xs space-y-4">
-          <div className="flex items-center gap-2.5 border-b border-[#e2e8f0] pb-3">
-            <div className="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center font-bold">
-              <Clock className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-base sm:text-lg font-extrabold font-serif text-[#0f172a]">
-                2. Manajemen Jam Konseling
-              </h2>
-              <p className="text-xs text-[#475569]">
-                Atur jam sesi privat yang dapat dipilih oleh siswa di portal konseling.
-              </p>
-            </div>
-          </div>
-
-          {/* List Existing Slots */}
-          <div className="space-y-2.5 pt-1">
-            {timeSlots.map((slot, index) => (
-              <div
-                key={slot.id || index}
-                className="flex items-center justify-between p-3.5 bg-[#f8fafc] rounded-2xl border border-slate-200 gap-3"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="w-7 h-7 rounded-xl bg-slate-200 text-[#0f172a] font-extrabold text-xs flex items-center justify-center">
-                    {index + 1}
-                  </span>
-                  <div>
-                    <p className="font-extrabold text-xs sm:text-sm text-[#0f172a]">
-                      {slot.timeRange}
-                    </p>
-                    <p className="text-[11px] text-[#475569]">
-                      Mulai pukul {slot.startTime} WIB
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
+          {/* Sub-bagian A: Pilihan Hari Aktif Mingguan */}
+          <div className="space-y-2.5">
+            <label className="text-xs font-extrabold text-[#0f172a] uppercase tracking-wider flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5 text-[#057a44]" />
+              <span>Hari Aktif Layanan Mingguan:</span>
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {DAYS_OF_WEEK.map((day) => {
+                const isSelected = activeDays.includes(day)
+                return (
                   <button
+                    key={day}
                     type="button"
-                    onClick={() => toggleSlotStatus(slot.id)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer border ${
-                      slot.isActive
-                        ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
-                        : 'bg-slate-100 text-slate-500 border-slate-300 hover:bg-slate-200'
+                    onClick={() => toggleDay(day)}
+                    className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      isSelected
+                        ? 'bg-[#057a44] text-white shadow-xs'
+                        : 'bg-[#f8fafc] text-[#475569] border border-slate-200 hover:bg-[#f1f5f9]'
                     }`}
                   >
-                    {slot.isActive ? 'Slot Dibuka' : 'Slot Ditutup'}
+                    {isSelected && <Check className="w-3.5 h-3.5" />}
+                    <span>{day}</span>
                   </button>
-
-                  {timeSlots.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveSlot(slot.id)}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
-                      title="Hapus slot"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
+                )
+              })}
+            </div>
           </div>
 
-          {/* Form Tambah Slot Baru */}
-          <div className="pt-2 border-t border-[#e2e8f0]">
-            <p className="text-xs font-bold text-[#0f172a] mb-2">Tambah Jam Baru:</p>
-            <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
-              <div className="flex items-center gap-2 bg-[#f8fafc] px-3 py-2 rounded-xl border border-slate-200 flex-1">
-                <span className="text-xs text-[#475569] font-medium">Mulai:</span>
-                <input
-                  type="time"
-                  value={newStartTime}
-                  onChange={(e) => setNewStartTime(e.target.value)}
-                  className="bg-transparent text-xs sm:text-sm font-bold text-[#0f172a] outline-none"
-                />
+          {/* Divider Pemisah */}
+          <div className="border-t border-[#e2e8f0]" />
+
+          {/* Sub-bagian B: Daftar Jam Sesi Konseling */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-extrabold text-[#0f172a] uppercase tracking-wider flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-[#057a44]" />
+                <span>Daftar Jam Sesi Konseling:</span>
+              </label>
+              <span className="text-[11px] font-bold text-[#057a44]">
+                {timeSlots.filter((s) => s.isActive).length} Sesi Terbuka
+              </span>
+            </div>
+
+            {/* List Existing Slots */}
+            <div className="space-y-2">
+              {timeSlots.map((slot, index) => (
+                <div
+                  key={slot.id || index}
+                  className="flex items-center justify-between p-3 bg-[#f8fafc] rounded-2xl border border-slate-200 gap-3"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="w-7 h-7 rounded-xl bg-slate-200 text-[#0f172a] font-extrabold text-xs flex items-center justify-center">
+                      {index + 1}
+                    </span>
+                    <div>
+                      <p className="font-extrabold text-xs sm:text-sm text-[#0f172a]">
+                        {slot.timeRange}
+                      </p>
+                      <p className="text-[10px] text-[#475569]">
+                        Mulai pukul {slot.startTime} WIB
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => toggleSlotStatus(slot.id)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer border ${
+                        slot.isActive
+                          ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
+                          : 'bg-slate-100 text-slate-500 border-slate-300 hover:bg-slate-200'
+                      }`}
+                    >
+                      {slot.isActive ? 'Slot Dibuka' : 'Slot Ditutup'}
+                    </button>
+
+                    {timeSlots.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveSlot(slot.id)}
+                        className="p-1.5 text-red-500 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+                        title="Hapus jam"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Form Tambah Jam Baru */}
+            <div className="pt-2 bg-[#f8fafc] p-3.5 rounded-2xl border border-slate-200 space-y-2">
+              <p className="text-xs font-bold text-[#0f172a]">Tambah Jam Baru:</p>
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
+                <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-slate-200 flex-1 shadow-2xs">
+                  <span className="text-xs text-[#475569] font-medium">Mulai:</span>
+                  <input
+                    type="time"
+                    value={newStartTime}
+                    onChange={(e) => setNewStartTime(e.target.value)}
+                    className="bg-transparent text-xs sm:text-sm font-bold text-[#0f172a] outline-none w-full"
+                  />
+                </div>
+                <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-slate-200 flex-1 shadow-2xs">
+                  <span className="text-xs text-[#475569] font-medium">Selesai:</span>
+                  <input
+                    type="time"
+                    value={newEndTime}
+                    onChange={(e) => setNewEndTime(e.target.value)}
+                    className="bg-transparent text-xs sm:text-sm font-bold text-[#0f172a] outline-none w-full"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddSlot}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-[#057a44] hover:bg-[#046238] text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0 shadow-2xs"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Tambah Jam</span>
+                </button>
               </div>
-              <div className="flex items-center gap-2 bg-[#f8fafc] px-3 py-2 rounded-xl border border-slate-200 flex-1">
-                <span className="text-xs text-[#475569] font-medium">Selesai:</span>
-                <input
-                  type="time"
-                  value={newEndTime}
-                  onChange={(e) => setNewEndTime(e.target.value)}
-                  className="bg-transparent text-xs sm:text-sm font-bold text-[#0f172a] outline-none"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={handleAddSlot}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-[#057a44] hover:bg-[#046238] text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Tambah Jam</span>
-              </button>
             </div>
           </div>
         </div>
 
-        {/* 3. Panel Tanggal Libur / Nonaktif Khusus (Blackout Dates) */}
+        {/* 2. Panel Tanggal Libur / Nonaktif Khusus (Blackout Dates) */}
         <div className="bg-white p-6 sm:p-7 rounded-3xl border-2 border-[#d5dcc4] shadow-xs space-y-4">
           <div className="flex items-center gap-2.5 border-b border-[#e2e8f0] pb-3">
             <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
@@ -294,7 +301,7 @@ export default function ScheduleCmsForm({
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-extrabold font-serif text-[#0f172a]">
-                3. Tanggal Libur / Nonaktif Khusus
+                2. Tanggal Libur / Nonaktif Khusus
               </h2>
               <p className="text-xs text-[#475569]">
                 Tentukan tanggal tertentu saat Anda tidak dapat menerima sesi (dinas luar, rapat guru, cuti).
@@ -344,7 +351,7 @@ export default function ScheduleCmsForm({
           )}
         </div>
 
-        {/* 4. Panel Catatan / Pengumuman untuk Siswa */}
+        {/* 3. Panel Catatan / Pengumuman untuk Siswa */}
         <div className="bg-white p-6 sm:p-7 rounded-3xl border-2 border-[#d5dcc4] shadow-xs space-y-4">
           <div className="flex items-center gap-2.5 border-b border-[#e2e8f0] pb-3">
             <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold">
@@ -352,7 +359,7 @@ export default function ScheduleCmsForm({
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-extrabold font-serif text-[#0f172a]">
-                4. Petunjuk & Lokasi untuk Siswa
+                3. Petunjuk & Lokasi untuk Siswa
               </h2>
               <p className="text-xs text-[#475569]">
                 Pesan ini akan ditampilkan tepat di bawah form pengajuan jadwal siswa.
