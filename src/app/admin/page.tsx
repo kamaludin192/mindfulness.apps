@@ -36,6 +36,29 @@ export default async function AdminDashboardOverview() {
   const totalBookings = bookings?.length || 0;
   const pendingBookings = bookings?.filter((b) => b.status === "pending").length || 0;
 
+  // 4. Fetch recent emotion check-ins and reflections
+  const { data: recentAssessments } = await supabase
+    .from("assessments")
+    .select(`
+      id,
+      mood_score,
+      notes,
+      created_at,
+      student:profiles(
+        full_name
+      )
+    `)
+    .order("created_at", { ascending: false })
+    .limit(6);
+
+  const MOOD_META: Record<number, { label: string; emoji: string; color: string }> = {
+    1: { label: "Sangat Buruk", emoji: "😢", color: "bg-red-50 text-red-700 border-red-200" },
+    2: { label: "Kurang Baik", emoji: "🙁", color: "bg-orange-50 text-orange-700 border-orange-200" },
+    3: { label: "Biasa Saja", emoji: "😐", color: "bg-amber-50 text-amber-700 border-amber-200" },
+    4: { label: "Cukup Baik", emoji: "🙂", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+    5: { label: "Sangat Senang", emoji: "😄", color: "bg-green-50 text-green-700 border-green-200" },
+  };
+
   return (
     <div className="space-y-8">
       {/* 1. HERO BANNER SUPERADMIN */}
@@ -178,7 +201,73 @@ export default async function AdminDashboardOverview() {
         </Link>
       </section>
 
-      {/* 4. RECENT USERS OVERVIEW */}
+      {/* 4. CHECK-IN EMOSI & REFLEKSI HARIAN SISWA (NEW) */}
+      <section className="bg-white rounded-3xl p-6 md:p-8 border-2 border-slate-200 shadow-xs space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+          <div>
+            <h2 className="font-serif font-extrabold text-base sm:text-lg text-[#0f172a] flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              Log Check-in Emosi & Refleksi Harian Siswa
+            </h2>
+            <p className="text-xs text-[#475569] font-medium">
+              Data refleksi harian siswa atas pertanyaan: <em>&ldquo;Setelah mengisi emosi hari ini, apa yang sedang Anda rasakan dan pikirkan hari ini?&rdquo;</em>
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {recentAssessments && recentAssessments.length > 0 ? (
+            recentAssessments.map((a, idx) => {
+              const studentName = (a.student as unknown as { full_name?: string })?.full_name || "Siswa";
+              const meta = MOOD_META[a.mood_score] || { label: "Normal", emoji: "😊", color: "bg-slate-100 text-slate-700 border-slate-200" };
+              return (
+                <div
+                  key={a.id || idx}
+                  className="p-4 rounded-2xl bg-[#f8fafc] border border-slate-200 space-y-2.5 hover:border-slate-400 transition-all"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center text-xs font-bold">
+                        {studentName.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="font-bold text-xs sm:text-sm text-[#0f172a]">{studentName}</p>
+                        <p className="text-[10px] text-[#475569]">
+                          {new Date(a.created_at).toLocaleDateString('id-ID', {
+                            weekday: 'short',
+                            day: 'numeric',
+                            month: 'short',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })} WIB
+                        </p>
+                      </div>
+                    </div>
+
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold border ${meta.color}`}>
+                      <span>{meta.emoji}</span>
+                      <span>{meta.label}</span>
+                    </span>
+                  </div>
+
+                  <div className="p-3 bg-white rounded-xl border border-slate-200 text-xs text-[#1e2a14] leading-relaxed">
+                    <p className="text-[11px] font-semibold text-slate-700 mb-1">Refleksi Pikiran & Perasaan:</p>
+                    <p className="italic text-[#2b3a1a]/90 font-medium">
+                      {a.notes ? `"${a.notes}"` : <span className="text-gray-400 not-italic font-normal">Tidak ada catatan refleksi tambahan.</span>}
+                    </p>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="col-span-2 py-8 text-center text-xs text-[#475569]">
+              Belum ada log data check-in emosi dan refleksi siswa.
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* 5. RECENT USERS OVERVIEW */}
       <section className="bg-white rounded-3xl p-6 border-2 border-slate-200 shadow-xs space-y-4">
         <div className="flex items-center justify-between border-b border-slate-200 pb-3">
           <div>

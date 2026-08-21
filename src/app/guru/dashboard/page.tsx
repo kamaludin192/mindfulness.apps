@@ -25,6 +25,12 @@ export default async function GuruDashboardMonitoring() {
         session_id,
         status,
         points_earned
+      ),
+      assessments(
+        id,
+        mood_score,
+        notes,
+        created_at
       )
     `)
     .eq('role', 'siswa')

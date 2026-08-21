@@ -107,7 +107,16 @@ export default async function SiswaDashboard() {
   const completedCount = progressList?.filter((p) => p.status === 'completed').length || 0
   const progressPercent = Math.round((completedCount / 4) * 100)
 
-  // 4. Daily Affirmation
+  // 4. Fetch Latest Daily Emotion Check-In
+  const { data: latestAssessment } = await supabase
+    .from('assessments')
+    .select('*')
+    .eq('student_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  // 5. Daily Affirmation
   const affirmations = [
     'Hadirlah utuh di saat ini, di sini.',
     'Setiap tarikan napas adalah kesempatan baru untuk merasa tenang.',
@@ -202,7 +211,10 @@ export default async function SiswaDashboard() {
       </section>
 
       {/* 2. INTERACTIVE DAILY MOOD CHECK-IN */}
-      <MoodTracker />
+      <MoodTracker
+        initialMoodScore={latestAssessment?.mood_score}
+        initialNotes={latestAssessment?.notes}
+      />
 
       {/* 3. FOUR STRUCTURED SESSIONS */}
       <section className="space-y-4">

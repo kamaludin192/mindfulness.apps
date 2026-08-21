@@ -151,13 +151,66 @@ const MOODS: MoodItem[] = [
   },
 ]
 
-export default function MoodTracker() {
-  const [selectedMood, setSelectedMood] = useState<MoodScore>('cukup_baik')
+const MOOD_TO_SCORE: Record<NonNullable<MoodScore>, number> = {
+  sangat_buruk: 1,
+  kurang_baik: 2,
+  biasa_saja: 3,
+  cukup_baik: 4,
+  sangat_senang: 5,
+}
+
+const SCORE_TO_MOOD: Record<number, MoodScore> = {
+  1: 'sangat_buruk',
+  2: 'kurang_baik',
+  3: 'biasa_saja',
+  4: 'cukup_baik',
+  5: 'sangat_senang',
+}
+
+interface MoodTrackerProps {
+  initialMoodScore?: number | null
+  initialNotes?: string | null
+}
+
+import { submitEmotionCheckIn } from '@/app/siswa/actions'
+import { CheckCircle2, MessageSquareHeart, Send, Loader2 } from 'lucide-react'
+
+export default function MoodTracker({
+  initialMoodScore,
+  initialNotes,
+}: MoodTrackerProps) {
+  const [selectedMood, setSelectedMood] = useState<MoodScore>(
+    initialMoodScore ? SCORE_TO_MOOD[initialMoodScore] || 'cukup_baik' : 'cukup_baik'
+  )
+  const [notes, setNotes] = useState<string>(initialNotes || '')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [savedSuccess, setSavedSuccess] = useState(false)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   const activeMoodData = MOODS.find((m) => m.id === selectedMood)
 
+  const handleSaveCheckIn = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedMood) return
+
+    setIsSubmitting(true)
+    setErrorMsg(null)
+
+    try {
+      const score = MOOD_TO_SCORE[selectedMood]
+      await submitEmotionCheckIn(score, notes)
+      setSavedSuccess(true)
+      setTimeout(() => setSavedSuccess(false), 4000)
+    } catch (err: unknown) {
+      const error = err as Error
+      setErrorMsg(error?.message || 'Gagal menyimpan check-in emosi.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
-    <section className="bg-white rounded-3xl p-6 md:p-8 border-2 border-[#d5dcc4] shadow-xs space-y-5">
+    <section className="bg-white rounded-3xl p-6 md:p-8 border-2 border-[#d5dcc4] shadow-xs space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-sm sm:text-base font-extrabold font-serif text-[#0f172a] flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-[#057a44]" />
@@ -176,7 +229,10 @@ export default function MoodTracker() {
             <button
               key={mood.id}
               type="button"
-              onClick={() => setSelectedMood(mood.id)}
+              onClick={() => {
+                setSelectedMood(mood.id)
+                setSavedSuccess(false)
+              }}
               className={`py-4 px-2 sm:py-5 sm:px-3 rounded-2xl flex flex-col items-center justify-center gap-2.5 sm:gap-3 transition-all cursor-pointer ${
                 isSelected
                   ? 'border-[3px] border-[#057a44] bg-emerald-50/50 shadow-xs -translate-y-0.5'
@@ -216,6 +272,63 @@ export default function MoodTracker() {
           </div>
         </div>
       )}
+
+      {/* Reflection Journal Section */}
+      <form onSubmit={handleSaveCheckIn} className="space-y-3 pt-2 border-t border-[#d5dcc4]/60">
+        <div className="space-y-1.5">
+          <label className="block text-xs sm:text-sm font-bold text-[#1e2a14] leading-relaxed">
+            Setelah mengisi emosi hari ini, apa yang sedang Anda rasakan dan pikirkan hari ini?
+          </label>
+          <p className="text-[11px] text-[#2b3a1a]/70">
+            Tuliskan perasaan dan pikiranmu secara jujur. Catatan ini akan otomatis terekam dan membantu Guru BK memahami kondisimu.
+          </p>
+        </div>
+
+        <textarea
+          rows={3}
+          value={notes}
+          onChange={(e) => {
+            setNotes(e.target.value)
+            setSavedSuccess(false)
+          }}
+          placeholder="Ceritakan apa yang sedang kamu rasakan atau alami saat ini..."
+          className="w-full p-3.5 rounded-2xl border-2 border-[#d5dcc4] bg-[#f8fafc] text-xs sm:text-sm text-[#1e2a14] placeholder-[#94a3b8] focus:border-[#3f5726] focus:bg-white focus:outline-none transition-all resize-y leading-relaxed"
+        />
+
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+          {savedSuccess ? (
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#065f46] bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 animate-in fade-in">
+              <CheckCircle2 className="w-4 h-4 text-[#057a44]" />
+              <span>Refleksi dan emosi harian berhasil disimpan & terkirim ke Guru BK!</span>
+            </div>
+          ) : errorMsg ? (
+            <div className="text-xs text-red-600 font-semibold">{errorMsg}</div>
+          ) : (
+            <div className="text-[11px] text-[#475569] flex items-center gap-1">
+              <MessageSquareHeart className="w-3.5 h-3.5 text-[#3f5726]" />
+              <span>Privasi Anda terjaga dan terhubung dengan Guru BK.</span>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-2xl bg-[#3f5726] hover:bg-[#2d3f1b] text-white text-xs sm:text-sm font-bold transition-all shadow-xs hover:shadow-md cursor-pointer disabled:opacity-50"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Menyimpan...</span>
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" />
+                <span>Simpan Refleksi Emosi</span>
+              </>
+            )}
+          </button>
+        </div>
+      </form>
     </section>
   )
 }
