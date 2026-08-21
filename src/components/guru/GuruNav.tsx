@@ -13,8 +13,9 @@ import {
   Menu,
   X,
   ShieldCheck,
+  UserCheck,
 } from 'lucide-react'
-import { logoutAction } from '@/app/siswa/profil/actions'
+import { logoutAction } from '@/app/guru/profil/actions'
 
 const NAV_ITEMS = [
   {
@@ -25,7 +26,7 @@ const NAV_ITEMS = [
   },
   {
     href: '/guru/dashboard',
-    label: 'Monitoring Siswa & LKS',
+    label: 'Monitoring Siswa',
     icon: Users,
     exact: false,
   },
@@ -39,6 +40,12 @@ const NAV_ITEMS = [
     href: '/guru/jadwal',
     label: 'CMS Ketersediaan Jadwal',
     icon: Clock,
+    exact: false,
+  },
+  {
+    href: '/guru/profil',
+    label: 'Profil Guru BK',
+    icon: UserCheck,
     exact: false,
   },
 ]

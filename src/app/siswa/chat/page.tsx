@@ -12,7 +12,11 @@ export const metadata = {
   title: 'Konseling & Chat BK - Siswa',
 }
 
-export default async function ChatPage() {
+export default async function ChatPage({
+  searchParams,
+}: {
+  searchParams?: { guruId?: string }
+}) {
   const supabase = createClient()
   const {
     data: { user },
@@ -22,26 +26,30 @@ export default async function ChatPage() {
     redirect('/login')
   }
 
-  // 1. Find a Guru BK to chat with
+  // 1. Find all Guru BK to chat with
   const { data: guruList } = await supabase
     .from('profiles')
-    .select('*')
+    .select('id, full_name, created_at')
     .eq('role', 'guru_bk')
-    .limit(1)
+    .order('full_name', { ascending: true })
 
-  const guru = guruList?.[0] || {
-    id: 'b2c3d4e5-f6a1-4b2c-9d8e-1f2a3b4c5d6e',
-    full_name: 'Dra. Endang (Guru BK)',
-  }
+  // Find active guru
+  const selectedGuruId = searchParams?.guruId
+  const activeGuru =
+    (selectedGuruId && guruList?.find((g) => g.id === selectedGuruId)) ||
+    guruList?.[0] || {
+      id: 'b2c3d4e5-f6a1-4b2c-9d8e-1f2a3b4c5d6e',
+      full_name: 'Dra. Endang (Guru BK)',
+    }
 
-  const counselorName = guru.full_name || 'Dra. Endang (Guru BK)'
+  const counselorName = activeGuru.full_name || 'Dra. Endang (Guru BK)'
 
-  // 2. Fetch initial chat messages
+  // 2. Fetch initial chat messages for the selected guru
   const { data: initialMessages } = await supabase
     .from('chat_messages')
     .select('*')
     .or(
-      `and(sender_id.eq.${user.id},receiver_id.eq.${guru.id}),and(sender_id.eq.${guru.id},receiver_id.eq.${user.id})`
+      `and(sender_id.eq.${user.id},receiver_id.eq.${activeGuru.id}),and(sender_id.eq.${activeGuru.id},receiver_id.eq.${user.id})`
     )
     .order('created_at', { ascending: true })
 
@@ -59,11 +67,11 @@ export default async function ChatPage() {
     status: 'pending' | 'approved' | 'rejected'
   } | undefined
 
-  // 4. Fetch Counselor Availability Settings
+  // 4. Fetch Counselor Availability Settings for active guru
   const { data: availabilitySettings } = await supabase
     .from('counselor_availability_settings')
     .select('*')
-    .eq('guru_id', guru.id)
+    .eq('guru_id', activeGuru.id)
     .single()
 
   return (
@@ -85,8 +93,9 @@ export default async function ChatPage() {
       {/* Counseling Booking Form matching the reference image */}
       <div className="space-y-3">
         <CounselingBookingCard
-          guruId={guru.id}
+          guruId={activeGuru.id}
           guruName={counselorName}
+          guruList={guruList || []}
           existingBooking={existingBooking}
           availability={availabilitySettings}
         />
@@ -114,7 +123,7 @@ export default async function ChatPage() {
         </h2>
         <ChatInterface
           currentUserId={user.id}
-          guruId={guru.id}
+          guruId={activeGuru.id}
           guruName={counselorName}
           initialMessages={initialMessages || []}
         />

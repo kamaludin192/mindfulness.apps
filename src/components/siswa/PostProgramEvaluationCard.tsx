@@ -18,17 +18,20 @@ import {
 } from 'lucide-react'
 import { submitProgramEvaluation } from '@/app/siswa/evaluasi/actions'
 import Link from 'next/link'
+import { UserCheck } from 'lucide-react'
 
 interface PostProgramEvaluationCardProps {
   completedCount: number
   guruId?: string
   guruName?: string
+  guruList?: { id: string; full_name: string }[] | null
 }
 
 export default function PostProgramEvaluationCard({
   completedCount,
   guruId = 'b2c3d4e5-f6a1-4b2c-9d8e-1f2a3b4c5d6e',
   guruName = 'Dra. Endang (Guru BK)',
+  guruList,
 }: PostProgramEvaluationCardProps) {
   // Only display when student has finished all 4 sessions
   if (completedCount < 4) {
@@ -47,6 +50,9 @@ export default function PostProgramEvaluationCard({
     { id: '4', timeRange: '14:00 - 14:45 WIB', startTime: '14:00' },
   ]
 
+  const [selectedGuruId, setSelectedGuruId] = useState<string>(
+    guruList?.[0]?.id || guruId
+  )
   const [rating, setRating] = useState<'membantu' | 'tidak_membantu' | null>(null)
   const [followUp, setFollowUp] = useState<'selesai' | 'konseling' | null>(null)
   const [selectedDate, setSelectedDate] = useState<string>(defaultDateStr)
@@ -82,7 +88,7 @@ export default function PostProgramEvaluationCard({
         followUpChoice: followUp,
         notes: notes.trim() || undefined,
         scheduledAt,
-        guruId,
+        guruId: selectedGuruId,
       })
 
       setIsSubmitted(true)
@@ -93,6 +99,9 @@ export default function PostProgramEvaluationCard({
       setIsSubmitting(false)
     }
   }
+
+  const activeGuruObj = guruList?.find((g) => g.id === selectedGuruId)
+  const activeGuruName = activeGuruObj?.full_name || guruName
 
   return (
     <section className="bg-gradient-to-br from-[#1a2e12] via-[#243a18] to-[#12200c] text-white rounded-3xl p-6 sm:p-8 md:p-9 border-2 border-[#a3e635]/40 shadow-xl space-y-6 relative overflow-hidden">
@@ -138,13 +147,13 @@ export default function PostProgramEvaluationCard({
               <strong>Langkah Pilihan:</strong>{' '}
               <span className="text-[#a3e635] font-bold">
                 {followUp === 'konseling'
-                  ? `💬 Lanjut Konseling dengan Guru BK (${guruName})`
+                  ? `💬 Lanjut Konseling dengan Guru BK (${activeGuruName})`
                   : '🌱 Selesai Latihannya (Mandiri)'}
               </span>
             </p>
             {followUp === 'konseling' && (
               <p className="text-xs text-amber-200">
-                Permohonan jadwal bimbingan konseling telah otomatis dikirim ke Guru BK dan menunggu konfirmasi.
+                Permohonan jadwal bimbingan konseling telah otomatis dikirim ke {activeGuruName} dan menunggu konfirmasi.
               </p>
             )}
           </div>
@@ -152,7 +161,7 @@ export default function PostProgramEvaluationCard({
           <div className="flex flex-wrap gap-3 pt-2">
             {followUp === 'konseling' && (
               <Link
-                href="/siswa/chat"
+                href={`/siswa/chat?guruId=${selectedGuruId}`}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#a3e635] hover:bg-[#bef264] text-[#0f172a] text-xs font-extrabold transition-colors cursor-pointer"
               >
                 <MessageSquareQuote className="w-4 h-4" />
@@ -291,8 +300,29 @@ export default function PostProgramEvaluationCard({
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border-2 border-[#a3e635]/60 space-y-4 animate-in fade-in slide-in-from-top-2">
               <div className="flex items-center gap-2 text-xs font-extrabold text-[#bef264]">
                 <CalendarCheck2 className="w-4 h-4" />
-                <span>Pilih Jadwal Temu Bimbingan Bersama {guruName}</span>
+                <span>Pilih Jadwal Temu Bimbingan Bersama Guru BK</span>
               </div>
+
+              {/* Guru BK Selector if multiple available */}
+              {guruList && guruList.length > 0 && (
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-white flex items-center gap-1.5">
+                    <UserCheck className="w-3.5 h-3.5 text-[#a3e635]" />
+                    <span>Pilih Guru BK / Konselor:</span>
+                  </label>
+                  <select
+                    value={selectedGuruId}
+                    onChange={(e) => setSelectedGuruId(e.target.value)}
+                    className="w-full p-3 bg-white text-[#0f172a] rounded-xl text-xs sm:text-sm font-bold outline-none focus:ring-2 focus:ring-[#a3e635] cursor-pointer"
+                  >
+                    {guruList.map((g) => (
+                      <option key={g.id} value={g.id}>
+                        {g.full_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">

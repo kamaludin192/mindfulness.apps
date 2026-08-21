@@ -117,7 +117,14 @@ export default async function SiswaDashboard() {
     .limit(1)
     .maybeSingle()
 
-  // 5. Daily Affirmation
+  // 5. Fetch available Guru BKs
+  const { data: guruList } = await supabase
+    .from('profiles')
+    .select('id, full_name')
+    .eq('role', 'guru_bk')
+    .order('full_name', { ascending: true })
+
+  // 6. Daily Affirmation
   const affirmations = [
     'Hadirlah utuh di saat ini, di sini.',
     'Setiap tarikan napas adalah kesempatan baru untuk merasa tenang.',
@@ -219,7 +226,10 @@ export default async function SiswaDashboard() {
       />
 
       {/* 3. POST-PROGRAM EVALUATION & COUNSELING OFFER (When 4 Sessions Complete) */}
-      <PostProgramEvaluationCard completedCount={completedCount} />
+      <PostProgramEvaluationCard
+        completedCount={completedCount}
+        guruList={guruList || []}
+      />
 
       {/* 4. FOUR STRUCTURED SESSIONS */}
       <section className="space-y-4">

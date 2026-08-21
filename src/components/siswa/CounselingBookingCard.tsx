@@ -1,7 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { Calendar, Clock, AlertCircle, Trash2, CalendarDays, CheckCircle2, MessageSquareQuote } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import {
+  Calendar,
+  Clock,
+  AlertCircle,
+  Trash2,
+  CalendarDays,
+  CheckCircle2,
+  MessageSquareQuote,
+  UserCheck,
+} from 'lucide-react'
 import { requestCounseling, cancelCounseling } from '@/app/siswa/chat/actions'
 
 export interface BookingSlot {
@@ -29,11 +39,13 @@ const DEFAULT_SLOTS: BookingSlot[] = [
 export default function CounselingBookingCard({
   guruId,
   guruName,
+  guruList,
   existingBooking,
   availability,
 }: {
   guruId: string
   guruName: string
+  guruList?: { id: string; full_name: string }[] | null
   existingBooking?: {
     id: string
     scheduled_at: string
@@ -41,6 +53,7 @@ export default function CounselingBookingCard({
   } | null
   availability?: CounselorAvailability | null
 }) {
+  const router = useRouter()
   // Tomorrow's date in YYYY-MM-DD format as default
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
@@ -102,13 +115,43 @@ export default function CounselingBookingCard({
   return (
     <div className="bg-white rounded-3xl p-6 md:p-8 border-2 border-[#d5dcc4] shadow-xs w-full space-y-6">
       {/* Header */}
-      <div className="space-y-1">
-        <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] font-serif tracking-tight">
-          Jadwalkan Konseling Guru BK
-        </h2>
-        <p className="text-xs sm:text-sm text-[#475569]">
-          Pilih slot jam privat bersama {guruName || 'Dra. Endang (Guru BK)'}.
-        </p>
+      <div className="space-y-3">
+        <div className="space-y-1">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-[#0f172a] font-serif tracking-tight">
+            Jadwalkan Konseling Guru BK
+          </h2>
+          <p className="text-xs sm:text-sm text-[#475569]">
+            Pilih Guru BK dan slot jam privat yang tersedia untuk bimbingan tatap muka.
+          </p>
+        </div>
+
+        {/* Guru BK Counselor Picker (if multiple or available) */}
+        {guruList && guruList.length > 0 && (
+          <div className="p-4 rounded-2xl bg-[#f3f6e8] border border-[#d5dcc4] space-y-2">
+            <label className="text-xs font-extrabold text-[#1e2a14] flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <UserCheck className="w-4 h-4 text-[#057a44]" />
+                <span>Pilih Guru BK / Konselor:</span>
+              </span>
+              <span className="text-[11px] font-bold text-[#057a44]">
+                {guruList.length} Pendidik Tersedia
+              </span>
+            </label>
+            <select
+              value={guruId}
+              onChange={(e) => {
+                router.push(`/siswa/chat?guruId=${e.target.value}`)
+              }}
+              className="w-full p-3 bg-white text-[#0f172a] rounded-xl text-xs sm:text-sm font-bold border border-slate-200 outline-none focus:ring-2 focus:ring-[#057a44] shadow-2xs cursor-pointer"
+            >
+              {guruList.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.full_name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       {/* If booking already exists */}
