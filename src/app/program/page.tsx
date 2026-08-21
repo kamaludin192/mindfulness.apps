@@ -129,16 +129,16 @@ export default function ProgramPage() {
                   </span>
                   <Leaf className="w-5 h-5 text-[#c2db8f]" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Mindful Sitting & Listening</h3>
+                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Mindful Sitting and Mindful Listening</h3>
                 <p className="text-sm text-white/90 leading-relaxed mb-6">
-                  Berlatih mengobservasi sekeliling dengan kesadaran penuh tanpa menghakimi. Dilengkapi worksheet experience calendar untuk mencatat dinamika pikiran dan perasaan harian secara objektif.
+                  Berlatih mengobservasi sekeliling dengan kesadaran penuh tanpa menghakimi saat duduk tenang dan mendengarkan. Dilengkapi digital worksheet untuk mencatat dinamika pikiran dan perasaan secara objektif.
                 </p>
                 <div className="p-4 rounded-2xl bg-white/10 text-xs space-y-2 border border-white/10">
                   <p className="font-semibold text-[#c2db8f] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
                     Penugasan / Output:
                   </p>
-                  <p className="text-white/80">Experience Calendar (Kalender Pengalaman Sensorik)</p>
+                  <p className="text-white/80">Worksheet Mindful Sitting & Listening</p>
                 </div>
               </div>
 
@@ -152,14 +152,14 @@ export default function ProgramPage() {
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Body Scanning</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed mb-6">
-                  Kenali ketegangan fisik melalui teknik pemindaian tubuh ujung kepala hingga kaki. Sesi ini menyertakan worksheet daily thought record untuk membantumu merespons beban pikiran negatif secara bijak.
+                  Kenali ketegangan fisik melalui teknik pemindaian sensasi tubuh secara menyeluruh untuk meredakan ketegangan fisik dan kecemasan.
                 </p>
                 <div className="p-4 rounded-2xl bg-white/80 text-xs space-y-2 border border-[#d5dcc4]/50">
                   <p className="font-semibold text-[#3f5726] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
                     Penugasan / Output:
                   </p>
-                  <p className="text-[#2b3a1a]/80">Daily Thought Record (Pencatatan Respon Otomatis Pikiran)</p>
+                  <p className="text-[#2b3a1a]/80">Worksheet Body Scanning</p>
                 </div>
               </div>
 
@@ -171,9 +171,9 @@ export default function ProgramPage() {
                   </span>
                   <span className="text-xs font-semibold text-[#2b3a1a]/50">Integrasi Puncak</span>
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Gratitude & Loving Kindness</h3>
+                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Gratitude and Loving in Kindness</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed mb-6">
-                  Tumbuhkan rasa syukur dan welas asih pada diri sendiri maupun orang lain. Selesaikan sesi ini dengan penugasan gratitude journal, mencatat hal-hal baik, dan memupuk afirmasi positif.
+                  Tumbuhkan rasa syukur dan memupuk cinta kasih serta kebaikan hati terhadap diri sendiri maupun orang lain.
                 </p>
                 <div className="p-4 rounded-2xl bg-[#f3f6e8] text-xs space-y-2 border border-[#d5dcc4]/50">
                   <p className="font-semibold text-[#3f5726] flex items-center gap-1.5">

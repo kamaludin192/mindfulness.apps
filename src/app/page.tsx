@@ -158,14 +158,14 @@ export default function HomePage() {
                   Sesi 1
                 </span>
                 <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
-                  Menyadari Napas & Tubuh (Mindful Breathing)
+                  Mindful Breathing
                 </h3>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
-                  Mempelajari dasar pernapasan sadar dan pemindaian tubuh (*body scan*) untuk menenangkan sistem saraf.
+                  Mempelajari dasar pernapasan sadar untuk menenangkan sistem saraf dan melatih fokus pikiran.
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Worksheet Latihan Mindful Breathing</span>
+                  <span>Worksheet Mindful Breathing</span>
                 </div>
               </div>
 
@@ -175,14 +175,14 @@ export default function HomePage() {
                   Sesi 2
                 </span>
                 <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
-                  Pengenalan Pikiran & Regulasi Emosi
+                  Mindful Sitting and Mindful Listening
                 </h3>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
-                  Mengamati pikiran yang datang dan pergi tanpa menghakimi, menciptakan ruang jeda sebelum merespons.
+                  Melatih kesadaran saat duduk tenang dan mendengarkan dengan penuh perhatian tanpa menghakimi.
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Worksheet Experiences Calender</span>
+                  <span>Worksheet Mindful Sitting & Listening</span>
                 </div>
               </div>
 
@@ -192,14 +192,14 @@ export default function HomePage() {
                   Sesi 3
                 </span>
                 <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
-                  Mengelola Stres Akademik & Kecemasan
+                  Body Scanning
                 </h3>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
-                  Strategi praktis meredakan kepanikan saat ujian, defusi kognitif, dan teknik relaksasi mandiri.
+                  Mempelajari pemindaian sensasi tubuh secara menyeluruh untuk meredakan ketegangan fisik dan kecemasan.
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Worksheet Daily Thought Record</span>
+                  <span>Worksheet Body Scanning</span>
                 </div>
               </div>
 
@@ -209,14 +209,14 @@ export default function HomePage() {
                   Sesi 4
                 </span>
                 <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
-                  Welas Asih Diri (Self-Compassion) & Integrasi
+                  Gratitude and Loving in Kindness
                 </h3>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
-                  Membiasakan sikap ramah pada diri sendiri saat gagal dan menumbuhkan rasa syukur dalam kehidupan.
+                  Menumbuhkan rasa syukur serta memupuk cinta kasih dan kebaikan hati terhadap diri sendiri dan orang lain.
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Jurnal Rasa Syukur & Surat Cinta Diri</span>
+                  <span>Worksheet Gratitude Journal & Surat Cinta Diri</span>
                 </div>
               </div>
             </div>
