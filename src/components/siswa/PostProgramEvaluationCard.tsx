@@ -15,10 +15,11 @@ import {
   ThumbsDown,
   BookOpen,
   MessageSquareQuote,
+  UserCheck,
+  Search,
 } from 'lucide-react'
 import { submitProgramEvaluation } from '@/app/siswa/evaluasi/actions'
 import Link from 'next/link'
-import { UserCheck } from 'lucide-react'
 
 interface PostProgramEvaluationCardProps {
   completedCount: number
@@ -53,6 +54,7 @@ export default function PostProgramEvaluationCard({
   const [selectedGuruId, setSelectedGuruId] = useState<string>(
     guruList?.[0]?.id || guruId
   )
+  const [searchGuruQuery, setSearchGuruQuery] = useState('')
   const [rating, setRating] = useState<'membantu' | 'tidak_membantu' | null>(null)
   const [followUp, setFollowUp] = useState<'selesai' | 'konseling' | null>(null)
   const [selectedDate, setSelectedDate] = useState<string>(defaultDateStr)
@@ -303,23 +305,54 @@ export default function PostProgramEvaluationCard({
                 <span>Pilih Jadwal Temu Bimbingan Bersama Guru BK</span>
               </div>
 
-              {/* Guru BK Selector if multiple available */}
+              {/* Guru BK Selector with Search if multiple available */}
               {guruList && guruList.length > 0 && (
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-white flex items-center gap-1.5">
-                    <UserCheck className="w-3.5 h-3.5 text-[#a3e635]" />
-                    <span>Pilih Guru BK / Konselor:</span>
-                  </label>
+                <div className="space-y-2 p-3.5 bg-black/20 rounded-2xl border border-white/10">
+                  <div className="flex items-center justify-between text-xs font-bold text-white">
+                    <span className="flex items-center gap-1.5">
+                      <UserCheck className="w-3.5 h-3.5 text-[#a3e635]" />
+                      <span>Pilih Guru BK / Konselor:</span>
+                    </span>
+                    <span className="text-[11px] text-[#bef264]">
+                      {guruList.length} Pendidik
+                    </span>
+                  </div>
+
+                  {/* Realtime Search Bar for Counselor */}
+                  <div className="relative">
+                    <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={searchGuruQuery}
+                      onChange={(e) => setSearchGuruQuery(e.target.value)}
+                      placeholder="Cari nama atau gelar Guru BK..."
+                      className="w-full pl-8.5 pr-3 py-2 bg-white text-[#0f172a] rounded-xl text-xs placeholder-slate-400 outline-none focus:ring-2 focus:ring-[#a3e635] transition-all"
+                    />
+                  </div>
+
+                  {/* Counselor Dropdown */}
                   <select
                     value={selectedGuruId}
                     onChange={(e) => setSelectedGuruId(e.target.value)}
-                    className="w-full p-3 bg-white text-[#0f172a] rounded-xl text-xs sm:text-sm font-bold outline-none focus:ring-2 focus:ring-[#a3e635] cursor-pointer"
+                    className="w-full p-2.5 bg-white text-[#0f172a] rounded-xl text-xs sm:text-sm font-bold outline-none focus:ring-2 focus:ring-[#a3e635] cursor-pointer"
                   >
-                    {guruList.map((g) => (
-                      <option key={g.id} value={g.id}>
-                        {g.full_name}
+                    {guruList.filter((g) =>
+                      g.full_name?.toLowerCase().includes(searchGuruQuery.toLowerCase())
+                    ).length > 0 ? (
+                      guruList
+                        .filter((g) =>
+                          g.full_name?.toLowerCase().includes(searchGuruQuery.toLowerCase())
+                        )
+                        .map((g) => (
+                          <option key={g.id} value={g.id}>
+                            {g.full_name}
+                          </option>
+                        ))
+                    ) : (
+                      <option disabled value="">
+                        Tidak ditemukan Guru BK dengan nama &ldquo;{searchGuruQuery}&rdquo;
                       </option>
-                    ))}
+                    )}
                   </select>
                 </div>
               )}

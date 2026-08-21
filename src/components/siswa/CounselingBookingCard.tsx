@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   MessageSquareQuote,
   UserCheck,
+  Search,
 } from 'lucide-react'
 import { requestCounseling, cancelCounseling } from '@/app/siswa/chat/actions'
 
@@ -65,9 +66,15 @@ export default function CounselingBookingCard({
 
   const [selectedDate, setSelectedDate] = useState<string>(defaultDateStr)
   const [selectedSlot, setSelectedSlot] = useState<string>(slots[0]?.id || '1')
+  const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [canceling, setCanceling] = useState(false)
+
+  // Filtered counselors based on search query
+  const filteredGurus = guruList?.filter((g) =>
+    g.full_name?.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || []
 
   // Check if date is in blackout / disabled dates
   const isDateBlackout = availability?.disabled_dates?.includes(selectedDate)
@@ -125,18 +132,32 @@ export default function CounselingBookingCard({
           </p>
         </div>
 
-        {/* Guru BK Counselor Picker (if multiple or available) */}
+        {/* Guru BK Counselor Picker with Search (if available) */}
         {guruList && guruList.length > 0 && (
-          <div className="p-4 rounded-2xl bg-[#f3f6e8] border border-[#d5dcc4] space-y-2">
-            <label className="text-xs font-extrabold text-[#1e2a14] flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
+          <div className="p-4.5 rounded-2xl bg-[#f3f6e8] border border-[#d5dcc4] space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+              <label className="text-xs font-extrabold text-[#1e2a14] flex items-center gap-1.5">
                 <UserCheck className="w-4 h-4 text-[#057a44]" />
                 <span>Pilih Guru BK / Konselor:</span>
-              </span>
+              </label>
               <span className="text-[11px] font-bold text-[#057a44]">
-                {guruList.length} Pendidik Tersedia
+                {guruList.length} Pendidik Terdaftar
               </span>
-            </label>
+            </div>
+
+            {/* Realtime Search Bar for Counselor */}
+            <div className="relative">
+              <Search className="w-4 h-4 text-[#64748b] absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari nama atau gelar Guru BK..."
+                className="w-full pl-9.5 pr-4 py-2.5 bg-white text-[#0f172a] rounded-xl text-xs sm:text-sm placeholder-slate-400 border border-slate-200 outline-none focus:ring-2 focus:ring-[#057a44] transition-all"
+              />
+            </div>
+
+            {/* Counselor Selector Dropdown */}
             <select
               value={guruId}
               onChange={(e) => {
@@ -144,11 +165,17 @@ export default function CounselingBookingCard({
               }}
               className="w-full p-3 bg-white text-[#0f172a] rounded-xl text-xs sm:text-sm font-bold border border-slate-200 outline-none focus:ring-2 focus:ring-[#057a44] shadow-2xs cursor-pointer"
             >
-              {guruList.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.full_name}
+              {filteredGurus.length > 0 ? (
+                filteredGurus.map((g) => (
+                  <option key={g.id} value={g.id}>
+                    {g.full_name}
+                  </option>
+                ))
+              ) : (
+                <option disabled value="">
+                  Tidak ditemukan Guru BK dengan nama &ldquo;{searchQuery}&rdquo;
                 </option>
-              ))}
+              )}
             </select>
           </div>
         )}
