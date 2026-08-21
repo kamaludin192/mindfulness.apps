@@ -171,13 +171,13 @@ export default async function AdminDashboardOverview() {
             <Video className="w-5 h-5" />
           </div>
           <h3 className="font-serif font-extrabold text-base text-[#0f172a] group-hover:text-[#057a44] transition-colors">
-            CMS Kurikulum & Video 4 Sesi
+            Pengaturan Kurikulum & video
           </h3>
           <p className="text-xs text-[#475569] leading-relaxed">
             Perbarui judul sesi, tautan video YouTube/MP4, dan deskripsi modul pembelajaran mindfulness.
           </p>
           <span className="inline-flex items-center gap-1 text-xs font-bold text-[#057a44]">
-            <span>Buka CMS Materi</span>
+            <span>Buka Pengaturan Kurikulum</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </span>
         </Link>

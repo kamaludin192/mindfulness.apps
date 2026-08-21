@@ -33,7 +33,7 @@ const ADMIN_NAV_ITEMS = [
   },
   {
     href: '/admin/materi',
-    label: 'CMS Materi & Video 4 Sesi',
+    label: 'Pengaturan Kurikulum & Video',
     icon: Video,
     exact: false,
   },
