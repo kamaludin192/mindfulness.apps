@@ -116,7 +116,7 @@ export default function ProgramPage() {
                 <div className="p-4 rounded-2xl bg-[#f3f6e8] text-xs space-y-2 border border-[#d5dcc4]/50">
                   <p className="font-semibold text-[#3f5726] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
-                    Penugasan / Output:
+                    Penugasan:
                   </p>
                   <p className="text-[#2b3a1a]/80">Tugas di rumah: berapa kali berlatih <em>mindful breathing</em> selama sehari.</p>
                 </div>
@@ -137,7 +137,7 @@ export default function ProgramPage() {
                 <div className="p-4 rounded-2xl bg-white/10 text-xs space-y-2 border border-white/10">
                   <p className="font-semibold text-[#c2db8f] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
-                    Penugasan / Output:
+                    Penugasan:
                   </p>
                   <p className="text-white/80">Penugasan <em>worksheet experience calendar</em> untuk dilakukan di rumah seharian apa yang dirasakan pada perasaan dan pikiran.</p>
                 </div>
@@ -158,7 +158,7 @@ export default function ProgramPage() {
                 <div className="p-4 rounded-2xl bg-white/80 text-xs space-y-2 border border-[#d5dcc4]/50">
                   <p className="font-semibold text-[#3f5726] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
-                    Penugasan / Output:
+                    Penugasan:
                   </p>
                   <p className="text-[#2b3a1a]/80">Penugasan <em>worksheet daily thought record</em>.</p>
                 </div>
@@ -179,7 +179,7 @@ export default function ProgramPage() {
                 <div className="p-4 rounded-2xl bg-[#f3f6e8] text-xs space-y-2 border border-[#d5dcc4]/50">
                   <p className="font-semibold text-[#3f5726] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
-                    Penugasan / Output:
+                    Penugasan:
                   </p>
                   <p className="text-[#2b3a1a]/80">Penugasan <em>worksheet gratitude</em> (menyebutkan hal yang disyukuri) dan <em>worksheet letter for myself</em> (menuliskan surat cinta untuk diri).</p>
                 </div>
