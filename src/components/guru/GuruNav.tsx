@@ -32,19 +32,19 @@ const NAV_ITEMS = [
   },
   {
     href: '/guru/counseling',
-    label: 'Jadwal & Konseling BK',
+    label: 'Jadwal Konseling',
     icon: CalendarCheck2,
     exact: false,
   },
   {
     href: '/guru/jadwal',
-    label: 'CMS Ketersediaan Jadwal',
+    label: 'Pengaturan Jadwal Konseling',
     icon: Clock,
     exact: false,
   },
   {
     href: '/guru/profil',
-    label: 'Profil Guru BK',
+    label: 'Profil saya',
     icon: UserCheck,
     exact: false,
   },

@@ -168,7 +168,7 @@ export default async function GuruProfilPage() {
               </div>
               <div>
                 <p className="font-bold text-xs sm:text-sm text-[#0f172a] group-hover:text-[#057a44]">
-                  CMS Ketersediaan Jadwal
+                  Pengaturan Jadwal Konseling
                 </p>
                 <p className="text-[11px] text-[#475569]">Atur slot hari dan jam konseling</p>
               </div>

@@ -4,7 +4,7 @@ import { SlidersHorizontal } from "lucide-react";
 import { type AvailabilitySettingsPayload } from "./actions";
 
 export const metadata = {
-  title: "CMS Ketersediaan Jadwal - Portal Guru BK",
+  title: "Pengaturan Jadwal Konseling - Portal Guru BK",
 };
 
 export default async function GuruScheduleCmsPage() {
