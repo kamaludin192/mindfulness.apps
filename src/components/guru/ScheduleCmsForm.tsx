@@ -240,7 +240,7 @@ export default function ScheduleCmsForm({
                           : 'bg-slate-100 text-slate-500 border-slate-300 hover:bg-slate-200'
                       }`}
                     >
-                      {slot.isActive ? 'Slot Dibuka' : 'Slot Ditutup'}
+                      {slot.isActive ? 'Tersedia' : 'Ditutup'}
                     </button>
 
                     {timeSlots.length > 1 && (
