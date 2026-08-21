@@ -109,7 +109,7 @@ export default async function SiswaDashboard() {
 
   // 4. Daily Affirmation
   const affirmations = [
-    'Tarik napas perlahan. Hadirlah utuh di saat ini, di sini.',
+    'Hadirlah utuh di saat ini, di sini.',
     'Setiap tarikan napas adalah kesempatan baru untuk merasa tenang.',
     'Kamu berharga, dan perasaanmu sepenuhnya valid.',
     'Tidak apa-apa untuk beristirahat sejenak saat lelah.',
@@ -135,7 +135,7 @@ export default async function SiswaDashboard() {
           <div className="md:col-span-7 space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 text-xs font-bold text-[#bbf7d0] border border-[#86efac]/40 shadow-xs">
               <Sparkles className="w-4 h-4 text-[#a3e635]" />
-              <span>Afirmasi Mindfulness Harian</span>
+              <span>Mindfulness Intervention</span>
             </div>
 
             <div className="space-y-2">
