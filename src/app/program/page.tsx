@@ -200,33 +200,24 @@ export default function ProgramPage() {
 
             <div className="grid md:grid-cols-3 gap-8 text-left">
               <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4]/40 hover:-translate-y-1 transition-all">
-                <div className="w-12 h-12 rounded-2xl bg-[#f3f6e8] flex items-center justify-center mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-[#f3f6e8] flex items-center justify-center mb-4">
                   <Headphones className="w-6 h-6 text-[#3f5726]" />
                 </div>
-                <h3 className="font-bold text-lg mb-3">Panduan Program Terstruktur</h3>
-                <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Akses materi psikoedukasi dan instruksi latihan langkah demi langkah yang disusun khusus untuk mendukung fase perkembangan mentalmu.
-                </p>
+                <h3 className="font-bold text-lg">Panduan Program Terstruktur</h3>
               </div>
 
               <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4]/40 hover:-translate-y-1 transition-all">
-                <div className="w-12 h-12 rounded-2xl bg-[#f3f6e8] flex items-center justify-center mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-[#f3f6e8] flex items-center justify-center mb-4">
                   <Smile className="w-6 h-6 text-[#3f5726]" />
                 </div>
-                <h3 className="font-bold text-lg mb-3">Pelacakan Mood Harian</h3>
-                <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Catat fluktuasi emosimu setiap hari. Fitur ini juga membantu fasilitator pendidikan memantau kesejahteraan mentalmu secara berkala.
-                </p>
+                <h3 className="font-bold text-lg">Pelacakan Mood Harian</h3>
               </div>
 
               <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4]/40 hover:-translate-y-1 transition-all">
-                <div className="w-12 h-12 rounded-2xl bg-[#f3f6e8] flex items-center justify-center mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-[#f3f6e8] flex items-center justify-center mb-4">
                   <Award className="w-6 h-6 text-[#3f5726]" />
                 </div>
-                <h3 className="font-bold text-lg mb-3">Pelacakan Konsistensi</h3>
-                <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Pantau rekam jejak dan perkembanganmu. Dokumentasi progres ini dirancang untuk memotivasimu membangun rutinitas positif yang berkelanjutan.
-                </p>
+                <h3 className="font-bold text-lg">Pelacakan Konsistensi</h3>
               </div>
             </div>
           </div>
