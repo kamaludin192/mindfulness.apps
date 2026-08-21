@@ -221,10 +221,24 @@ export default async function GuruDashboard() {
                   </div>
 
                   <div className="p-3 bg-white rounded-xl border border-slate-200 text-xs text-[#1e2a14] leading-relaxed">
-                    <p className="text-[11px] font-semibold text-[#3f5726] mb-1">Refleksi Pikiran & Perasaan:</p>
-                    <p className="italic text-[#2b3a1a]/90 font-medium">
-                      {a.notes ? `"${a.notes}"` : <span className="text-gray-400 not-italic font-normal">Tidak ada catatan refleksi tambahan.</span>}
-                    </p>
+                    {a.notes?.includes('[Evaluasi Pasca 4 Sesi]') ? (
+                      <div className="space-y-1">
+                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#a3e635]/20 text-[#253d10] border border-[#a3e635]/60 mb-1">
+                          <Sparkles className="w-3 h-3 text-[#3f5726]" />
+                          <span>Evaluasi Akhir 4 Sesi</span>
+                        </div>
+                        <p className="font-semibold text-[#1e2a14]">
+                          {a.notes}
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        <p className="text-[11px] font-semibold text-[#3f5726] mb-1">Refleksi Pikiran & Perasaan:</p>
+                        <p className="italic text-[#2b3a1a]/90 font-medium">
+                          {a.notes ? `"${a.notes}"` : <span className="text-gray-400 not-italic font-normal">Tidak ada catatan refleksi tambahan.</span>}
+                        </p>
+                      </>
+                    )}
                   </div>
                 </div>
               );

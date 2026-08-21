@@ -14,6 +14,7 @@ import {
   Award,
 } from 'lucide-react'
 import MoodTracker from '@/components/siswa/MoodTracker'
+import PostProgramEvaluationCard from '@/components/siswa/PostProgramEvaluationCard'
 
 export const metadata = {
   title: 'Dashboard Siswa - mindfulnessintervention.id',
@@ -217,7 +218,10 @@ export default async function SiswaDashboard() {
         initialCreatedAt={latestAssessment?.created_at}
       />
 
-      {/* 3. FOUR STRUCTURED SESSIONS */}
+      {/* 3. POST-PROGRAM EVALUATION & COUNSELING OFFER (When 4 Sessions Complete) */}
+      <PostProgramEvaluationCard completedCount={completedCount} />
+
+      {/* 4. FOUR STRUCTURED SESSIONS */}
       <section className="space-y-4">
         <div className="flex items-center justify-between px-1">
           <div>

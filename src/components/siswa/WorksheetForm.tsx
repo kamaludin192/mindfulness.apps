@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { submitWorksheet } from '@/app/siswa/worksheet/actions'
+import Link from 'next/link'
 import {
   CheckCircle2,
   Save,
@@ -10,6 +11,7 @@ import {
   Heart,
   Sparkles,
   Smile,
+  ArrowRight,
 } from 'lucide-react'
 
 export interface BreathingRow {
@@ -690,23 +692,50 @@ export default function WorksheetForm({
           <span>{loading ? 'Menyimpan Lembar Kerja...' : 'Simpan & Selesaikan Lembar Kerja'}</span>
         </button>
       ) : (
-        <div className="p-4 bg-green-50 border border-green-200 rounded-2xl text-green-900 flex flex-col sm:flex-row items-center justify-between gap-3 animate-in fade-in">
-          <div className="flex items-center gap-3">
-            <CheckCircle2 className="w-6 h-6 text-green-600 shrink-0" />
-            <div>
-              <p className="font-bold text-xs md:text-sm">Lembar Kerja Tersimpan & Selesai!</p>
-              <p className="text-[11px] text-green-700">
-                Poin progres dan refleksi welas asih Anda telah tersimpan dengan aman di jurnal pribadi.
-              </p>
+        <div className="space-y-4 animate-in fade-in">
+          <div className="p-4 bg-green-50 border border-green-200 rounded-2xl text-green-900 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <CheckCircle2 className="w-6 h-6 text-green-600 shrink-0" />
+              <div>
+                <p className="font-bold text-xs md:text-sm">Lembar Kerja Tersimpan & Selesai!</p>
+                <p className="text-[11px] text-green-700">
+                  Poin progres dan refleksi welas asih Anda telah tersimpan dengan aman di jurnal pribadi.
+                </p>
+              </div>
             </div>
+            <button
+              type="button"
+              onClick={() => setSavedSuccess(false)}
+              className="px-4 py-2 bg-white hover:bg-green-100 text-green-800 text-xs font-bold rounded-xl border border-green-300 transition-colors cursor-pointer shrink-0"
+            >
+              Edit / Tambah Catatan
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={() => setSavedSuccess(false)}
-            className="px-4 py-2 bg-white hover:bg-green-100 text-green-800 text-xs font-bold rounded-xl border border-green-300 transition-colors cursor-pointer shrink-0"
-          >
-            Edit / Tambah Catatan
-          </button>
+
+          {sessionNumber === 4 && (
+            <div className="p-5 bg-gradient-to-br from-[#1e2f11] via-[#283e16] to-[#15230c] text-white rounded-2xl border-2 border-[#a3e635]/50 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/40 text-[11px] font-extrabold text-[#bef264] border border-[#a3e635]/40">
+                  <Sparkles className="w-3.5 h-3.5 text-[#a3e635]" />
+                  <span>Modul 4 Sesi Selesai!</span>
+                </div>
+                <p className="font-serif font-extrabold text-sm sm:text-base">
+                  Isi Evaluasi Layanan & Pilihan Konseling Lanjutan 🌿
+                </p>
+                <p className="text-xs text-white/80">
+                  Beri penilaian apakah sesi ini Membantu serta tentukan langkah mandiri atau lanjut konseling bersama Guru BK.
+                </p>
+              </div>
+
+              <Link
+                href="/siswa"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#a3e635] hover:bg-[#bef264] text-[#0f172a] text-xs font-extrabold transition-all shadow-xs shrink-0 cursor-pointer"
+              >
+                <span>Buka Form Evaluasi</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </form>

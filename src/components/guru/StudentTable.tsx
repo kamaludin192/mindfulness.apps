@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, Search, Award, BookOpen } from "lucide-react";
+import { CheckCircle2, Search, Award, BookOpen, Sparkles } from "lucide-react";
 
 type ExerciseProgress = {
   id: string;
@@ -121,6 +121,12 @@ export function StudentTable({ students }: { students: Student[] | null }) {
                             <span>{meta.emoji}</span>
                             <span>{meta.label}</span>
                           </span>
+                          {latestAssessment.notes?.includes('[Evaluasi Pasca 4 Sesi]') && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#a3e635]/20 text-[#253d10] border border-[#a3e635]/50">
+                              <Sparkles className="w-3 h-3 text-[#3f5726]" />
+                              <span>Evaluasi Selesai 4 Sesi</span>
+                            </span>
+                          )}
                         </div>
                         <p className="text-[10px] text-slate-500 font-medium">
                           {new Date(latestAssessment.created_at).toLocaleDateString('id-ID', {
@@ -142,7 +148,7 @@ export function StudentTable({ students }: { students: Student[] | null }) {
                               date: latestAssessment.created_at,
                             })}
                             className="p-2 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-700 italic line-clamp-2 cursor-pointer hover:bg-slate-100 hover:border-slate-300 transition-colors"
-                            title="Klik untuk membaca seluruh refleksi"
+                            title="Klik untuk membaca seluruh refleksi / evaluasi"
                           >
                             &ldquo;{latestAssessment.notes}&rdquo;
                           </div>
