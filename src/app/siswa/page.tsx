@@ -214,6 +214,7 @@ export default async function SiswaDashboard() {
       <MoodTracker
         initialMoodScore={latestAssessment?.mood_score}
         initialNotes={latestAssessment?.notes}
+        initialCreatedAt={latestAssessment?.created_at}
       />
 
       {/* 3. FOUR STRUCTURED SESSIONS */}

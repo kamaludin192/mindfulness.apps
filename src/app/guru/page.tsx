@@ -7,6 +7,7 @@ import {
   ArrowRight,
   Clock,
   Sparkles,
+  Calendar,
 } from "lucide-react";
 
 export default async function GuruDashboard() {
@@ -196,14 +197,19 @@ export default async function GuruDashboard() {
                       </div>
                       <div>
                         <p className="font-bold text-xs sm:text-sm text-[#0f172a]">{studentName}</p>
-                        <p className="text-[10px] text-[#475569]">
-                          {new Date(a.created_at).toLocaleDateString('id-ID', {
-                            weekday: 'short',
-                            day: 'numeric',
-                            month: 'short',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })} WIB
+                        <p className="text-[11px] text-[#475569] font-medium flex items-center gap-1">
+                          <Calendar className="w-3 h-3 text-[#3f5726]" />
+                          <span>
+                            {new Date(a.created_at).toLocaleDateString('id-ID', {
+                              weekday: 'long',
+                              day: 'numeric',
+                              month: 'long',
+                              year: 'numeric',
+                            })} • {new Date(a.created_at).toLocaleTimeString('id-ID', {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })} WIB
+                          </span>
                         </p>
                       </div>
                     </div>

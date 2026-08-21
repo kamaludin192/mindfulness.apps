@@ -170,6 +170,7 @@ const SCORE_TO_MOOD: Record<number, MoodScore> = {
 interface MoodTrackerProps {
   initialMoodScore?: number | null
   initialNotes?: string | null
+  initialCreatedAt?: string | null
 }
 
 import { submitEmotionCheckIn } from '@/app/siswa/actions'
@@ -178,6 +179,7 @@ import { CheckCircle2, MessageSquareHeart, Send, Loader2 } from 'lucide-react'
 export default function MoodTracker({
   initialMoodScore,
   initialNotes,
+  initialCreatedAt,
 }: MoodTrackerProps) {
   const [selectedMood, setSelectedMood] = useState<MoodScore>(
     initialMoodScore ? SCORE_TO_MOOD[initialMoodScore] || 'cukup_baik' : 'cukup_baik'
@@ -211,12 +213,23 @@ export default function MoodTracker({
 
   return (
     <section className="bg-white rounded-3xl p-6 md:p-8 border-2 border-[#d5dcc4] shadow-xs space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <h2 className="text-sm sm:text-base font-extrabold font-serif text-[#0f172a] flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-[#057a44]" />
           Check-in Emosi Hari Ini
         </h2>
-        <span className="text-xs font-semibold text-[#475569]">Pilih perasaanmu saat ini</span>
+        {initialCreatedAt ? (
+          <span className="text-[11px] font-bold text-[#3f5726] bg-[#f3f6e8] px-3 py-1 rounded-full border border-[#d5dcc4]">
+            Terakhir dicatat: {new Date(initialCreatedAt).toLocaleDateString('id-ID', {
+              weekday: 'long',
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            })} • {new Date(initialCreatedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB
+          </span>
+        ) : (
+          <span className="text-xs font-semibold text-[#475569]">Pilih perasaanmu saat ini</span>
+        )}
       </div>
 
       {/* Mood Selector Buttons matching reference image */}

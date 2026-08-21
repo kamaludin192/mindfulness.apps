@@ -116,10 +116,23 @@ export function StudentTable({ students }: { students: Student[] | null }) {
                   <td className="px-6 py-4">
                     {latestAssessment && meta ? (
                       <div className="space-y-1.5 max-w-xs">
-                        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold border ${meta.color}`}>
-                          <span>{meta.emoji}</span>
-                          <span>{meta.label}</span>
-                        </span>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold border ${meta.color}`}>
+                            <span>{meta.emoji}</span>
+                            <span>{meta.label}</span>
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-500 font-medium">
+                          {new Date(latestAssessment.created_at).toLocaleDateString('id-ID', {
+                            weekday: 'long',
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
+                          })} • {new Date(latestAssessment.created_at).toLocaleTimeString('id-ID', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })} WIB
+                        </p>
                         {latestAssessment.notes ? (
                           <div
                             onClick={() => setSelectedNote({
