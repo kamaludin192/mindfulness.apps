@@ -195,7 +195,7 @@ export default function ScheduleCmsForm({
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-extrabold font-serif text-[#0f172a]">
-                2. Manajemen Slot Jam Konseling
+                2. Manajemen Jam Konseling
               </h2>
               <p className="text-xs text-[#475569]">
                 Atur jam sesi privat yang dapat dipilih oleh siswa di portal konseling.
@@ -254,7 +254,7 @@ export default function ScheduleCmsForm({
 
           {/* Form Tambah Slot Baru */}
           <div className="pt-2 border-t border-[#e2e8f0]">
-            <p className="text-xs font-bold text-[#0f172a] mb-2">Tambah Slot Jam Baru:</p>
+            <p className="text-xs font-bold text-[#0f172a] mb-2">Tambah Jam Baru:</p>
             <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
               <div className="flex items-center gap-2 bg-[#f8fafc] px-3 py-2 rounded-xl border border-slate-200 flex-1">
                 <span className="text-xs text-[#475569] font-medium">Mulai:</span>
@@ -280,7 +280,7 @@ export default function ScheduleCmsForm({
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-[#057a44] hover:bg-[#046238] text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0"
               >
                 <Plus className="w-4 h-4" />
-                <span>Tambah Slot</span>
+                <span>Tambah Jam</span>
               </button>
             </div>
           </div>
