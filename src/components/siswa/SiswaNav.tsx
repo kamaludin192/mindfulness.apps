@@ -14,7 +14,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { href: '/siswa', label: 'Beranda', icon: Home },
   { href: '/siswa/worksheet', label: 'Sesi & Materi', icon: BookOpen },
-  { href: '/siswa/chat', label: 'Konseling BK', icon: MessageSquareQuote },
+  { href: '/siswa/chat', label: 'Konseling', icon: MessageSquareQuote },
   { href: '/siswa/profil', label: 'Profil Saya', icon: User },
 ]
 
