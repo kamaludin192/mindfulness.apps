@@ -83,13 +83,9 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto">
             <div className="grid md:grid-cols-4 gap-10 items-start">
               <div className="md:col-span-1 space-y-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#3f5726]">Metodologi Ilmiah</span>
                 <h2 className="text-2xl md:text-3xl font-bold font-serif leading-snug text-[#1e2a14]">
                   Membangun Kesadaran Secara Bertahap
                 </h2>
-                <p className="text-xs text-[#2b3a1a]/70 leading-relaxed">
-                  Dirancang terstruktur dan ramah pelajar agar tidak membebani mental siswa.
-                </p>
               </div>
 
               <div className="md:col-span-3 grid md:grid-cols-3 gap-6">
