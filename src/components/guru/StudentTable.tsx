@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, Search, Award, BookOpen, Sparkles, MessageSquare } from "lucide-react";
+import { CheckCircle2, Search, Award, BookOpen } from "lucide-react";
 
 type ExerciseProgress = {
   id: string;
