@@ -4,7 +4,6 @@ import Link from 'next/link'
 import GuruProfileEditor from '@/components/guru/GuruProfileEditor'
 import {
   Mail,
-  Shield,
   Calendar,
   Users,
   CalendarCheck2,
@@ -12,8 +11,6 @@ import {
   Clock,
   ArrowRight,
   LogOut,
-  GraduationCap,
-  Sparkles,
   CreditCard,
 } from 'lucide-react'
 import { logoutAction } from './actions'

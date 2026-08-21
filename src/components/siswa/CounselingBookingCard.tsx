@@ -39,13 +39,12 @@ const DEFAULT_SLOTS: BookingSlot[] = [
 
 export default function CounselingBookingCard({
   guruId,
-  guruName,
   guruList,
   existingBooking,
   availability,
 }: {
   guruId: string
-  guruName: string
+  guruName?: string
   guruList?: { id: string; full_name: string }[] | null
   existingBooking?: {
     id: string

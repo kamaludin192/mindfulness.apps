@@ -12,7 +12,6 @@ import {
   Loader2,
   Mail,
   GraduationCap,
-  Shield,
   CreditCard,
 } from 'lucide-react'
 

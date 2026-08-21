@@ -16,6 +16,8 @@ import {
   UserCheck,
 } from 'lucide-react'
 import { logoutAction } from '@/app/guru/profil/actions'
+import NotificationBell from '@/components/shared/NotificationBell'
+import { type NotificationItem } from '@/lib/notifications'
 
 const NAV_ITEMS = [
   {
@@ -116,7 +118,11 @@ export function GuruSidebar() {
   )
 }
 
-export function GuruMobileHeader() {
+export function GuruMobileHeader({
+  notifications = [],
+}: {
+  notifications?: NotificationItem[]
+}) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
@@ -134,13 +140,16 @@ export function GuruMobileHeader() {
         </div>
       </Link>
 
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="p-2 text-[#0f172a] bg-[#f8fafc] rounded-xl border border-[#e2e8f0]"
-      >
-        {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-      </button>
+      <div className="flex items-center gap-2">
+        <NotificationBell notifications={notifications} role="guru_bk" />
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className="p-2 text-[#0f172a] bg-[#f8fafc] rounded-xl border border-[#e2e8f0]"
+        >
+          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
 
       {/* Mobile Drawer */}
       {open && (

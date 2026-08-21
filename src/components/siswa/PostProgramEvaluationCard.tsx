@@ -8,12 +8,10 @@ import {
   CalendarCheck2,
   Calendar,
   Clock,
-  ArrowRight,
   Send,
   Loader2,
   ThumbsUp,
   ThumbsDown,
-  BookOpen,
   MessageSquareQuote,
   UserCheck,
   Search,
@@ -34,11 +32,6 @@ export default function PostProgramEvaluationCard({
   guruName = 'Dra. Endang (Guru BK)',
   guruList,
 }: PostProgramEvaluationCardProps) {
-  // Only display when student has finished all 4 sessions
-  if (completedCount < 4) {
-    return null
-  }
-
   // Tomorrow's date default
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
@@ -63,6 +56,11 @@ export default function PostProgramEvaluationCard({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+
+  // Only display when student has finished all 4 sessions
+  if (completedCount < 4) {
+    return null
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
