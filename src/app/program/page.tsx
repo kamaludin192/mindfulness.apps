@@ -10,6 +10,7 @@ import {
   Sparkles,
   BookOpen,
   MessageCircle,
+  Heart,
 } from "lucide-react";
 
 export default function ProgramPage() {
@@ -106,7 +107,7 @@ export default function ProgramPage() {
                   <span className="inline-block px-3.5 py-1 bg-[#e8ece1] rounded-full text-xs font-bold text-[#3f5726]">
                     SESI 1
                   </span>
-                  <span className="text-xs font-semibold text-[#2b3a1a]/50">Pondasi Awal</span>
+                  <Sparkles className="w-5 h-5 text-[#3f5726]" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Mindful Breathing</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed mb-6">
@@ -169,7 +170,7 @@ export default function ProgramPage() {
                   <span className="inline-block px-3.5 py-1 bg-[#e8ece1] rounded-full text-xs font-bold text-[#3f5726]">
                     SESI 4
                   </span>
-                  <span className="text-xs font-semibold text-[#2b3a1a]/50">Integrasi Puncak</span>
+                  <Heart className="w-5 h-5 text-[#3f5726]" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Gratitude and Loving in Kindness</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed mb-6">
