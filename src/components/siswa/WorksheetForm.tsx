@@ -539,7 +539,7 @@ export default function WorksheetForm({
                 </div>
                 <div>
                   <h4 className="text-sm md:text-base font-bold font-serif text-[#1e2a14]">
-                    1. Jurnal Rasa Syukur (Gratitude)
+                    1. Gratitude
                   </h4>
                   <p className="text-xs text-[#2b3a1a]/70">
                     Tuliskan hal-hal yang kamu syukuri hari ini (hal kecil, orang berharga, atau kebaikan diri).
@@ -618,7 +618,7 @@ export default function WorksheetForm({
                 </div>
                 <div>
                   <h4 className="text-sm md:text-base font-bold font-serif text-[#1e2a14]">
-                    2. Surat Kasih Sayang & Cinta untuk Diri Sendiri
+                    2. Letter For MySelf
                   </h4>
                   <p className="text-xs text-[#2b3a1a]/70">
                     Tuliskan surat apresiasi, maaf, dan penerimaan tulus untuk dirimu yang telah berjuang sejauh ini.
