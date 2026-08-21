@@ -190,7 +190,7 @@ export default async function AdminDashboardOverview() {
             <CalendarCheck2 className="w-5 h-5" />
           </div>
           <h3 className="font-serif font-extrabold text-base text-[#0f172a] group-hover:text-blue-700 transition-colors">
-            Audit Konseling BK Siswa
+            Audit Konseling Siswa
           </h3>
           <p className="text-xs text-[#475569] leading-relaxed">
             Pantau seluruh riwayat permohonan bimbingan konseling dan persetujuan jadwal guru secara global.
