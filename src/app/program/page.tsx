@@ -234,7 +234,7 @@ export default function ProgramPage() {
                 Integrasi Chat Konseling Guru BK
               </h3>
               <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                Setelah menuntaskan 4 sesi latihan dan mengisi LKS, tombol <strong>Booking Konseling 1-on-1</strong> akan terbuka secara otomatis untuk sesi pendalaman bersama Guru BK Anda.
+                Setelah menuntaskan 4 sesi latihan dan mengisi worksheet, tombol <strong>Booking Konseling 1-on-1</strong> akan terbuka secara otomatis untuk sesi pendalaman bersama Guru BK Anda.
               </p>
             </div>
           </div>
