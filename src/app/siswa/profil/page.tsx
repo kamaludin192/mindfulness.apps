@@ -20,10 +20,10 @@ export const metadata = {
 }
 
 const SESSIONS_OVERVIEW = [
-  { num: 1, title: 'Menyadari Napas & Tubuh' },
-  { num: 2, title: 'Pengenalan Pikiran & Regulasi Emosi' },
-  { num: 3, title: 'Mengelola Stres Akademik & Kecemasan' },
-  { num: 4, title: 'Welas Asih Diri (Self-Compassion) & Integrasi' },
+  { num: 1, title: 'Mindful Breathing' },
+  { num: 2, title: 'Mindful Sitting and Mindful Listening' },
+  { num: 3, title: 'Body Scanning' },
+  { num: 4, title: 'Gratitude and Loving in Kindness' },
 ]
 
 export default async function SiswaProfilPage() {

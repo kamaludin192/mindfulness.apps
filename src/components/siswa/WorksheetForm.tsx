@@ -151,10 +151,10 @@ export default function WorksheetForm({
           LAMPIRAN MODUL MINDFULNESS
         </span>
         <h3 className="text-lg md:text-xl font-bold font-serif text-[#1e2a14] uppercase tracking-wide">
-          {sessionNumber === 1 && 'WORKSHEET LATIHAN MINDFUL BREATHING'}
-          {sessionNumber === 2 && 'WORKSHEET EXPERIENCES CALENDER'}
+          {sessionNumber === 1 && 'WORKSHEET MINDFUL BREATHING'}
+          {sessionNumber === 2 && 'WORKSHEET EXPERIENCE CALENDAR'}
           {sessionNumber === 3 && 'WORKSHEET DAILY THOUGHT RECORD'}
-          {sessionNumber === 4 && 'WORKSHEET WELAS ASIH DIRI (SELF-COMPASSION) & INTEGRASI'}
+          {sessionNumber === 4 && 'WORKSHEET GRATITUDE & LETTER FOR MYSELF'}
         </h3>
         {sessionNumber === 2 && (
           <div className="max-w-2xl mx-auto pt-2 text-xs md:text-sm text-[#2b3a1a]/80 leading-relaxed italic bg-[#f3f6e8] p-3.5 rounded-2xl border border-[#d5dcc4]">

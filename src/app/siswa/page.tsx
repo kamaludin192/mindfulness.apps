@@ -29,23 +29,23 @@ interface SessionItem {
 const DEFAULT_SESSIONS: SessionItem[] = [
   {
     session_number: 1,
-    title: 'Menyadari Napas & Tubuh',
-    description: 'Latihan dasar Mindful Breathing dan Body Scan untuk menenangkan sistem saraf dan memusatkan kesadaran saat ini.',
+    title: 'Mindful Breathing',
+    description: 'Latihan dasar pernapasan sadar untuk menenangkan sistem saraf dan melatih fokus pikiran.',
   },
   {
     session_number: 2,
-    title: 'Pengenalan Pikiran & Regulasi Emosi',
-    description: 'Memahami bahwa pikiran bukanlah fakta mutlak serta melatih respons tenang menghadapi emosi yang intens.',
+    title: 'Mindful Sitting and Mindful Listening',
+    description: 'Melatih kesadaran saat duduk tenang dan mendengarkan dengan penuh perhatian tanpa menghakimi.',
   },
   {
     session_number: 3,
-    title: 'Mengelola Stres Akademik & Kecemasan',
-    description: 'Teknik STOP dan defusi kognitif untuk mengatasi kepanikan ujian, tugas menumpuk, dan tekanan sekolah.',
+    title: 'Body Scanning',
+    description: 'Mempelajari pemindaian sensasi tubuh secara menyeluruh untuk meredakan ketegangan fisik dan kecemasan.',
   },
   {
     session_number: 4,
-    title: 'Welas Asih Diri (Self-Compassion) & Integrasi',
-    description: 'Mengembangkan kebaikan hati pada diri sendiri saat gagal dan merancang rutinitas mindfulness mandiri berkelanjutan.',
+    title: 'Gratitude and Loving in Kindness',
+    description: 'Menumbuhkan rasa syukur serta memupuk cinta kasih dan kebaikan hati terhadap diri sendiri dan orang lain.',
   },
 ]
 

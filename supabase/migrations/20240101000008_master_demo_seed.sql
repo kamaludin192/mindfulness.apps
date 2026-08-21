@@ -119,10 +119,10 @@ ON CONFLICT (id) DO UPDATE SET role = EXCLUDED.role, full_name = EXCLUDED.full_n
 DELETE FROM public.cms_contents;
 INSERT INTO public.cms_contents (session_number, title, video_url)
 VALUES
-  (1, 'Sesi 1: Menyadari Napas & Tubuh (Mindful Breathing)', NULL),
-  (2, 'Sesi 2: Pengenalan Pikiran & Regulasi Emosi', NULL),
-  (3, 'Sesi 3: Mengelola Stres Akademik & Kecemasan', NULL),
-  (4, 'Sesi 4: Welas Asih Diri (Self-Compassion) & Rasa Syukur', NULL);
+  (1, 'Mindful Breathing', NULL),
+  (2, 'Mindful Sitting and Mindful Listening', NULL),
+  (3, 'Body Scanning', NULL),
+  (4, 'Gratitude and Loving in Kindness', NULL);
 
 -- =========================================================
 -- 6. SEED SETTING JADWAL KETERSEDIAAN GURU BK
