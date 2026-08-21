@@ -671,7 +671,7 @@ export default function WorksheetForm({
             disabled={isCompleted}
             value={summaryNote}
             onChange={(e) => setSummaryNote(e.target.value)}
-            placeholder="Tuliskan wawasan atau hal penting yang ingin kamu ingat dari sesi ini..."
+            placeholder="wawasan atau hal apa yang kamu rasakan"
             className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs md:text-sm text-[#1e2a14] placeholder-[#2b3a1a]/40 outline-none focus:ring-2 focus:ring-[#3f5726] disabled:border-none disabled:bg-transparent"
           />
         </div>
