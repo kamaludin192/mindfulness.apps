@@ -293,7 +293,7 @@ export default function MoodTracker({
             Setelah mengisi emosi hari ini, apa yang sedang Anda rasakan dan pikirkan hari ini?
           </label>
           <p className="text-[11px] text-[#2b3a1a]/70">
-            Tuliskan perasaan dan pikiranmu secara jujur. Catatan ini akan otomatis terekam dan membantu Guru BK memahami kondisimu.
+            Tuliskan perasaan dan pikiranmu secara jujur.
           </p>
         </div>
 
@@ -312,14 +312,14 @@ export default function MoodTracker({
           {savedSuccess ? (
             <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#065f46] bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 animate-in fade-in">
               <CheckCircle2 className="w-4 h-4 text-[#057a44]" />
-              <span>Refleksi dan emosi harian berhasil disimpan & terkirim ke Guru BK!</span>
+              <span>Refleksi dan emosi harian berhasil disimpan!</span>
             </div>
           ) : errorMsg ? (
             <div className="text-xs text-red-600 font-semibold">{errorMsg}</div>
           ) : (
             <div className="text-[11px] text-[#475569] flex items-center gap-1">
               <MessageSquareHeart className="w-3.5 h-3.5 text-[#3f5726]" />
-              <span>Privasi Anda terjaga dan terhubung dengan Guru BK.</span>
+              <span>Privasi Anda Aman, Terjaga, dan Terlindungi.</span>
             </div>
           )}
 
