@@ -182,7 +182,7 @@ export default function HomePage() {
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Worksheet Mindful Sitting & Listening</span>
+                  <span>Worksheet Experience Calendar</span>
                 </div>
               </div>
 
@@ -199,7 +199,7 @@ export default function HomePage() {
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Worksheet Body Scanning</span>
+                  <span>Worksheet Daily Thought Record</span>
                 </div>
               </div>
 
@@ -216,7 +216,7 @@ export default function HomePage() {
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Worksheet Gratitude Journal & Surat Cinta Diri</span>
+                  <span>Worksheet Gratitude & Worksheet Letter for Myself</span>
                 </div>
               </div>
             </div>

@@ -111,14 +111,14 @@ export default function ProgramPage() {
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Mindful Breathing</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed mb-6">
-                  Latihan pernapasan sadar yang dilengkapi dengan materi psikoedukasi. Sesi ini mencakup penugasan praktik mandiri di rumah untuk melatih fokus dan ketenangan saat menghadapi situasi pemicu kecemasan.
+                  Latihan pernapasan sadar yang dilengkapi dengan materi psikoedukasi untuk melatih fokus dan ketenangan saat menghadapi situasi pemicu kecemasan.
                 </p>
                 <div className="p-4 rounded-2xl bg-[#f3f6e8] text-xs space-y-2 border border-[#d5dcc4]/50">
                   <p className="font-semibold text-[#3f5726] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
                     Penugasan / Output:
                   </p>
-                  <p className="text-[#2b3a1a]/80">Lembar Kerja Refleksi Pola Napas & Tingkat Ketenangan</p>
+                  <p className="text-[#2b3a1a]/80">Tugas di rumah: berapa kali berlatih <em>mindful breathing</em> selama sehari.</p>
                 </div>
               </div>
 
@@ -132,14 +132,14 @@ export default function ProgramPage() {
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Mindful Sitting and Mindful Listening</h3>
                 <p className="text-sm text-white/90 leading-relaxed mb-6">
-                  Berlatih mengobservasi sekeliling dengan kesadaran penuh tanpa menghakimi saat duduk tenang dan mendengarkan. Dilengkapi digital worksheet untuk mencatat dinamika pikiran dan perasaan secara objektif.
+                  Berlatih mengobservasi sekeliling dengan kesadaran penuh tanpa menghakimi saat duduk tenang dan mendengarkan dengan penuh perhatian.
                 </p>
                 <div className="p-4 rounded-2xl bg-white/10 text-xs space-y-2 border border-white/10">
                   <p className="font-semibold text-[#c2db8f] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
                     Penugasan / Output:
                   </p>
-                  <p className="text-white/80">Worksheet Mindful Sitting & Listening</p>
+                  <p className="text-white/80">Penugasan <em>worksheet experience calendar</em> untuk dilakukan di rumah seharian apa yang dirasakan pada perasaan dan pikiran.</p>
                 </div>
               </div>
 
@@ -160,7 +160,7 @@ export default function ProgramPage() {
                     <BookOpen className="w-4 h-4" />
                     Penugasan / Output:
                   </p>
-                  <p className="text-[#2b3a1a]/80">Worksheet Body Scanning</p>
+                  <p className="text-[#2b3a1a]/80">Penugasan <em>worksheet daily thought record</em>.</p>
                 </div>
               </div>
 
@@ -181,7 +181,7 @@ export default function ProgramPage() {
                     <BookOpen className="w-4 h-4" />
                     Penugasan / Output:
                   </p>
-                  <p className="text-[#2b3a1a]/80">Gratitude Journal & Lembar Apresiasi Diri</p>
+                  <p className="text-[#2b3a1a]/80">Penugasan <em>worksheet gratitude</em> (menyebutkan hal yang disyukuri) dan <em>worksheet letter for myself</em> (menuliskan surat cinta untuk diri).</p>
                 </div>
               </div>
             </div>
