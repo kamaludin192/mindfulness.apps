@@ -22,7 +22,7 @@ export function SiswaSidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="hidden md:flex flex-col w-64 bg-white border-r border-[#d5dcc4] h-screen sticky top-0 justify-between p-5 z-20">
+    <aside className="hidden md:flex flex-col w-64 bg-white border-r border-[#d5dcc4] fixed top-0 left-0 bottom-0 h-screen justify-between p-5 z-40 overflow-y-auto shrink-0 shadow-xs">
       <div className="space-y-6">
         {/* Brand Logo */}
         <Link href="/siswa" className="flex items-center gap-2.5 px-2">
