@@ -61,7 +61,7 @@ export default function HomePage() {
             </div>
 
             {/* Quick Stats Strip */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 w-full max-w-4xl text-left pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 w-full max-w-4xl text-left pt-2">
               <div className="bg-white/85 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4] shadow-2xs">
                 <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">4 Sesi</p>
                 <p className="text-xs text-[#2b3a1a]/70 font-medium">Video & Lembar Kerja</p>
@@ -73,10 +73,6 @@ export default function HomePage() {
               <div className="bg-white/85 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4] shadow-2xs">
                 <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">100%</p>
                 <p className="text-xs text-[#2b3a1a]/70 font-medium">Privasi Terjaga</p>
-              </div>
-              <div className="bg-white/85 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4] shadow-2xs">
-                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">Edukasi</p>
-                <p className="text-xs text-[#2b3a1a]/70 font-medium">Psikoedukasi Terstruktur</p>
               </div>
             </div>
           </div>
