@@ -31,7 +31,7 @@ const DEFAULT_SESSIONS: SessionItem[] = [
   {
     session_number: 1,
     title: 'Mindful Breathing',
-    description: 'Latihan dasar pernapasan sadar untuk menenangkan sistem saraf dan melatih fokus pikiran.',
+    description: 'Latihan dasar pernapasan sadar dan melatih fokus pikiran.',
   },
   {
     session_number: 2,

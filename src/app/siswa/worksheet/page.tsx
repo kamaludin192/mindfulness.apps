@@ -14,7 +14,7 @@ const DEFAULT_SESSIONS = [
     id: '11111111-1111-1111-1111-111111111111',
     session_number: 1,
     title: 'Mindful Breathing',
-    description: 'Latihan dasar pernapasan sadar untuk menenangkan sistem saraf dan melatih fokus pikiran.',
+    description: 'Latihan dasar pernapasan sadar dan melatih fokus pikiran.',
     video_url: '',
   },
   {

@@ -131,7 +131,7 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto space-y-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#3f5726]">Modul Latihan</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#3f5726]">Latihan</span>
                 <h2 className="text-2xl md:text-3xl font-bold font-serif text-[#1e2a14] mt-1">4 Sesi Mindfulness Interaktif</h2>
               </div>
               <Link
@@ -153,7 +153,7 @@ export default function HomePage() {
                   Mindful Breathing
                 </h3>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
-                  Mempelajari dasar pernapasan sadar untuk menenangkan sistem saraf dan melatih fokus pikiran.
+                  Mempelajari dasar pernapasan sadar dan melatih fokus pikiran.
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
