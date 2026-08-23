@@ -10,7 +10,7 @@ interface BottomCtaProps {
 
 export default function BottomCta({
   title = "Siap Memulai Perjalanan Anda?",
-  subtitle = "Ambil langkah pertama untuk merawat kesejahteraan mentalmu dan temukan ketenangan bersama bimbingan Guru BK hari ini.",
+  subtitle = "Ambil langkah pertama untuk memulai kesadaran.",
   buttonText = "Daftar / Mulai Sekarang",
   buttonHref = "/login",
 }: BottomCtaProps) {
@@ -24,7 +24,7 @@ export default function BottomCta({
         <div className="relative z-10 max-w-2xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-xs font-semibold text-[#c2db8f] mb-2 backdrop-blur-xs">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Mulai Langkah Sadarmu</span>
+            <span>Mulai Melangkah</span>
           </div>
 
           <h2 className="text-2xl md:text-4xl font-bold leading-tight font-serif">
