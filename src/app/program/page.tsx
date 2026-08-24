@@ -54,7 +54,7 @@ export default function ProgramPage() {
                 <div className="w-12 h-12 rounded-2xl bg-[#c2db8f] flex items-center justify-center font-bold text-xl text-[#1e2a14] mb-6 shadow-xs">
                   1
                 </div>
-                <h3 className="font-bold text-lg mb-3">Asesmen Awal</h3>
+                <h3 className="font-bold text-lg mb-3">Asesmen</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
                   Mengidentifikasi kondisi psikologis awal, tingkat stres akademik, dan kesiapan emosional siswa untuk menentukan kesesuaian pendampingan.
                 </p>
@@ -76,7 +76,7 @@ export default function ProgramPage() {
                 <div className="w-12 h-12 rounded-2xl bg-[#75845c] flex items-center justify-center font-bold text-xl text-white mb-6 shadow-xs">
                   3
                 </div>
-                <h3 className="font-bold text-lg mb-3">Evaluasi Progress</h3>
+                <h3 className="font-bold text-lg mb-3">Evaluasi</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
                   Memantau perkembangan afektif dan stabilitas suasana hati siswa secara berkala untuk mengevaluasi efektivitas intervensi.
                 </p>

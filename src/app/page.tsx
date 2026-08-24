@@ -94,7 +94,7 @@ export default function HomePage() {
                   <div className="w-9 h-9 rounded-2xl bg-[#3f5726]/10 text-[#3f5726] flex items-center justify-center font-bold mb-3 text-sm">
                     1
                   </div>
-                  <h3 className="font-bold text-base text-[#1e2a14]">Asesmen & Pengenalan</h3>
+                  <h3 className="font-bold text-base text-[#1e2a14]">Asesmen</h3>
                   <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
                     Mengenali kondisi awal emosi dan pernapasan Anda untuk memastikan kesiapan dalam mengikuti latihan.
                   </p>
@@ -105,7 +105,7 @@ export default function HomePage() {
                   <div className="w-9 h-9 rounded-2xl bg-[#3f5726] text-white flex items-center justify-center font-bold mb-3 text-sm shadow-xs">
                     2
                   </div>
-                  <h3 className="font-bold text-base text-[#1e2a14]">Latihan Rutin & Worksheet</h3>
+                  <h3 className="font-bold text-base text-[#1e2a14]">Latihan Rutin</h3>
                   <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
                     Mempraktikkan video mindfulness dan mengisi lembar kerja digital untuk mengintegrasikan pengalaman.
                   </p>
@@ -116,7 +116,7 @@ export default function HomePage() {
                   <div className="w-9 h-9 rounded-2xl bg-[#75845c] text-white flex items-center justify-center font-bold mb-3 text-sm shadow-xs">
                     3
                   </div>
-                  <h3 className="font-bold text-base text-[#1e2a14]">Evaluasi & Konseling</h3>
+                  <h3 className="font-bold text-base text-[#1e2a14]">Evaluasi</h3>
                   <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
                     Memantau perkembangan diri dan berdiskusi tatap muka bersama Guru BK saat membutuhkan bimbingan mendalam.
                   </p>
