@@ -9,6 +9,7 @@ import {
   Video,
   Sparkles,
   Calendar,
+  Palette,
 } from "lucide-react";
 
 export default async function AdminDashboardOverview() {
@@ -143,16 +144,35 @@ export default async function AdminDashboardOverview() {
       </section>
 
       {/* 3. QUICK NAVIGATION TILES */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <Link
+          href="/admin/tampilan"
+          className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-slate-200 hover:border-amber-500 hover:shadow-md transition-all space-y-3 cursor-pointer group"
+        >
+          <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-800 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
+            <Palette className="w-5 h-5" />
+          </div>
+          <h3 className="font-serif font-extrabold text-base text-[#0f172a] group-hover:text-amber-800 transition-colors">
+            Kustomisasi Tampilan & UI
+          </h3>
+          <p className="text-xs text-[#475569] leading-relaxed">
+            Edit teks judul, pengumuman, dan banner pada Landing Page, Portal Murid, dan Portal Guru.
+          </p>
+          <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-800">
+            <span>Buka CMS Tampilan</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </Link>
+
         <Link
           href="/admin/users"
-          className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-amber-500 hover:shadow-md transition-all space-y-3 cursor-pointer group"
+          className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-slate-200 hover:border-amber-500 hover:shadow-md transition-all space-y-3 cursor-pointer group"
         >
           <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-800 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
             <Users className="w-5 h-5" />
           </div>
           <h3 className="font-serif font-extrabold text-base text-[#0f172a] group-hover:text-amber-800 transition-colors">
-            Kelola Akun & Hak Akses (Role)
+            Kelola Akun & Role
           </h3>
           <p className="text-xs text-[#475569] leading-relaxed">
             Ubah role pengguna menjadi Siswa, Guru BK, atau Superadmin, serta kelola status akun.
@@ -165,7 +185,7 @@ export default async function AdminDashboardOverview() {
 
         <Link
           href="/admin/materi"
-          className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all space-y-3 cursor-pointer group"
+          className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all space-y-3 cursor-pointer group"
         >
           <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-[#057a44] flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
             <Video className="w-5 h-5" />
@@ -177,14 +197,14 @@ export default async function AdminDashboardOverview() {
             Perbarui judul sesi, tautan video YouTube/MP4, dan deskripsi materi pembelajaran mindfulness.
           </p>
           <span className="inline-flex items-center gap-1 text-xs font-bold text-[#057a44]">
-            <span>Buka Pengaturan Materi & Video</span>
+            <span>Buka Pengaturan Materi</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </span>
         </Link>
 
         <Link
           href="/admin/konseling"
-          className="bg-white p-6 rounded-3xl border-2 border-slate-200 hover:border-blue-500 hover:shadow-md transition-all space-y-3 cursor-pointer group"
+          className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-slate-200 hover:border-blue-500 hover:shadow-md transition-all space-y-3 cursor-pointer group"
         >
           <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
             <CalendarCheck2 className="w-5 h-5" />

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import BottomCta from "@/components/public/BottomCta";
+import { getLayoutConfigAction } from "@/app/admin/tampilan/actions";
 import {
   ArrowRight,
   ShieldCheck,
@@ -9,7 +10,10 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const config = await getLayoutConfigAction();
+  const landing = config.landingPage;
+
   return (
     <div className="min-h-screen font-sans bg-[#f5f8ec] text-[#2b3a1a] flex flex-col selection:bg-[#c2db8f]/40 relative">
       <Navbar />
@@ -27,52 +31,52 @@ export default function HomePage() {
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white text-[#1e2a14] text-xs md:text-sm font-bold shadow-xs border border-[#d5dcc4] backdrop-blur-md hover:border-[#3f5726] transition-all">
               <span className="w-2 h-2 rounded-full bg-[#3f5726] animate-pulse" />
               <ShieldCheck className="w-4 h-4 text-[#3f5726]" />
-              <span>mindfulnessintervention.id • Ruang Aman & Terverifikasi Siswa</span>
+              <span>{landing.heroBadge}</span>
             </div>
 
             {/* Headline */}
             <div className="space-y-3 max-w-4xl">
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold font-serif leading-[1.15] tracking-tight text-[#141f0d]">
-                Mindfulness-Based <br className="hidden sm:inline" />
-                <span className="text-[#3f5726]">Intervention</span>
+                {landing.heroTitlePrefix} <br className="hidden sm:inline" />
+                <span className="text-[#3f5726]">{landing.heroTitleHighlight}</span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-[#243316] font-medium max-w-3xl mx-auto leading-relaxed pt-2">
-                Mindfulness-Based Intervention adalah intervensi berbasis kesadaran yang melatih hadir secara utuh pada momen saat ini secara sengaja. Platform ini digunakan sebagai optimalisasi media layanan Bimbingan dan Konseling untuk memudahkan siswa SMA dalam memperoleh bantuan layanan.
+                {landing.heroDescription}
               </p>
             </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto pt-2">
               <Link
-                href="/login"
+                href={landing.heroPrimaryBtnHref || "/login"}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-[#2f431b] hover:bg-[#1e2a14] text-white px-8 py-4 rounded-full font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer text-sm md:text-base"
               >
-                <span>Mulai Sesi Pertama Sekarang</span>
+                <span>{landing.heroPrimaryBtnText}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
               <Link
-                href="/program"
+                href={landing.heroSecondaryBtnHref || "/program"}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/90 hover:bg-white text-[#2b3a1a] border border-[#d5dcc4] hover:border-[#3f5726]/40 px-7 py-4 rounded-full font-semibold transition-all shadow-2xs hover:shadow-xs cursor-pointer text-sm md:text-base backdrop-blur-xs"
               >
                 <BookOpen className="w-4 h-4 text-[#3f5726]" />
-                <span>Jelajahi 4 Sesi Latihan</span>
+                <span>{landing.heroSecondaryBtnText}</span>
               </Link>
             </div>
 
             {/* Quick Stats Strip */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 w-full max-w-4xl text-left pt-2">
               <div className="bg-white/85 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4] shadow-2xs">
-                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">4 Sesi</p>
-                <p className="text-xs text-[#2b3a1a]/70 font-medium">Video & Lembar Kerja</p>
+                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">{landing.stat1Number}</p>
+                <p className="text-xs text-[#2b3a1a]/70 font-medium">{landing.stat1Label}</p>
               </div>
               <div className="bg-white/85 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4] shadow-2xs">
-                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">1-on-1</p>
-                <p className="text-xs text-[#2b3a1a]/70 font-medium">Jadwal Guru BK</p>
+                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">{landing.stat2Number}</p>
+                <p className="text-xs text-[#2b3a1a]/70 font-medium">{landing.stat2Label}</p>
               </div>
               <div className="bg-white/85 backdrop-blur-xs p-4.5 rounded-2xl border border-[#d5dcc4] shadow-2xs">
-                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">100%</p>
-                <p className="text-xs text-[#2b3a1a]/70 font-medium">Privasi Terjaga</p>
+                <p className="text-2xl md:text-3xl font-bold font-serif text-[#2f431b]">{landing.stat3Number}</p>
+                <p className="text-xs text-[#2b3a1a]/70 font-medium">{landing.stat3Label}</p>
               </div>
             </div>
           </div>
@@ -94,9 +98,9 @@ export default function HomePage() {
                   <div className="w-9 h-9 rounded-2xl bg-[#3f5726]/10 text-[#3f5726] flex items-center justify-center font-bold mb-3 text-sm">
                     1
                   </div>
-                  <h3 className="font-bold text-base text-[#1e2a14]">Asesmen</h3>
+                  <h3 className="font-bold text-base text-[#1e2a14]">{landing.step1Title}</h3>
                   <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
-                    Mengenali kondisi awal emosi dan pernapasan Anda untuk memastikan kesiapan dalam mengikuti latihan.
+                    {landing.step1Desc}
                   </p>
                 </div>
 
@@ -105,9 +109,9 @@ export default function HomePage() {
                   <div className="w-9 h-9 rounded-2xl bg-[#3f5726] text-white flex items-center justify-center font-bold mb-3 text-sm shadow-xs">
                     2
                   </div>
-                  <h3 className="font-bold text-base text-[#1e2a14]">Latihan Rutin</h3>
+                  <h3 className="font-bold text-base text-[#1e2a14]">{landing.step2Title}</h3>
                   <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
-                    Mempraktikkan video mindfulness dan mengisi lembar kerja digital untuk mengintegrasikan pengalaman.
+                    {landing.step2Desc}
                   </p>
                 </div>
 
@@ -116,9 +120,9 @@ export default function HomePage() {
                   <div className="w-9 h-9 rounded-2xl bg-[#75845c] text-white flex items-center justify-center font-bold mb-3 text-sm shadow-xs">
                     3
                   </div>
-                  <h3 className="font-bold text-base text-[#1e2a14]">Evaluasi</h3>
+                  <h3 className="font-bold text-base text-[#1e2a14]">{landing.step3Title}</h3>
                   <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
-                    Memantau perkembangan diri dan berdiskusi online bersama Guru BK saat membutuhkan bimbingan mendalam.
+                    {landing.step3Desc}
                   </p>
                 </div>
               </div>
@@ -216,7 +220,11 @@ export default function HomePage() {
         </section>
 
         {/* 4. BOTTOM CTA */}
-        <BottomCta />
+        <BottomCta
+          title={landing.ctaTitle}
+          subtitle={landing.ctaSubtitle}
+          buttonText={landing.ctaButtonText}
+        />
       </main>
 
       <Footer />

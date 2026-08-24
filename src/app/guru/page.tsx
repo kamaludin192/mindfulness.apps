@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
+import { getLayoutConfigAction } from "@/app/admin/tampilan/actions";
 import {
   Users,
   CheckCircle2,
@@ -12,6 +13,8 @@ import {
 
 export default async function GuruDashboard() {
   const supabase = createClient();
+  const layoutConfig = await getLayoutConfigAction();
+  const teacherConfig = layoutConfig.teacherPortal;
 
   // 1. Fetch count of students
   const { count: studentCount } = await supabase
@@ -98,10 +101,10 @@ export default async function GuruDashboard() {
             <span>Dashboard Guru BK</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold font-serif tracking-tight text-white">
-            Selamat Datang di Portal Guru BK 🌿
+            {teacherConfig.portalTitle || "Selamat Datang di Portal Guru BK 🌿"}
           </h1>
           <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed">
-            Pantau perkembangan mindfulness siswa, tinjau pengerjaan lembar kerja digital (worksheet), dan kelola jadwal bimbingan konseling secara terstruktur dan aman.
+            {teacherConfig.portalSubtitle || "Pantau perkembangan mindfulness siswa, tinjau pengerjaan lembar kerja digital (worksheet), dan kelola jadwal bimbingan konseling secara terstruktur dan aman."}
           </p>
         </div>
 
