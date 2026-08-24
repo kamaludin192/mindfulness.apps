@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { getLayoutConfigAction } from '@/app/admin/tampilan/actions'
 import {
   Sparkles,
   CheckCircle2,
@@ -13,7 +12,6 @@ import {
   Lock,
   BookOpen,
   Award,
-  Bell,
 } from 'lucide-react'
 import MoodTracker from '@/components/siswa/MoodTracker'
 import PostProgramEvaluationCard from '@/components/siswa/PostProgramEvaluationCard'
@@ -54,8 +52,6 @@ const DEFAULT_SESSIONS: SessionItem[] = [
 
 export default async function SiswaDashboard() {
   const supabase = createClient()
-  const layoutConfig = await getLayoutConfigAction()
-  const studentConfig = layoutConfig.studentPortal
 
   const {
     data: { user },
@@ -146,23 +142,6 @@ export default async function SiswaDashboard() {
 
   return (
     <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-7">
-      {/* Dynamic Announcement Banner if Active */}
-      {studentConfig.announcementActive && studentConfig.announcementText && (
-        <div className="bg-emerald-50 border-2 border-emerald-300 rounded-3xl p-4 sm:p-5 flex items-start gap-3.5 shadow-xs animate-in fade-in">
-          <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 mt-0.5 shadow-xs">
-            <Bell className="w-4 h-4" />
-          </div>
-          <div className="space-y-1">
-            <h4 className="text-xs sm:text-sm font-extrabold text-[#065f46]">
-              {studentConfig.announcementTitle || 'Pemberitahuan Siswa'}
-            </h4>
-            <p className="text-xs sm:text-sm text-[#1e2a14] leading-relaxed font-medium">
-              {studentConfig.announcementText}
-            </p>
-          </div>
-        </div>
-      )}
-
       {/* 1. HERO GREETING BANNER - HIGH CONTRAST & CRISP */}
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1e2f11] via-[#283e16] to-[#15230c] p-6 sm:p-8 md:p-9 text-white shadow-lg border-2 border-[#3f5726]">
         {/* Ambient Decorative Highlights */}
@@ -174,7 +153,7 @@ export default async function SiswaDashboard() {
           <div className="md:col-span-7 space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 text-xs font-bold text-[#bbf7d0] border border-[#86efac]/40 shadow-xs">
               <Sparkles className="w-4 h-4 text-[#a3e635]" />
-              <span>{studentConfig.welcomeTitle || 'Mindfulness Intervention'}</span>
+              <span>Mindfulness Intervention</span>
             </div>
 
             <div className="space-y-2">

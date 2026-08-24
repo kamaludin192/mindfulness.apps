@@ -43,8 +43,6 @@ export async function getLayoutConfigAction(): Promise<AppLayoutConfig> {
         landingPage: { ...DEFAULT_LAYOUT_CONFIG.landingPage, ...parsed.landingPage },
         programPage: { ...DEFAULT_LAYOUT_CONFIG.programPage, ...parsed.programPage },
         tentangKamiPage: { ...DEFAULT_LAYOUT_CONFIG.tentangKamiPage, ...parsed.tentangKamiPage },
-        studentPortal: { ...DEFAULT_LAYOUT_CONFIG.studentPortal, ...parsed.studentPortal },
-        teacherPortal: { ...DEFAULT_LAYOUT_CONFIG.teacherPortal, ...parsed.teacherPortal },
       }
     }
   } catch (e) {

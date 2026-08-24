@@ -5,8 +5,6 @@ import {
   Globe,
   BookOpen,
   Info,
-  GraduationCap,
-  Users,
   Save,
   RotateCcw,
   Sparkles,
@@ -14,6 +12,7 @@ import {
   AlertCircle,
   Layers,
   ExternalLink,
+  Users,
 } from 'lucide-react'
 import Link from 'next/link'
 import {
@@ -22,8 +21,6 @@ import {
   type LandingPageConfig,
   type ProgramPageConfig,
   type TentangKamiPageConfig,
-  type StudentPortalConfig,
-  type TeacherPortalConfig,
 } from '@/lib/layout-cms-config'
 import { saveLayoutConfigAction, resetLayoutConfigAction } from '@/app/admin/tampilan/actions'
 
@@ -33,7 +30,7 @@ export default function LayoutCmsEditor({
   initialConfig: AppLayoutConfig
 }) {
   const [config, setConfig] = useState<AppLayoutConfig>(initialConfig || DEFAULT_LAYOUT_CONFIG)
-  const [activeTab, setActiveTab] = useState<'landing' | 'program' | 'tentang' | 'siswa' | 'guru'>('landing')
+  const [activeTab, setActiveTab] = useState<'landing' | 'program' | 'tentang'>('landing')
   const [saving, setSaving] = useState(false)
   const [statusMessage, setStatusMessage] = useState<{
     type: 'success' | 'error'
@@ -70,32 +67,6 @@ export default function LayoutCmsEditor({
     }))
   }
 
-  const handleStudentChange = (
-    field: keyof StudentPortalConfig,
-    val: string | boolean
-  ) => {
-    setConfig((prev) => ({
-      ...prev,
-      studentPortal: {
-        ...prev.studentPortal,
-        [field]: val,
-      },
-    }))
-  }
-
-  const handleTeacherChange = (
-    field: keyof TeacherPortalConfig,
-    val: string
-  ) => {
-    setConfig((prev) => ({
-      ...prev,
-      teacherPortal: {
-        ...prev.teacherPortal,
-        [field]: val,
-      },
-    }))
-  }
-
   const handleSave = async () => {
     setSaving(true)
     setStatusMessage(null)
@@ -103,7 +74,7 @@ export default function LayoutCmsEditor({
       await saveLayoutConfigAction(config)
       setStatusMessage({
         type: 'success',
-        text: 'Pengaturan tampilan berhasil disimpan dan langsung diterapkan ke seluruh halaman!',
+        text: 'Pengaturan tampilan landing page berhasil disimpan dan langsung diterapkan!',
       })
       setTimeout(() => setStatusMessage(null), 4000)
     } catch (err: unknown) {
@@ -117,7 +88,7 @@ export default function LayoutCmsEditor({
   const handleReset = async () => {
     if (
       !confirm(
-        'Apakah Anda yakin ingin mengembalikan semua teks tampilan ke pengaturan awal (default)?'
+        'Apakah Anda yakin ingin mengembalikan semua teks tampilan landing page ke pengaturan awal (default)?'
       )
     )
       return
@@ -128,7 +99,7 @@ export default function LayoutCmsEditor({
       setConfig(DEFAULT_LAYOUT_CONFIG)
       setStatusMessage({
         type: 'success',
-        text: 'Semua tampilan berhasil dikembalikan ke pengaturan awal!',
+        text: 'Semua tampilan landing page berhasil dikembalikan ke pengaturan awal!',
       })
       setTimeout(() => setStatusMessage(null), 4000)
     } catch (err: unknown) {
@@ -143,71 +114,45 @@ export default function LayoutCmsEditor({
     <div className="space-y-6">
       {/* Top Bar: Tabs & Action Buttons */}
       <div className="bg-white p-4 sm:p-5 rounded-3xl border-2 border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-        {/* Navigation Tabs (5 Tabs) */}
+        {/* Navigation Tabs (3 Tabs for Public Landing Pages) */}
         <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             onClick={() => setActiveTab('landing')}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
               activeTab === 'landing'
                 ? 'bg-amber-500 text-slate-950 shadow-xs'
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
-            <Globe className="w-3.5 h-3.5" />
-            <span>1. Beranda</span>
+            <Globe className="w-4 h-4" />
+            <span>1. Beranda (Landing Page)</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('program')}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
               activeTab === 'program'
                 ? 'bg-amber-500 text-slate-950 shadow-xs'
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
-            <BookOpen className="w-3.5 h-3.5" />
+            <BookOpen className="w-4 h-4" />
             <span>2. Program</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('tentang')}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
               activeTab === 'tentang'
                 ? 'bg-amber-500 text-slate-950 shadow-xs'
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
-            <Info className="w-3.5 h-3.5" />
+            <Info className="w-4 h-4" />
             <span>3. Tentang Kami</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('siswa')}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-              activeTab === 'siswa'
-                ? 'bg-amber-500 text-slate-950 shadow-xs'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-            }`}
-          >
-            <GraduationCap className="w-3.5 h-3.5" />
-            <span>4. Portal Siswa</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('guru')}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-              activeTab === 'guru'
-                ? 'bg-amber-500 text-slate-950 shadow-xs'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-            }`}
-          >
-            <Users className="w-3.5 h-3.5" />
-            <span>5. Portal Guru BK</span>
           </button>
         </div>
 
@@ -945,209 +890,11 @@ export default function LayoutCmsEditor({
         </div>
       )}
 
-      {/* ========================================================= */}
-      {/* TAB 4: PORTAL MURID / SISWA */}
-      {/* ========================================================= */}
-      {activeTab === 'siswa' && (
-        <div className="space-y-6">
-          <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-3xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h3 className="text-sm font-bold text-emerald-950 flex items-center gap-2">
-                <GraduationCap className="w-4 h-4 text-emerald-600" />
-                <span>Pengaturan Konten Dashboard Portal Siswa (`/siswa`)</span>
-              </h3>
-              <p className="text-xs text-emerald-900/80 font-medium">
-                Atur salam sambutan, pesan motivasi harian, dan banner pengumuman untuk seluruh siswa yang sedang login.
-              </p>
-            </div>
-            <Link
-              href="/siswa"
-              target="_blank"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition-all shrink-0 shadow-xs"
-            >
-              <span>Lihat Portal Siswa</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-slate-200 shadow-xs space-y-5">
-            <h4 className="font-serif font-extrabold text-base text-[#0f172a] border-b border-slate-200 pb-3 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-emerald-500" />
-              <span>A. Salam Sambutan & Header Siswa</span>
-            </h4>
-
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#0f172a]">
-                  Judul Sambutan Siswa
-                </label>
-                <input
-                  type="text"
-                  value={config.studentPortal.welcomeTitle}
-                  onChange={(e) => handleStudentChange('welcomeTitle', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#0f172a]">
-                  Subjudul Sambutan / Pesan Motivasi
-                </label>
-                <textarea
-                  rows={2}
-                  value={config.studentPortal.welcomeSubtitle}
-                  onChange={(e) => handleStudentChange('welcomeSubtitle', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-slate-200 shadow-xs space-y-5">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h4 className="font-serif font-extrabold text-base text-[#0f172a] flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-emerald-500" />
-                <span>B. Banner Pengumuman & Tips Harian Siswa</span>
-              </h4>
-
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={config.studentPortal.announcementActive}
-                  onChange={(e) => handleStudentChange('announcementActive', e.target.checked)}
-                  className="w-4 h-4 text-emerald-600 rounded-md focus:ring-emerald-500"
-                />
-                <span className="text-xs font-bold text-slate-700">Tampilkan Banner</span>
-              </label>
-            </div>
-
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#0f172a]">
-                  Judul Banner Pengumuman / Tips
-                </label>
-                <input
-                  type="text"
-                  value={config.studentPortal.announcementTitle}
-                  onChange={(e) => handleStudentChange('announcementTitle', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#0f172a]">
-                  Isi Pesan Banner Pengumuman / Tips
-                </label>
-                <textarea
-                  rows={2}
-                  value={config.studentPortal.announcementText}
-                  onChange={(e) => handleStudentChange('announcementText', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ========================================================= */}
-      {/* TAB 5: PORTAL GURU BK */}
-      {/* ========================================================= */}
-      {activeTab === 'guru' && (
-        <div className="space-y-6">
-          <div className="bg-blue-500/10 border border-blue-500/30 rounded-3xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h3 className="text-sm font-bold text-blue-950 flex items-center gap-2">
-                <Users className="w-4 h-4 text-blue-600" />
-                <span>Pengaturan Konten Dashboard Guru BK (`/guru`)</span>
-              </h3>
-              <p className="text-xs text-blue-900/80 font-medium">
-                Sesuaikan judul panduan, pengumuman operasional, dan petunjuk bimbingan konseling untuk guru pembimbing.
-              </p>
-            </div>
-            <Link
-              href="/guru"
-              target="_blank"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 transition-all shrink-0 shadow-xs"
-            >
-              <span>Lihat Portal Guru</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-slate-200 shadow-xs space-y-5">
-            <h4 className="font-serif font-extrabold text-base text-[#0f172a] border-b border-slate-200 pb-3 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-blue-500" />
-              <span>A. Judul & Subjudul Banner Guru BK</span>
-            </h4>
-
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#0f172a]">
-                  Judul Header Guru BK
-                </label>
-                <input
-                  type="text"
-                  value={config.teacherPortal.portalTitle}
-                  onChange={(e) => handleTeacherChange('portalTitle', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#0f172a]">
-                  Subjudul Panduan Ringkas
-                </label>
-                <textarea
-                  rows={2}
-                  value={config.teacherPortal.portalSubtitle}
-                  onChange={(e) => handleTeacherChange('portalSubtitle', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-slate-200 shadow-xs space-y-5">
-            <h4 className="font-serif font-extrabold text-base text-[#0f172a] border-b border-slate-200 pb-3 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-blue-500" />
-              <span>B. Catatan Panduan & Prosedur Konseling</span>
-            </h4>
-
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#0f172a]">
-                  Petunjuk Pengingat Daftar Siswa (Banner Note)
-                </label>
-                <input
-                  type="text"
-                  value={config.teacherPortal.bannerNotice}
-                  onChange={(e) => handleTeacherChange('bannerNotice', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#0f172a]">
-                  Pedoman Telaah Refleksi Siswa
-                </label>
-                <textarea
-                  rows={2}
-                  value={config.teacherPortal.counselorGuidelines}
-                  onChange={(e) => handleTeacherChange('counselorGuidelines', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Floating Save Bar */}
       <div className="sticky bottom-6 z-30 bg-slate-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between gap-4 border border-slate-700">
         <div className="flex items-center gap-2 text-xs font-medium text-slate-300">
           <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-          <span>Simpan perubahan untuk menerapkan teks terbaru ke seluruh platform.</span>
+          <span>Simpan perubahan untuk menerapkan teks terbaru ke halaman publik.</span>
         </div>
 
         <button

@@ -33,7 +33,7 @@ export default async function AdminLayoutCmsPage() {
           Pengaturan Tampilan Antarmuka
         </h1>
         <p className="text-xs sm:text-sm text-[#334155] font-medium max-w-3xl leading-relaxed">
-          Kustomisasi teks, judul hero, salam motivasi, pengumuman, dan banner pada <strong>Landing Page</strong>, <strong>Portal Murid</strong>, dan <strong>Portal Guru</strong> secara fleksibel dan langsung diterapkan ke seluruh sistem.
+          Kustomisasi teks, judul hero, tahapan program, visi-misi, profil tim peneliti, dan banner pada halaman publik (<strong>Beranda</strong>, <strong>Program</strong>, dan <strong>Tentang Kami</strong>) secara fleksibel dan langsung diterapkan ke seluruh sistem.
         </p>
       </div>
 

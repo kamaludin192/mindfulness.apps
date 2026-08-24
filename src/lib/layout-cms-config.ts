@@ -64,29 +64,10 @@ export interface TentangKamiPageConfig {
   member3Bio: string
 }
 
-export interface StudentPortalConfig {
-  welcomeTitle: string
-  welcomeSubtitle: string
-  announcementActive: boolean
-  announcementTitle: string
-  announcementText: string
-  guidelineTitle: string
-  guidelineText: string
-}
-
-export interface TeacherPortalConfig {
-  portalTitle: string
-  portalSubtitle: string
-  bannerNotice: string
-  counselorGuidelines: string
-}
-
 export interface AppLayoutConfig {
   landingPage: LandingPageConfig
   programPage: ProgramPageConfig
   tentangKamiPage: TentangKamiPageConfig
-  studentPortal: StudentPortalConfig
-  teacherPortal: TeacherPortalConfig
 }
 
 export const DEFAULT_LAYOUT_CONFIG: AppLayoutConfig = {
@@ -169,26 +150,5 @@ export const DEFAULT_LAYOUT_CONFIG: AppLayoutConfig = {
     member3Role: "Pakar Psikologi Positif & Akademisi",
     member3Bio:
       "Doktor pendidikan yang memfokuskan risetnya pada inovasi Mindfulness-Based Cognitive Therapy (MBCT) dan psikologi positif. Memiliki kepakaran dalam merancang model intervensi klinis berbasis bukti guna mengoptimalkan psychological well-being.",
-  },
-  studentPortal: {
-    welcomeTitle: "Selamat Datang di Ruang Sadar Siswa",
-    welcomeSubtitle:
-      "Langkah demi langkah melatih kesadaran penuh, mengelola kecemasan belajar, dan menjaga kesejahteraan diri.",
-    announcementActive: true,
-    announcementTitle: "Tips Mindfulness Hari Ini",
-    announcementText:
-      "Ambil jeda sejenak 3 menit, rasakan hembusan napas Anda, dan sadari momen saat ini sebelum melanjutkan aktivitas belajar.",
-    guidelineTitle: "Panduan Menjalani 4 Sesi",
-    guidelineText:
-      "Tuntaskan setiap sesi secara berurutan dan isi lembar kerja refleksi untuk membuka akses permohonan bimbingan konseling bersama Guru BK.",
-  },
-  teacherPortal: {
-    portalTitle: "Portal Manajemen Guru BK",
-    portalSubtitle:
-      "Pantau perkembangan afektif siswa, evaluasi catatan refleksi, dan kelola jadwal permohonan konseling siswa secara terstruktur.",
-    bannerNotice:
-      "Daftar siswa di bawah ini diperbarui secara otomatis berdasarkan progres latihan 4 sesi dan respons catatan refleksi harian.",
-    counselorGuidelines:
-      "Gunakan catatan refleksi siswa sebagai bahan telaah awal sebelum menyetujui dan melaksanakan sesi konseling.",
   },
 }

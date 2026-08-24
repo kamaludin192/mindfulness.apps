@@ -156,7 +156,7 @@ export default async function AdminDashboardOverview() {
             Kustomisasi Tampilan & UI
           </h3>
           <p className="text-xs text-[#475569] leading-relaxed">
-            Edit teks judul, pengumuman, dan banner pada Landing Page, Portal Murid, dan Portal Guru.
+            Edit teks judul, konten program, visi-misi, profil tim, dan banner pada Beranda, Program, dan Tentang Kami.
           </p>
           <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-800">
             <span>Buka CMS Tampilan</span>
