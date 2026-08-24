@@ -23,13 +23,11 @@ export default function ProgramPage() {
         <section className="px-4 pt-16 pb-16 md:pt-24 md:pb-20 max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 text-[#3f5726] text-xs md:text-sm font-semibold mb-6 shadow-xs border border-[#d5dcc4]">
             <Sparkles className="w-4 h-4 text-[#3f5726]" />
-            <span>Kurikulum Intervensi Terstruktur</span>
+            <span>Latihan Terstruktur</span>
           </div>
 
           <h1 className="text-3xl md:text-5xl font-bold font-serif mb-6 leading-tight">
-            Program & 4 Sesi
-            <br />
-            <span className="text-[#3f5726]">Mindfulness Interaktif</span>
+            Program 4 Sesi <span className="text-[#3f5726]">Interaktif</span>
           </h1>
 
           <p className="text-base md:text-lg text-[#2b3a1a]/80 max-w-3xl mx-auto leading-relaxed">
@@ -41,9 +39,9 @@ export default function ProgramPage() {
         <section className="bg-white px-4 py-20 border-y border-[#d5dcc4]/40">
           <div className="max-w-6xl mx-auto">
             <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#5a7a35]">Alur Pembelajaran</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#5a7a35]">Latihan Terstruktur untuk Siswa SMA</span>
               <h2 className="text-2xl md:text-4xl font-bold font-serif">
-                Metodologi Pembangunan Kesadaran
+                Tahapan Membangun Kesadaran
               </h2>
               <p className="text-sm text-[#2b3a1a]/70">
                 Tiga tahapan sistematis untuk memastikan setiap siswa mendapatkan pendampingan yang tepat dan berkelanjutan.
