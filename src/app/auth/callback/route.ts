@@ -1,9 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse, type NextRequest } from 'next/server'
+import { provisionOrUpdateOAuthUser } from '@/services/auth.service'
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
+  const type = requestUrl.searchParams.get('type')
+  const next = requestUrl.searchParams.get('next')
 
   if (code) {
     const supabase = createClient()
@@ -12,39 +15,24 @@ export async function GET(request: NextRequest) {
     if (!error && data.user) {
       const user = data.user
 
-      // Check if user already has a profile
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single()
-
-      if (!profile) {
-        // Auto-provision profile as siswa for new Google OAuth sign-in
-        const fullName =
-          user.user_metadata?.full_name ||
-          user.user_metadata?.name ||
-          user.email?.split('@')[0] ||
-          'Siswa Baru'
-
-        await supabase.from('profiles').insert({
-          id: user.id,
-          full_name: fullName,
-          role: 'siswa',
-        })
-
-        return NextResponse.redirect(new URL('/siswa', request.url))
+      // Check if this callback was triggered by a password recovery email
+      if (type === 'recovery' || (next && next.includes('forgot-password'))) {
+        return NextResponse.redirect(
+          new URL(
+            `/forgot-password?step=otp&email=${encodeURIComponent(user.email || '')}`,
+            request.url
+          )
+        )
       }
 
-      // Existing user: redirect according to role
-      if (profile.role === 'guru_bk' || profile.role === 'superadmin') {
-        return NextResponse.redirect(new URL('/guru', request.url))
-      } else {
-        return NextResponse.redirect(new URL('/siswa', request.url))
-      }
+      // Provision or update user profile as siswa for Google OAuth
+      await provisionOrUpdateOAuthUser(user)
+
+      // Direct redirection to Portal Siswa for Google Sign-In
+      return NextResponse.redirect(new URL('/siswa', request.url))
     }
   }
 
-  // If error or no code, return to login with error param
+  // If error or missing code, redirect to login with notification param
   return NextResponse.redirect(new URL('/login?error=oauth_failed', request.url))
 }

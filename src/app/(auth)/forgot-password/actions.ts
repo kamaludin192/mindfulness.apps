@@ -1,6 +1,9 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import {
+  sendPasswordResetOtp,
+  verifyPasswordResetOtp,
+} from '@/services/auth.service'
 
 export interface ResetState {
   step: 'email' | 'otp' | 'success'
@@ -23,31 +26,20 @@ export async function requestPasswordReset(
     }
   }
 
-  const supabase = createClient()
-
-  // Request password reset email from Supabase
-  const { error } = await supabase.auth.resetPasswordForEmail(email)
-
-  if (error) {
-    if (error.message.includes('rate limit')) {
-      return {
-        ...prevState,
-        error: 'Terlalu banyak permintaan. Silakan tunggu beberapa saat sebelum mencoba lagi.',
-        message: null,
-      }
+  try {
+    await sendPasswordResetOtp(email)
+    return {
+      step: 'otp',
+      email,
+      error: null,
+      message: `Kode verifikasi OTP 6-digit telah dikirimkan ke email ${email}. Silakan periksa kotak masuk atau folder spam Anda.`,
     }
+  } catch (err) {
     return {
       ...prevState,
-      error: error.message,
+      error: err instanceof Error ? err.message : 'Gagal mengirim kode verifikasi OTP.',
       message: null,
     }
-  }
-
-  return {
-    step: 'otp',
-    email,
-    error: null,
-    message: `Kode verifikasi OTP telah dikirimkan ke email ${email}. Silakan periksa kotak masuk atau spam Anda.`,
   }
 }
 
@@ -84,52 +76,21 @@ export async function verifyOtpAndChangePassword(
     }
   }
 
-  const supabase = createClient()
-
-  // 1. Verify the recovery OTP token
-  const { error: verifyError } = await supabase.auth.verifyOtp({
-    email,
-    token: otp,
-    type: 'recovery',
-  })
-
-  if (verifyError) {
-    // If recovery type fails, attempt with email type as fallback
-    const { error: fallbackError } = await supabase.auth.verifyOtp({
+  try {
+    await verifyPasswordResetOtp(email, otp, newPassword)
+    return {
+      step: 'success',
       email,
-      token: otp,
-      type: 'email',
-    })
-
-    if (fallbackError) {
-      return {
-        ...prevState,
-        error: 'Kode OTP tidak valid atau sudah kadaluarsa. Silakan periksa kembali atau kirim ulang.',
-        message: null,
-      }
+      error: null,
+      message:
+        'Kata sandi Anda berhasil diperbarui! Anda dapat masuk menggunakan kata sandi baru sekarang.',
     }
-  }
-
-  // 2. Update user's password with the active session
-  const { error: updateError } = await supabase.auth.updateUser({
-    password: newPassword,
-  })
-
-  if (updateError) {
+  } catch (err) {
     return {
       ...prevState,
-      error: `Gagal memperbarui kata sandi: ${updateError.message}`,
+      error: err instanceof Error ? err.message : 'Gagal memverifikasi OTP atau mengubah kata sandi.',
       message: null,
     }
   }
-
-  // 3. Sign out to ensure clean login with new credentials
-  await supabase.auth.signOut()
-
-  return {
-    step: 'success',
-    email,
-    error: null,
-    message: 'Kata sandi Anda berhasil diperbarui! Anda dapat masuk menggunakan kata sandi baru sekarang.',
-  }
 }
+
