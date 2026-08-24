@@ -19,20 +19,19 @@ export default function TentangKamiPage() {
       <main className="flex-1">
         {/* 1. HEADER SECTION */}
         <section className="px-4 pt-16 pb-16 md:pt-24 md:pb-20 max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 text-[#3f5726] text-xs md:text-sm font-semibold mb-6 shadow-xs border border-[#d5dcc4]">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white text-[#1e2a14] text-xs md:text-sm font-bold shadow-xs border border-[#d5dcc4] backdrop-blur-md mb-6">
+            <span className="w-2 h-2 rounded-full bg-[#3f5726] animate-pulse" />
             <ShieldCheck className="w-4 h-4 text-[#3f5726]" />
-            <span>Inisiatif Berbasis Riset Edukasi</span>
+            <span>mindfulnessintervention.id • Ruang Aman & Terverifikasi Siswa</span>
           </div>
 
-          <h4 className="text-xs font-bold tracking-widest uppercase text-[#5a7a35] mb-2">TENTANG KAMI</h4>
-          <h1 className="text-3xl md:text-5xl font-bold font-serif mb-6 leading-tight">
-            Membangun Resiliensi Digital Pelajar
-            <br />
-            <span className="text-[#3f5726]">Melalui Psikoedukasi Terstruktur</span>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold font-serif mb-6 leading-[1.15] tracking-tight text-[#141f0d]">
+            Mindfulness-Based <br className="hidden sm:inline" />
+            <span className="text-[#3f5726]">Intervention</span>
           </h1>
 
-          <p className="text-base md:text-lg text-[#2b3a1a]/80 max-w-3xl mx-auto leading-relaxed">
-            Kami hadir sebagai ruang aman bagi remaja untuk mengelola stres, kecemasan, dan tekanan akademik melalui pendekatan kesadaran penuh (mindfulness) berbasis praktik yang tervalidasi.
+          <p className="text-base sm:text-lg md:text-xl text-[#243316] font-medium max-w-3xl mx-auto leading-relaxed">
+            Mindfulness-Based Intervention adalah intervensi berbasis kesadaran yang melatih hadir secara utuh pada momen saat ini secara sengaja. Platform ini digunakan sebagai optimalisasi media layanan Bimbingan dan Konseling untuk memudahkan siswa SMA dalam memperoleh bantuan layanan.
           </p>
         </section>
 
