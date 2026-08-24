@@ -1,0 +1,511 @@
+﻿43640f5 feat: base UI layouts and portals
+
+ src/app/(auth)/login/page.tsx |  68 ++++++++++++++++++++++++++++
+ src/app/guru/layout.tsx       |  64 ++++++++++++++++++++++++++
+ src/app/guru/page.tsx         |  78 ++++++++++++++++++++++++++++++++
+ src/app/layout.tsx            |   4 +-
+ src/app/page.tsx              | 101 ++----------------------------------------
+ src/app/siswa/layout.tsx      |  65 +++++++++++++++++++++++++++
+ src/app/siswa/page.tsx        |  57 ++++++++++++++++++++++++
+ 7 files changed, 337 insertions(+), 100 deletions(-)
+
+diff --git a/src/app/(auth)/login/page.tsx b/src/app/(auth)/login/page.tsx
+new file mode 100644
+index 0000000..79e7996
+--- /dev/null
++++ b/src/app/(auth)/login/page.tsx
+@@ -0,0 +1,68 @@
++import Link from "next/link";
++import { User, Lock, LogIn } from "lucide-react";
++
++export default function LoginPage() {
++  return (
++    <div className="min-h-screen flex items-center justify-center bg-brand-50 p-4">
++      <div className="w-full max-w-md bg-surface p-8 rounded-2xl shadow-sm border border-brand-300">
++        <div className="text-center mb-8">
++          <h1 className="text-2xl font-bold text-brand-900 mb-2">Selamat Datang</h1>
++          <p className="text-brand-700 text-sm">Masuk untuk melanjutkan ke portal</p>
++        </div>
++
++        <form className="space-y-6">
++          <div className="space-y-2">
++            <label className="text-sm font-medium text-brand-900 block" htmlFor="username">
++              NISN / NIP
++            </label>
++            <div className="relative">
++              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
++                <User className="h-5 w-5 text-brand-500" />
++              </div>
++              <input
++                id="username"
++                type="text"
++                className="block w-full pl-10 pr-3 py-2 border border-brand-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-brand-900 bg-white"
++                placeholder="Masukkan NISN atau NIP"
++              />
++            </div>
++          </div>
++
++          <div className="space-y-2">
++            <label className="text-sm font-medium text-brand-900 block" htmlFor="password">
++              Kata Sandi
++            </label>
++            <div className="relative">
++              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
++                <Lock className="h-5 w-5 text-brand-500" />
++              </div>
++              <input
++                id="password"
++                type="password"
++                className="block w-full pl-10 pr-3 py-2 border border-brand-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-brand-900 bg-white"
++                placeholder="ΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇó"
++              />
++            </div>
++          </div>
++
++          <div className="flex flex-col gap-3 pt-2">
++            {/* Dummy links for navigation layout demonstration */}
++            <Link 
++              href="/siswa"
++              className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-brand-500 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors"
++            >
++              <LogIn className="h-4 w-4 mr-2" />
++              Masuk sebagai Siswa
++            </Link>
++            <Link 
++              href="/guru"
++              className="w-full flex justify-center items-center py-2.5 px-4 border border-brand-500 rounded-lg shadow-sm text-sm font-medium text-brand-900 bg-white hover:bg-brand-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors"
++            >
++              Masuk sebagai Guru BK
++            </Link>
++          </div>
++        </form>
++      </div>
++    </div>
++  );
++}
+diff --git a/src/app/guru/layout.tsx b/src/app/guru/layout.tsx
+new file mode 100644
+index 0000000..94d6854
+--- /dev/null
++++ b/src/app/guru/layout.tsx
+@@ -0,0 +1,64 @@
++import Link from "next/link";
++import { LayoutDashboard, Users, BookOpen, Settings, LogOut } from "lucide-react";
++
++export default function GuruLayout({
++  children,
++}: {
++  children: React.ReactNode;
++}) {
++  return (
++    <div className="min-h-screen bg-gray-50 flex">
++      {/* Desktop Sidebar */}
++      <aside className="w-64 bg-surface border-r border-brand-300 flex-shrink-0 hidden md:flex flex-col sticky top-0 h-screen">
++        <div className="p-6 border-b border-brand-300">
++          <h1 className="text-2xl font-bold text-brand-900">Mindfulness</h1>
++          <p className="text-sm text-brand-700">Portal Guru BK</p>
++        </div>
++        <nav className="flex-1 overflow-y-auto p-4 space-y-1">
++          <Link href="/guru" className="flex items-center px-4 py-3 text-brand-900 bg-brand-50 rounded-lg font-medium">
++            <LayoutDashboard className="h-5 w-5 mr-3 text-brand-500" />
++            Dashboard
++          </Link>
++          <Link href="/guru/siswa" className="flex items-center px-4 py-3 text-brand-700 hover:bg-brand-50 hover:text-brand-900 rounded-lg transition-colors">
++            <Users className="h-5 w-5 mr-3 text-brand-500" />
++            Data Siswa
++          </Link>
++          <Link href="/guru/materi" className="flex items-center px-4 py-3 text-brand-700 hover:bg-brand-50 hover:text-brand-900 rounded-lg transition-colors">
++            <BookOpen className="h-5 w-5 mr-3 text-brand-500" />
++            Manajemen Materi
++          </Link>
++          <Link href="/guru/pengaturan" className="flex items-center px-4 py-3 text-brand-700 hover:bg-brand-50 hover:text-brand-900 rounded-lg transition-colors">
++            <Settings className="h-5 w-5 mr-3 text-brand-500" />
++            Pengaturan
++          </Link>
++        </nav>
++        <div className="p-4 border-t border-brand-300">
++          <button className="flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors w-full">
++            <LogOut className="h-5 w-5 mr-3" />
++            Keluar
++          </button>
++        </div>
++      </aside>
++
++      {/* Main Content */}
++      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
++        {/* Mobile Header (visible only on small screens) */}
++        <header className="md:hidden bg-surface border-b border-brand-300 p-4 flex items-center justify-between sticky top-0 z-10">
++          <div>
++            <h1 className="font-bold text-brand-900 text-lg">Mindfulness</h1>
++            <p className="text-xs text-brand-700">Portal Guru BK</p>
++          </div>
++          {/* A simple hamburger menu icon could go here for mobile sidebar toggle, but keeping it simple for layout */}
++          <button className="p-2 text-brand-900 bg-brand-50 rounded-md">
++            <LayoutDashboard className="h-5 w-5" />
++          </button>
++        </header>
++
++        {/* Page Content */}
++        <main className="flex-1 overflow-y-auto p-4 md:p-8">
++          {children}
++        </main>
++      </div>
++    </div>
++  );
++}
+diff --git a/src/app/guru/page.tsx b/src/app/guru/page.tsx
+new file mode 100644
+index 0000000..bf10547
+--- /dev/null
++++ b/src/app/guru/page.tsx
+@@ -0,0 +1,78 @@
++import { Users, TrendingUp, AlertTriangle } from "lucide-react";
++
++export default function GuruDashboard() {
++  return (
++    <div className="max-w-6xl mx-auto space-y-6">
++      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
++        <div>
++          <h1 className="text-2xl font-bold text-brand-900">Dashboard Utama</h1>
++          <p className="text-brand-700">Ringkasan kondisi mindfulness siswa hari ini</p>
++        </div>
++      </div>
++
++      {/* Stats Grid */}
++      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
++        <div className="bg-surface p-6 rounded-2xl shadow-sm border border-brand-300">
++          <div className="flex items-center gap-4">
++            <div className="p-3 bg-brand-50 rounded-xl text-brand-500">
++              <Users className="h-6 w-6" />
++            </div>
++            <div>
++              <p className="text-sm font-medium text-brand-700">Total Siswa Aktif</p>
++              <p className="text-2xl font-bold text-brand-900">124</p>
++            </div>
++          </div>
++        </div>
++
++        <div className="bg-surface p-6 rounded-2xl shadow-sm border border-brand-300">
++          <div className="flex items-center gap-4">
++            <div className="p-3 bg-green-50 rounded-xl text-green-600">
++              <TrendingUp className="h-6 w-6" />
++            </div>
++            <div>
++              <p className="text-sm font-medium text-brand-700">Tingkat Partisipasi</p>
++              <p className="text-2xl font-bold text-brand-900">85%</p>
++            </div>
++          </div>
++        </div>
++
++        <div className="bg-surface p-6 rounded-2xl shadow-sm border border-brand-300">
++          <div className="flex items-center gap-4">
++            <div className="p-3 bg-red-50 rounded-xl text-red-600">
++              <AlertTriangle className="h-6 w-6" />
++            </div>
++            <div>
++              <p className="text-sm font-medium text-brand-700">Perlu Perhatian</p>
++              <p className="text-2xl font-bold text-brand-900">12</p>
++            </div>
++          </div>
++        </div>
++      </div>
++
++      {/* Recent Activity */}
++      <div className="bg-surface rounded-2xl shadow-sm border border-brand-300 overflow-hidden">
++        <div className="px-6 py-4 border-b border-brand-300">
++          <h2 className="font-bold text-brand-900">Siswa Perlu Perhatian (Check-in Sedih beruntun)</h2>
++        </div>
++        <div className="divide-y divide-brand-100">
++          {[1, 2, 3, 4, 5].map((i) => (
++            <div key={i} className="px-6 py-4 flex items-center justify-between">
++              <div className="flex items-center gap-4">
++                <div className="w-10 h-10 bg-brand-50 rounded-full flex items-center justify-center text-brand-900 font-bold text-sm">
++                  S{i}
++                </div>
++                <div>
++                  <p className="font-medium text-brand-900">Siswa {i}</p>
++                  <p className="text-sm text-brand-700">Kelas XI-IPA 2</p>
++                </div>
++              </div>
++              <button className="text-sm font-medium text-brand-500 hover:text-brand-700">
++                Lihat Detail
++              </button>
++            </div>
++          ))}
++        </div>
++      </div>
++    </div>
++  );
++}
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index a36cde0..03d8a4a 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -7,22 +7,22 @@ const geistSans = localFont({
+   variable: "--font-geist-sans",
+   weight: "100 900",
+ });
+ const geistMono = localFont({
+   src: "./fonts/GeistMonoVF.woff",
+   variable: "--font-geist-mono",
+   weight: "100 900",
+ });
+ 
+ export const metadata: Metadata = {
+-  title: "Create Next App",
+-  description: "Generated by create next app",
++  title: "Mindfulness Intervention App",
++  description: "Platform Mindfulness untuk Siswa dan Guru BK",
+ };
+ 
+ export default function RootLayout({
+   children,
+ }: Readonly<{
+   children: React.ReactNode;
+ }>) {
+   return (
+     <html lang="en">
+       <body
+diff --git a/src/app/page.tsx b/src/app/page.tsx
+index 6fe62d1..df48db6 100644
+--- a/src/app/page.tsx
++++ b/src/app/page.tsx
+@@ -1,101 +1,6 @@
+-import Image from "next/image";
++import { redirect } from "next/navigation";
+ 
+ export default function Home() {
+-  return (
+-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+-        <Image
+-          className="dark:invert"
+-          src="https://nextjs.org/icons/next.svg"
+-          alt="Next.js logo"
+-          width={180}
+-          height={38}
+-          priority
+-        />
+-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
+-          <li className="mb-2">
+-            Get started by editing{" "}
+-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
+-              src/app/page.tsx
+-            </code>
+-            .
+-          </li>
+-          <li>Save and see your changes instantly.</li>
+-        </ol>
+-
+-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+-          <a
+-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-          >
+-            <Image
+-              className="dark:invert"
+-              src="https://nextjs.org/icons/vercel.svg"
+-              alt="Vercel logomark"
+-              width={20}
+-              height={20}
+-            />
+-            Deploy now
+-          </a>
+-          <a
+-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
+-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-          >
+-            Read our docs
+-          </a>
+-        </div>
+-      </main>
+-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+-        <a
+-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+-          target="_blank"
+-          rel="noopener noreferrer"
+-        >
+-          <Image
+-            aria-hidden
+-            src="https://nextjs.org/icons/file.svg"
+-            alt="File icon"
+-            width={16}
+-            height={16}
+-          />
+-          Learn
+-        </a>
+-        <a
+-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+-          target="_blank"
+-          rel="noopener noreferrer"
+-        >
+-          <Image
+-            aria-hidden
+-            src="https://nextjs.org/icons/window.svg"
+-            alt="Window icon"
+-            width={16}
+-            height={16}
+-          />
+-          Examples
+-        </a>
+-        <a
+-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+-          target="_blank"
+-          rel="noopener noreferrer"
+-        >
+-          <Image
+-            aria-hidden
+-            src="https://nextjs.org/icons/globe.svg"
+-            alt="Globe icon"
+-            width={16}
+-            height={16}
+-          />
+-          Go to nextjs.org ΓåÆ
+-        </a>
+-      </footer>
+-    </div>
+-  );
++  // Sementara langsung redirect ke halaman login
++  redirect("/login");
+ }
+diff --git a/src/app/siswa/layout.tsx b/src/app/siswa/layout.tsx
+new file mode 100644
+index 0000000..b28b349
+--- /dev/null
++++ b/src/app/siswa/layout.tsx
+@@ -0,0 +1,65 @@
++import Link from "next/link";
++import { Home, BookHeart, UserCircle } from "lucide-react";
++
++export default function SiswaLayout({
++  children,
++}: {
++  children: React.ReactNode;
++}) {
++  return (
++    <div className="min-h-screen bg-brand-50 flex flex-col">
++      {/* Mobile Top App Bar */}
++      <header className="sticky top-0 z-10 bg-white border-b border-brand-300 px-4 py-3 flex items-center justify-between shadow-sm md:hidden">
++        <h1 className="text-lg font-bold text-brand-900">Mindfulness App</h1>
++        <div className="w-8 h-8 rounded-full bg-brand-300 flex items-center justify-center text-brand-900 font-semibold">
++          S
++        </div>
++      </header>
++
++      <div className="flex flex-1 overflow-hidden">
++        {/* Desktop Sidebar (hidden on mobile) */}
++        <aside className="hidden md:flex flex-col w-64 bg-white border-r border-brand-300 h-[calc(100vh)] sticky top-0">
++          <div className="p-6 border-b border-brand-300">
++            <h1 className="text-xl font-bold text-brand-900">Mindfulness</h1>
++            <p className="text-sm text-brand-700">Portal Siswa</p>
++          </div>
++          <nav className="flex-1 px-4 py-6 space-y-2">
++            <Link href="/siswa" className="flex items-center px-4 py-3 text-brand-900 bg-brand-50 rounded-lg font-medium">
++              <Home className="h-5 w-5 mr-3 text-brand-500" />
++              Beranda
++            </Link>
++            <Link href="/siswa/materi" className="flex items-center px-4 py-3 text-brand-700 hover:bg-brand-50 hover:text-brand-900 rounded-lg transition-colors">
++              <BookHeart className="h-5 w-5 mr-3 text-brand-500" />
++              Materi
++            </Link>
++            <Link href="/siswa/profil" className="flex items-center px-4 py-3 text-brand-700 hover:bg-brand-50 hover:text-brand-900 rounded-lg transition-colors">
++              <UserCircle className="h-5 w-5 mr-3 text-brand-500" />
++              Profil
++            </Link>
++          </nav>
++        </aside>
++
++        {/* Main Content Area */}
++        <main className="flex-1 overflow-y-auto pb-20 md:pb-0">
++          {children}
++        </main>
++      </div>
++
++      {/* Mobile Bottom Navigation */}
++      <nav className="md:hidden fixed bottom-0 w-full bg-white border-t border-brand-300 flex justify-around items-center h-16 px-2 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-20">
++        <Link href="/siswa" className="flex flex-col items-center justify-center w-full h-full text-brand-700 hover:text-brand-900">
++          <Home className="h-6 w-6 mb-1 text-brand-500" />
++          <span className="text-[10px] font-medium">Beranda</span>
++        </Link>
++        <Link href="/siswa/materi" className="flex flex-col items-center justify-center w-full h-full text-brand-700 hover:text-brand-900">
++          <BookHeart className="h-6 w-6 mb-1" />
++          <span className="text-[10px] font-medium">Materi</span>
++        </Link>
++        <Link href="/siswa/profil" className="flex flex-col items-center justify-center w-full h-full text-brand-700 hover:text-brand-900">
++          <UserCircle className="h-6 w-6 mb-1" />
++          <span className="text-[10px] font-medium">Profil</span>
++        </Link>
++      </nav>
++    </div>
++  );
++}
+diff --git a/src/app/siswa/page.tsx b/src/app/siswa/page.tsx
+new file mode 100644
+index 0000000..d0f8d63
+--- /dev/null
++++ b/src/app/siswa/page.tsx
+@@ -0,0 +1,57 @@
++import { Activity, CalendarHeart, SmilePlus } from "lucide-react";
++
++export default function SiswaDashboard() {
++  return (
++    <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-6">
++      {/* Welcome Card */}
++      <section className="bg-white rounded-2xl p-6 shadow-sm border border-brand-300">
++        <h2 className="text-xl font-bold text-brand-900 mb-2">Halo, Andi!</h2>
++        <p className="text-brand-700 text-sm">
++          Bagaimana perasaanmu hari ini? Mari luangkan waktu sejenak untuk melatih mindfulness.
++        </p>
++      </section>
++
++      {/* Quick Actions / Feeling Check-in */}
++      <section className="space-y-3">
++        <h3 className="text-sm font-semibold text-brand-900 px-1">Check-in Harian</h3>
++        <div className="grid grid-cols-3 gap-3">
++          <button className="flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-brand-300 shadow-sm hover:bg-brand-50 transition-colors">
++            <SmilePlus className="h-8 w-8 text-brand-500 mb-2" />
++            <span className="text-xs font-medium text-brand-900">Senang</span>
++          </button>
++          <button className="flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-brand-300 shadow-sm hover:bg-brand-50 transition-colors">
++            <Activity className="h-8 w-8 text-yellow-500 mb-2" />
++            <span className="text-xs font-medium text-brand-900">Biasa</span>
++          </button>
++          <button className="flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-brand-300 shadow-sm hover:bg-brand-50 transition-colors">
++            <CalendarHeart className="h-8 w-8 text-blue-500 mb-2" />
++            <span className="text-xs font-medium text-brand-900">Sedih</span>
++          </button>
++        </div>
++      </section>
++
++      {/* Recommended Content */}
++      <section className="space-y-3">
++        <div className="flex justify-between items-center px-1">
++          <h3 className="text-sm font-semibold text-brand-900">Materi Terbaru</h3>
++          <button className="text-xs font-medium text-brand-500 hover:text-brand-700">Lihat Semua</button>
++        </div>
++        <div className="space-y-3">
++          {[1, 2, 3].map((i) => (
++            <div key={i} className="bg-white p-4 rounded-xl border border-brand-300 shadow-sm flex items-center gap-4">
++              <div className="w-16 h-16 bg-brand-50 rounded-lg flex-shrink-0 flex items-center justify-center text-brand-300">
++                <SmilePlus />
++              </div>
++              <div>
++                <h4 className="font-semibold text-brand-900 text-sm">Latihan Pernapasan {i}</h4>
++                <p className="text-xs text-brand-700 mt-1 line-clamp-2">
++                  Latihan sederhana untuk memusatkan perhatian dan menenangkan pikiran.
++                </p>
++              </div>
++            </div>
++          ))}
++        </div>
++      </section>
++    </div>
++  );
++}

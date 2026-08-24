@@ -96,25 +96,32 @@ export async function register(prevState: AuthState, formData: FormData): Promis
   }
 
   if (data.user) {
-    // Upsert profile into public.profiles
+    // Simpan profil ke tabel public.profiles
     await supabase.from('profiles').upsert({
       id: data.user.id,
       full_name: fullName.trim(),
       role,
     })
 
-    // If session is immediately active (e.g. email confirm disabled)
+    // Jika Supabase memberikan session langsung (Email Confirm OFF)
     if (data.session) {
-      if (role === 'siswa') {
-        redirect('/siswa')
-      } else {
-        redirect('/guru')
-      }
+      redirect('/siswa')
     }
 
+    // Jika tidak ada session, coba paksa login agar langsung masuk
+    const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password: password,
+    })
+
+    if (loginData.session) {
+      redirect('/siswa')
+    }
+
+    // Jika tetap gagal login otomatis (mungkin karena Confirm Email masih ON di Supabase)
     return {
       error: null,
-      success: 'Pendaftaran akun berhasil! Silakan masuk menggunakan akun baru Anda.',
+      success: 'Pendaftaran berhasil! Silakan periksa email Anda atau masuk melalui tab Login.',
     }
   }
 

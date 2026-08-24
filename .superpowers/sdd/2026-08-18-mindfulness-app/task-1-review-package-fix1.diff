@@ -1,0 +1,121 @@
+﻿fc2f282 fix: configure brand and surface color palette in tailwind.config.ts
+
+ .../2026-08-18-mindfulness-app/task-1-report.md    | 46 +++++++++++++++++++++-
+ tailwind.config.ts                                 |  8 ++++
+ 2 files changed, 52 insertions(+), 2 deletions(-)
+
+diff --git a/.superpowers/sdd/2026-08-18-mindfulness-app/task-1-report.md b/.superpowers/sdd/2026-08-18-mindfulness-app/task-1-report.md
+index 1b3e3ea..b0fce65 100644
+--- a/.superpowers/sdd/2026-08-18-mindfulness-app/task-1-report.md
++++ b/.superpowers/sdd/2026-08-18-mindfulness-app/task-1-report.md
+@@ -2,20 +2,21 @@
+ 
+ ## What Was Implemented
+ - Initialized Next.js 14 application with TypeScript, Tailwind CSS, App Router (`src/app`), ESLint, and `@/*` path aliases.
+ - Installed Supabase client and UI dependencies:
+   - `@supabase/supabase-js`
+   - `@supabase/ssr`
+   - `lucide-react`
+   - `clsx`
+   - `tailwind-merge`
+ - Configured `.env.example` with Supabase environment variables placeholders (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
++- Configured custom brand palette (`brand-50`, `brand-300`, `brand-500`, `brand-700`, `brand-900`, `surface`) in `tailwind.config.ts`.
+ - Validated setup with successful build and linting.
+ 
+ ## What Was Tested & Test Results
+ - **Build Verification**: Executed `npm run build`
+   - Result: Production build compiled successfully with 0 errors (`next build` output verified).
+ - **Lint Verification**: Executed `npm run lint`
+   - Result: `No ESLint warnings or errors`.
+ 
+ ## Files Changed / Created
+ - `package.json`
+@@ -25,16 +26,57 @@
+ - `tsconfig.json`
+ - `.eslintrc.json`
+ - `.gitignore`
+ - `.env.example`
+ - `next.config.mjs`
+ - `src/app/layout.tsx`
+ - `src/app/page.tsx`
+ - `src/app/globals.css`
+ 
+ ## Self-Review Findings
+-- **Completeness**: All files and steps requested in Task 1 (`package.json`, `tailwind.config.ts`, `.env.example`, Supabase and UI dependencies) are present and properly configured.
+-- **Quality**: TypeScript configuration and Tailwind configuration conform to Next.js 14 standards with import aliases configured.
++- **Completeness**: All files and steps requested in Task 1 (`package.json`, `tailwind.config.ts`, `.env.example`, Supabase and UI dependencies, and brand color palette) are present and properly configured.
++- **Quality**: TypeScript configuration and Tailwind configuration conform to Next.js 14 standards with import aliases and design system tokens configured.
+ - **Discipline**: Clean foundational setup without unnecessary boilerplate or unrequested packages.
+ 
+ ## Issues or Concerns
+ - None. Build and lint checks pass cleanly.
++
++---
++
++## Fix Report: Review Findings Resolution
++
++### Changes Made
++- **File:** `tailwind.config.ts`
++- **Details:** Extended `theme.extend.colors` to include the mandated `brand` color scale and `surface` color defined in `context-master.md`:
++  - `brand-900`: `#455E14`
++  - `brand-700`: `#7A9B57`
++  - `brand-500`: `#83951C`
++  - `brand-300`: `#BDD299`
++  - `brand-50`: `#E5EEDA`
++  - `surface`: `#FFFFFF`
++
++### Verification
++- **Command:** `npm run build`
++  - **Output:**
++    ```
++    > mindfulness-app@0.1.0 build
++    > next build
++
++      Γû▓ Next.js 14.2.35
++
++       Creating an optimized production build ...
++     Γ£ô Compiled successfully
++       Linting and checking validity of types ...
++       Collecting page data ...
++     Γ£ô Generating static pages (5/5)
++       Finalizing page optimization ...
++       Collecting build traces ...
++    Γùï  (Static)  prerendered as static content
++    ```
++- **Command:** `npm run lint`
++  - **Output:**
++    ```
++    > mindfulness-app@0.1.0 lint
++    > next lint
++
++    Γ£ö No ESLint warnings or errors
++    ```
+diff --git a/tailwind.config.ts b/tailwind.config.ts
+index 021c393..7e1cd5e 100644
+--- a/tailwind.config.ts
++++ b/tailwind.config.ts
+@@ -4,16 +4,24 @@ const config: Config = {
+   content: [
+     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+   ],
+   theme: {
+     extend: {
+       colors: {
+         background: "var(--background)",
+         foreground: "var(--foreground)",
++        surface: "#FFFFFF",
++        brand: {
++          50: "#E5EEDA",
++          300: "#BDD299",
++          500: "#83951C",
++          700: "#7A9B57",
++          900: "#455E14",
++        },
+       },
+     },
+   },
+   plugins: [],
+ };
+ export default config;

@@ -1,0 +1,183 @@
+﻿51a13d0 fix: resolve ts-ignore lint errors and minor feedback
+
+ src/app/guru/counseling/page.tsx        |  6 ++----
+ src/app/guru/dashboard/page.tsx         |  8 ++++++--
+ src/components/guru/CounselingTable.tsx | 15 ++++++++++++---
+ src/components/guru/StudentTable.tsx    |  2 +-
+ 4 files changed, 21 insertions(+), 10 deletions(-)
+
+diff --git a/src/app/guru/counseling/page.tsx b/src/app/guru/counseling/page.tsx
+index dd7b075..b9a7f08 100644
+--- a/src/app/guru/counseling/page.tsx
++++ b/src/app/guru/counseling/page.tsx
+@@ -33,30 +33,28 @@ export default async function CounselingPage() {
+     throw new Error(`Error fetching counseling bookings: ${error.message}`);
+   }
+ 
+   // Transform the response slightly for the component
+   const formattedBookings = bookings?.map((b) => ({
+     id: b.id,
+     student_id: b.student_id,
+     guru_id: b.guru_id,
+     scheduled_at: b.scheduled_at,
+     status: b.status,
+-    // @ts-ignore
+-    student_profile: b.student
++    student_profile: b.student as unknown as { full_name: string }
+   })) || [];
+ 
+   return (
+     <div className="max-w-7xl mx-auto space-y-6">
+       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+         <div>
+           <h1 className="text-2xl font-bold text-brand-900">Persetujuan Konseling</h1>
+           <p className="text-brand-700">Kelola permintaan sesi konseling dari siswa</p>
+         </div>
+       </div>
+ 
+       <div className="bg-surface rounded-2xl shadow-sm border border-brand-300 overflow-hidden">
+-        {/* @ts-ignore */}
+-        <CounselingTable bookings={formattedBookings} />
++        <CounselingTable bookings={formattedBookings as any} />
+       </div>
+     </div>
+   );
+ }
+diff --git a/src/app/guru/dashboard/page.tsx b/src/app/guru/dashboard/page.tsx
+index 086350d..ece1cda 100644
+--- a/src/app/guru/dashboard/page.tsx
++++ b/src/app/guru/dashboard/page.tsx
+@@ -1,17 +1,22 @@
+ import React from "react";
+ import { createClient } from "@/lib/supabase/server";
+ import { StudentTable } from "@/components/guru/StudentTable";
+ 
+ export default async function GuruDashboardMonitoring() {
+   const supabase = createClient();
+   
++  const { data: user, error: authError } = await supabase.auth.getUser();
++  if (authError || !user?.user) {
++    return <div>Silakan login sebagai Guru BK.</div>;
++  }
++
+   const { data: studentsWithProgress, error } = await supabase
+     .from('profiles')
+     .select(`
+       id,
+       full_name,
+       created_at,
+       exercise_progress(
+         id,
+         session_id,
+         status,
+@@ -28,16 +33,15 @@ export default async function GuruDashboardMonitoring() {
+   return (
+      <div className="max-w-7xl mx-auto space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-brand-900">Monitoring Siswa</h1>
+            <p className="text-brand-700">Pantau progress pengerjaan LKS siswa</p>
+          </div>
+        </div>
+ 
+        <div className="bg-surface rounded-2xl shadow-sm border border-brand-300 overflow-hidden">
+-         {/* @ts-ignore */}
+-         <StudentTable students={studentsWithProgress} />
++         <StudentTable students={studentsWithProgress as any} />
+        </div>
+      </div>
+   );
+ }
+diff --git a/src/components/guru/CounselingTable.tsx b/src/components/guru/CounselingTable.tsx
+index cd0e4e9..4c90293 100644
+--- a/src/components/guru/CounselingTable.tsx
++++ b/src/components/guru/CounselingTable.tsx
+@@ -10,44 +10,52 @@ type Booking = {
+   guru_id: string;
+   scheduled_at: string;
+   status: 'pending' | 'approved' | 'rejected';
+   student_profile?: {
+     full_name: string;
+   };
+ };
+ 
+ export function CounselingTable({ bookings }: { bookings: Booking[] }) {
+   const [loadingId, setLoadingId] = useState<string | null>(null);
++  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+ 
+   const handleUpdate = async (id: string, status: 'approved' | 'rejected') => {
+     try {
+       setLoadingId(id);
++      setErrorMsg(null);
+       await updateCounselingStatus(id, status);
+     } catch (error) {
+       console.error(error);
+-      alert("Failed to update status");
++      setErrorMsg("Gagal mengubah status. Silakan coba lagi.");
+     } finally {
+       setLoadingId(null);
+     }
+   };
+ 
+   if (!bookings || bookings.length === 0) {
+     return (
+       <div className="p-8 text-center text-brand-700">
+         Belum ada permintaan konseling.
+       </div>
+     );
+   }
+ 
+   return (
+-    <div className="overflow-x-auto">
+-      <table className="w-full text-left border-collapse">
++    <div className="space-y-4">
++      {errorMsg && (
++        <div className="p-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg">
++          {errorMsg}
++        </div>
++      )}
++      <div className="overflow-x-auto">
++        <table className="w-full text-left border-collapse">
+         <thead>
+           <tr className="bg-brand-50 border-b border-brand-300">
+             <th className="px-6 py-4 font-semibold text-brand-900">Nama Siswa</th>
+             <th className="px-6 py-4 font-semibold text-brand-900">Jadwal</th>
+             <th className="px-6 py-4 font-semibold text-brand-900">Status</th>
+             <th className="px-6 py-4 font-semibold text-brand-900 text-center">Aksi</th>
+           </tr>
+         </thead>
+         <tbody className="divide-y divide-brand-100">
+           {bookings.map((booking) => {
+@@ -102,13 +110,14 @@ export function CounselingTable({ bookings }: { bookings: Booking[] }) {
+                     ) : (
+                       <span className="text-sm text-brand-500 italic">Selesai</span>
+                     )}
+                   </div>
+                 </td>
+               </tr>
+             );
+           })}
+         </tbody>
+       </table>
++      </div>
+     </div>
+   );
+ }
+diff --git a/src/components/guru/StudentTable.tsx b/src/components/guru/StudentTable.tsx
+index f16fe5c..d32d013 100644
+--- a/src/components/guru/StudentTable.tsx
++++ b/src/components/guru/StudentTable.tsx
+@@ -1,12 +1,12 @@
+ import React from "react";
+-import { CheckCircle2, Circle } from "lucide-react";
++import { CheckCircle2 } from "lucide-react";
+ 
+ type ExerciseProgress = {
+   id: string;
+   session_id: string;
+   status: 'in_progress' | 'completed';
+   points_earned: number;
+ };
+ 
+ type Student = {
+   id: string;

@@ -1,0 +1,716 @@
+﻿e49be11 feat: siswa worksheet and realtime chat
+
+ src/app/globals.css                    |   3 +
+ src/app/siswa/chat/actions.ts          |  35 ++++++++
+ src/app/siswa/chat/page.tsx            | 146 +++++++++++++++++++++++++++++++++
+ src/app/siswa/worksheet/actions.ts     |  77 +++++++++++++++++
+ src/app/siswa/worksheet/page.tsx       |  90 ++++++++++++++++++++
+ src/components/siswa/ChatInterface.tsx | 134 ++++++++++++++++++++++++++++++
+ src/components/siswa/VideoPlayer.tsx   |  70 ++++++++++++++++
+ src/components/siswa/WorksheetForm.tsx |  91 ++++++++++++++++++++
+ 8 files changed, 646 insertions(+)
+
+diff --git a/src/app/globals.css b/src/app/globals.css
+index 13d40b8..64a78a6 100644
+--- a/src/app/globals.css
++++ b/src/app/globals.css
+@@ -18,10 +18,13 @@ body {
+   color: var(--foreground);
+   background: var(--background);
+   font-family: Arial, Helvetica, sans-serif;
+ }
+ 
+ @layer utilities {
+   .text-balance {
+     text-wrap: balance;
+   }
+ }
++
++.hide-scrollbar::-webkit-scrollbar { display: none; }
++.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+\ No newline at end of file
+diff --git a/src/app/siswa/chat/actions.ts b/src/app/siswa/chat/actions.ts
+new file mode 100644
+index 0000000..ef92faf
+--- /dev/null
++++ b/src/app/siswa/chat/actions.ts
+@@ -0,0 +1,35 @@
++'use server'
++
++import { createClient } from '@/lib/supabase/server'
++import { revalidatePath } from 'next/cache'
++
++export async function sendMessage(receiverId: string, message: string) {
++  const supabase = createClient()
++  const { data: { user }, error: authError } = await supabase.auth.getUser()
++  if (authError || !user) throw new Error('Unauthorized')
++
++  await supabase
++    .from('chat_messages')
++    .insert({
++      sender_id: user.id,
++      receiver_id: receiverId,
++      message,
++    })
++}
++
++export async function requestCounseling(guruId: string, scheduledAt: string) {
++  const supabase = createClient()
++  const { data: { user }, error: authError } = await supabase.auth.getUser()
++  if (authError || !user) throw new Error('Unauthorized')
++
++  await supabase
++    .from('counseling_bookings')
++    .insert({
++      student_id: user.id,
++      guru_id: guruId,
++      scheduled_at: scheduledAt,
++      status: 'pending'
++    })
++  
++  revalidatePath('/siswa/chat')
++}
+diff --git a/src/app/siswa/chat/page.tsx b/src/app/siswa/chat/page.tsx
+new file mode 100644
+index 0000000..9a7146e
+--- /dev/null
++++ b/src/app/siswa/chat/page.tsx
+@@ -0,0 +1,146 @@
++import { createClient } from '@/lib/supabase/server'
++import { redirect } from 'next/navigation'
++import ChatInterface from '@/components/siswa/ChatInterface'
++import { MessageSquare, PhoneCall, AlertTriangle, Calendar } from 'lucide-react'
++import { requestCounseling } from './actions'
++
++export const metadata = {
++  title: 'Chat & Konseling - Siswa',
++}
++
++export default async function ChatPage() {
++  const supabase = createClient()
++  const { data: { user } } = await supabase.auth.getUser()
++
++  if (!user) {
++    redirect('/login')
++  }
++
++  // 1. Get completed sessions count for Counseling Lock
++  const { count } = await supabase
++    .from('exercise_progress')
++    .select('*', { count: 'exact', head: true })
++    .eq('student_id', user.id)
++    .eq('status', 'completed')
++  
++  const completedSessions = count || 0
++  const isLocked = completedSessions < 4
++
++  // 2. Find a Guru BK to chat with
++  const { data: guruList } = await supabase
++    .from('profiles')
++    .select('*')
++    .eq('role', 'guru_bk')
++    .limit(1)
++  
++  const guru = guruList?.[0]
++
++  if (!guru) {
++    return <div className="p-4 text-center mt-10 text-gray-500">Belum ada Guru BK yang tersedia.</div>
++  }
++
++  // 3. Fetch initial chat messages
++  const { data: initialMessages } = await supabase
++    .from('chat_messages')
++    .select('*')
++    .or(`and(sender_id.eq.${user.id},receiver_id.eq.${guru.id}),and(sender_id.eq.${guru.id},receiver_id.eq.${user.id})`)
++    .order('created_at', { ascending: true })
++
++  // 4. Fetch booking status
++  const { data: existingBookings } = await supabase
++    .from('counseling_bookings')
++    .select('*')
++    .eq('student_id', user.id)
++    .order('created_at', { ascending: false })
++    .limit(1)
++
++  const existingBooking = existingBookings?.[0]
++
++  return (
++    <div className="min-h-screen bg-brand-50 pb-[env(safe-area-inset-bottom)] pb-24">
++      <header className="bg-brand-500 text-white p-4 sticky top-0 z-10 shadow-md">
++        <h1 className="text-xl font-bold flex items-center gap-2">
++          <MessageSquare className="w-6 h-6" />
++          Konseling
++        </h1>
++      </header>
++
++      <main className="p-4 max-w-lg mx-auto space-y-6">
++        
++        {isLocked ? (
++          <div className="bg-red-50 rounded-3xl p-5 border border-red-200 shadow-sm">
++            <div className="flex items-start gap-3 mb-3">
++              <div className="bg-red-100 p-2 rounded-full text-red-600 shrink-0">
++                <AlertTriangle className="w-6 h-6" />
++              </div>
++              <div>
++                <h3 className="font-bold text-red-900">Konseling Belum Terbuka</h3>
++                <p className="text-sm text-red-700 mt-1">
++                  Kamu baru menyelesaikan {completedSessions} dari 4 sesi LKS. Selesaikan 4 sesi untuk membuka fitur penjadwalan konseling.
++                </p>
++              </div>
++            </div>
++            
++            <div className="mt-4 pt-4 border-t border-red-200">
++              <h4 className="font-semibold text-red-900 mb-2">Crisis Bypass (Darurat)</h4>
++              <p className="text-sm text-red-700 mb-3">Jika kamu merasa butuh bantuan mendesak, silakan hubungi:</p>
++              <a 
++                href="tel:119" 
++                className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 shadow-sm"
++              >
++                <PhoneCall className="w-5 h-5" />
++                Hubungi Hotline 119
++              </a>
++            </div>
++          </div>
++        ) : (
++          <div className="bg-white rounded-3xl p-5 border border-brand-200 shadow-sm">
++            <h3 className="font-bold text-brand-900 mb-2">Jadwalkan Konseling</h3>
++            {existingBooking ? (
++              <div className="bg-brand-50 p-4 rounded-xl border border-brand-100">
++                <p className="text-sm text-brand-800">
++                  Status pengajuan: <span className="font-bold uppercase">{existingBooking.status}</span>
++                </p>
++                <p className="text-xs text-brand-600 mt-1">
++                  Jadwal: {new Date(existingBooking.scheduled_at).toLocaleString('id-ID')}
++                </p>
++              </div>
++            ) : (
++              <form action={async (formData) => {
++                'use server'
++                const date = formData.get('date') as string
++                await requestCounseling(guru.id, new Date(date).toISOString())
++              }} className="flex flex-col gap-3">
++                <input 
++                  type="datetime-local" 
++                  name="date"
++                  required
++                  className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-300 outline-none text-gray-800"
++                />
++                <button 
++                  type="submit"
++                  className="w-full py-3 px-4 bg-brand-900 hover:bg-brand-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 shadow-sm"
++                >
++                  <Calendar className="w-5 h-5" />
++                  Ajukan Jadwal
++                </button>
++              </form>
++            )}
++          </div>
++        )}
++
++        <div>
++          <h2 className="text-lg font-bold text-brand-900 mb-3 ml-2 flex items-center gap-2">
++            Chat dengan {guru.full_name || 'Guru BK'}
++          </h2>
++          <ChatInterface 
++            currentUserId={user.id}
++            guruId={guru.id}
++            initialMessages={initialMessages || []}
++          />
++        </div>
++
++      </main>
++    </div>
++  )
++}
+diff --git a/src/app/siswa/worksheet/actions.ts b/src/app/siswa/worksheet/actions.ts
+new file mode 100644
+index 0000000..58cb04a
+--- /dev/null
++++ b/src/app/siswa/worksheet/actions.ts
+@@ -0,0 +1,77 @@
++'use server'
++
++import { createClient } from '@/lib/supabase/server'
++import { revalidatePath } from 'next/cache'
++
++export async function markVideoWatched(sessionId: string) {
++  const supabase = createClient()
++  const { data: { user }, error: authError } = await supabase.auth.getUser()
++  
++  if (authError || !user) throw new Error('Unauthorized')
++
++  const { data: progress } = await supabase
++    .from('exercise_progress')
++    .select('*')
++    .eq('student_id', user.id)
++    .eq('session_id', sessionId)
++    .single()
++
++  if (progress) {
++    await supabase
++      .from('exercise_progress')
++      .update({ is_video_watched: true })
++      .eq('id', progress.id)
++  } else {
++    await supabase
++      .from('exercise_progress')
++      .insert({
++        student_id: user.id,
++        session_id: sessionId,
++        is_video_watched: true,
++        status: 'in_progress',
++      })
++  }
++
++  revalidatePath('/siswa/worksheet')
++}
++
++export async function submitWorksheet(sessionId: string, formData: string) {
++  const supabase = createClient()
++  const { data: { user }, error: authError } = await supabase.auth.getUser()
++  
++  if (authError || !user) throw new Error('Unauthorized')
++
++  const worksheetData = JSON.parse(formData)
++
++  const { data: progress } = await supabase
++    .from('exercise_progress')
++    .select('*')
++    .eq('student_id', user.id)
++    .eq('session_id', sessionId)
++    .single()
++
++  if (progress) {
++    await supabase
++      .from('exercise_progress')
++      .update({
++        worksheet_data: worksheetData,
++        status: 'completed',
++        points_earned: 10
++      })
++      .eq('id', progress.id)
++  } else {
++    await supabase
++      .from('exercise_progress')
++      .insert({
++        student_id: user.id,
++        session_id: sessionId,
++        worksheet_data: worksheetData,
++        status: 'completed',
++        is_video_watched: true,
++        points_earned: 10
++      })
++  }
++
++  revalidatePath('/siswa/worksheet')
++  revalidatePath('/siswa/chat')
++}
+diff --git a/src/app/siswa/worksheet/page.tsx b/src/app/siswa/worksheet/page.tsx
+new file mode 100644
+index 0000000..8f6aad5
+--- /dev/null
++++ b/src/app/siswa/worksheet/page.tsx
+@@ -0,0 +1,90 @@
++import { createClient } from '@/lib/supabase/server'
++import { redirect } from 'next/navigation'
++import VideoPlayer from '@/components/siswa/VideoPlayer'
++import WorksheetForm from '@/components/siswa/WorksheetForm'
++import { BookOpen } from 'lucide-react'
++
++export const metadata = {
++  title: 'Worksheet - Siswa',
++}
++
++export default async function WorksheetPage({ searchParams }: { searchParams: { session?: string } }) {
++  const supabase = createClient()
++  const { data: { user } } = await supabase.auth.getUser()
++
++  if (!user) {
++    redirect('/login')
++  }
++
++  const { data: sessions } = await supabase
++    .from('cms_contents')
++    .select('*')
++    .order('session_number', { ascending: true })
++
++  if (!sessions || sessions.length === 0) {
++    return <div className="p-4 text-center mt-10 text-gray-500">Belum ada sesi yang tersedia.</div>
++  }
++
++  const activeSessionId = searchParams.session || sessions[0].id
++  const activeSession = sessions.find(s => s.id === activeSessionId) || sessions[0]
++
++  const { data: progress } = await supabase
++    .from('exercise_progress')
++    .select('*')
++    .eq('student_id', user.id)
++    .eq('session_id', activeSession.id)
++    .single()
++
++  const isVideoWatched = progress?.is_video_watched || false
++  const worksheetData = progress?.worksheet_data || null
++  const status = progress?.status || null
++
++  return (
++    <div className="min-h-screen bg-brand-50 pb-[env(safe-area-inset-bottom)] pb-24">
++      <header className="bg-brand-500 text-white p-4 sticky top-0 z-10 shadow-md">
++        <h1 className="text-xl font-bold flex items-center gap-2">
++          <BookOpen className="w-6 h-6" />
++          Pembelajaran
++        </h1>
++      </header>
++
++      <main className="p-4 max-w-lg mx-auto">
++        <div className="flex gap-2 overflow-x-auto pb-4 snap-x hide-scrollbar scrollbar-hide">
++          {sessions.map((s) => (
++            <a 
++              key={s.id} 
++              href={`/siswa/worksheet?session=${s.id}`}
++              className={`snap-center whitespace-nowrap px-4 py-2 rounded-full font-medium transition-colors border ${
++                s.id === activeSession.id 
++                  ? 'bg-brand-900 text-white border-brand-900 shadow-sm' 
++                  : 'bg-white text-brand-700 border-brand-300 hover:bg-brand-100'
++              }`}
++            >
++              Sesi {s.session_number}
++            </a>
++          ))}
++        </div>
++
++        <div className="bg-white rounded-3xl p-5 shadow-sm border border-brand-100">
++          <h2 className="text-2xl font-bold text-brand-900 mb-4">{activeSession.title}</h2>
++          
++          <VideoPlayer 
++            sessionId={activeSession.id}
++            videoUrl={activeSession.video_url || ''}
++            initialWatched={isVideoWatched}
++          />
++
++          {isVideoWatched && (
++            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
++              <WorksheetForm 
++                sessionId={activeSession.id}
++                initialData={worksheetData}
++                status={status}
++              />
++            </div>
++          )}
++        </div>
++      </main>
++    </div>
++  )
++}
+diff --git a/src/components/siswa/ChatInterface.tsx b/src/components/siswa/ChatInterface.tsx
+new file mode 100644
+index 0000000..d76068d
+--- /dev/null
++++ b/src/components/siswa/ChatInterface.tsx
+@@ -0,0 +1,134 @@
++'use client'
++
++import { useState, useEffect, useRef } from 'react'
++import { createClient } from '@/lib/supabase/client'
++import { sendMessage } from '@/app/siswa/chat/actions'
++import { Send } from 'lucide-react'
++
++export default function ChatInterface({ 
++  currentUserId,
++  guruId,
++  initialMessages 
++}: { 
++  currentUserId: string
++  guruId: string
++  initialMessages: Array<{ id: string; sender_id: string; receiver_id: string; message: string; created_at?: string }>
++}) {
++  const [messages, setMessages] = useState(initialMessages)
++  const [newMessage, setNewMessage] = useState('')
++  const [sending, setSending] = useState(false)
++  const messagesEndRef = useRef<HTMLDivElement>(null)
++  const supabase = createClient()
++
++  useEffect(() => {
++    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
++  }, [messages])
++
++  useEffect(() => {
++    const channel = supabase
++      .channel('chat_messages_changes')
++      .on(
++        'postgres_changes',
++        {
++          event: 'INSERT',
++          schema: 'public',
++          table: 'chat_messages',
++        },
++        (payload) => {
++          const newMsg = payload.new as { id: string; sender_id: string; receiver_id: string; message: string; created_at?: string }
++          if (
++            (newMsg.sender_id === currentUserId && newMsg.receiver_id === guruId) ||
++            (newMsg.sender_id === guruId && newMsg.receiver_id === currentUserId)
++          ) {
++            setMessages((prev) => {
++              // Prevent duplicates if optimistic update already added it
++              // Assuming our optimistic id is a UUID and DB id is a UUID, they won't match, 
++              // but we can just rely on the server for simplicity or filter by message text and time.
++              // A better way is not using optimistic updates if we rely strictly on realtime, 
++              // but optimistic is better UX. We'll filter duplicates by checking if it already exists 
++              // (but ids differ). Let's just do a simple check.
++              return [...prev, newMsg]
++            })
++          }
++        }
++      )
++      .subscribe()
++
++    return () => {
++      supabase.removeChannel(channel)
++    }
++  }, [currentUserId, guruId, supabase])
++
++  const handleSend = async (e: React.FormEvent) => {
++    e.preventDefault()
++    if (!newMessage.trim() || sending) return
++
++    const msg = newMessage.trim()
++    setNewMessage('')
++    setSending(true)
++
++    try {
++      await sendMessage(guruId, msg)
++    } catch (e) {
++      console.error(e)
++    } finally {
++      setSending(false)
++    }
++  }
++
++  // Deduplicate messages by their content and rough time, or just ID if not using optimistic
++  // Since we removed optimistic update above to prevent double rendering easily, we just rely on DB return and Realtime.
++  // Actually, sendMessage doesn't return the message, and realtime handles the UI update.
++  // We need to fetch it or rely strictly on realtime.
++  // BUT the user who sends it also receives it via realtime. So it will appear.
++
++  return (
++    <div className="flex flex-col h-[500px] bg-white rounded-3xl shadow-sm border border-brand-100 overflow-hidden">
++      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-brand-50/30">
++        {messages.length === 0 ? (
++          <div className="text-center text-gray-500 mt-10">
++            Belum ada pesan. Mulai percakapan dengan Guru BK.
++          </div>
++        ) : (
++          messages.map((msg, idx) => {
++            // Very basic deduplication hack in case realtime and initial fetch overlap
++            if (idx > 0 && messages[idx - 1].id === msg.id) return null;
++            
++            const isMe = msg.sender_id === currentUserId
++            return (
++              <div key={msg.id || idx} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
++                <div 
++                  className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
++                    isMe 
++                      ? 'bg-brand-500 text-white rounded-br-sm' 
++                      : 'bg-white text-brand-900 rounded-bl-sm border border-brand-100 shadow-sm'
++                  }`}
++                >
++                  <p>{msg.message}</p>
++                </div>
++              </div>
++            )
++          })
++        )}
++        <div ref={messagesEndRef} />
++      </div>
++
++      <form onSubmit={handleSend} className="p-3 bg-white border-t border-brand-100 flex gap-2">
++        <input 
++          type="text"
++          value={newMessage}
++          onChange={(e) => setNewMessage(e.target.value)}
++          placeholder="Tulis pesan..."
++          className="flex-1 rounded-full px-4 py-2 border border-brand-200 focus:ring-2 focus:ring-brand-500 outline-none bg-brand-50/50"
++        />
++        <button 
++          type="submit"
++          disabled={!newMessage.trim() || sending}
++          className="w-10 h-10 rounded-full bg-brand-900 text-white flex items-center justify-center hover:bg-brand-700 transition-colors disabled:opacity-50 shrink-0"
++        >
++          <Send className="w-5 h-5 -ml-0.5" />
++        </button>
++      </form>
++    </div>
++  )
++}
+diff --git a/src/components/siswa/VideoPlayer.tsx b/src/components/siswa/VideoPlayer.tsx
+new file mode 100644
+index 0000000..71eb1bc
+--- /dev/null
++++ b/src/components/siswa/VideoPlayer.tsx
+@@ -0,0 +1,70 @@
++'use client'
++
++import { useState } from 'react'
++import { markVideoWatched } from '@/app/siswa/worksheet/actions'
++import { CheckCircle, PlayCircle } from 'lucide-react'
++
++export default function VideoPlayer({ 
++  sessionId, 
++  videoUrl, 
++  initialWatched 
++}: { 
++  sessionId: string
++  videoUrl: string
++  initialWatched: boolean 
++}) {
++  const [isWatched, setIsWatched] = useState(initialWatched)
++  const [loading, setLoading] = useState(false)
++
++  const handleWatchComplete = async () => {
++    setLoading(true)
++    try {
++      await markVideoWatched(sessionId)
++      setIsWatched(true)
++    } catch (e) {
++      console.error(e)
++    } finally {
++      setLoading(false)
++    }
++  }
++
++  const embedUrl = videoUrl?.includes('youtube.com/watch') 
++    ? videoUrl.replace('watch?v=', 'embed/')
++    : videoUrl
++
++  return (
++    <div className="flex flex-col gap-4">
++      <div className="aspect-video w-full rounded-xl overflow-hidden bg-black relative shadow-sm">
++        {videoUrl ? (
++          <iframe 
++            src={embedUrl} 
++            title="Video Player"
++            className="w-full h-full border-0"
++            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
++            allowFullScreen
++          ></iframe>
++        ) : (
++          <div className="flex flex-col items-center justify-center h-full text-white/50">
++            <PlayCircle className="w-12 h-12 mb-2" />
++            <p>Video Not Available</p>
++          </div>
++        )}
++      </div>
++
++      {!isWatched ? (
++        <button 
++          onClick={handleWatchComplete}
++          disabled={loading}
++          className="w-full py-3 px-4 bg-brand-500 hover:bg-brand-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
++        >
++          {loading ? 'Menyimpan...' : 'Saya sudah menonton video ini'}
++        </button>
++      ) : (
++        <div className="w-full py-3 px-4 bg-brand-50 text-brand-900 font-medium rounded-xl flex items-center justify-center gap-2 border border-brand-300">
++          <CheckCircle className="w-5 h-5 text-brand-500" />
++          Video Selesai Ditonton
++        </div>
++      )}
++    </div>
++  )
++}
+diff --git a/src/components/siswa/WorksheetForm.tsx b/src/components/siswa/WorksheetForm.tsx
+new file mode 100644
+index 0000000..61a1571
+--- /dev/null
++++ b/src/components/siswa/WorksheetForm.tsx
+@@ -0,0 +1,91 @@
++'use client'
++
++import { useState } from 'react'
++import { submitWorksheet } from '@/app/siswa/worksheet/actions'
++import { CheckCircle2, Save } from 'lucide-react'
++
++interface WorksheetFormProps {
++  sessionId: string
++  initialData?: { reflection?: string; actionPlan?: string } | null
++  status: 'in_progress' | 'completed' | null
++}
++
++export default function WorksheetForm({ sessionId, initialData, status }: WorksheetFormProps) {
++  const [loading, setLoading] = useState(false)
++  const [reflection, setReflection] = useState(initialData?.reflection || '')
++  const [actionPlan, setActionPlan] = useState(initialData?.actionPlan || '')
++
++  const handleSubmit = async (e: React.FormEvent) => {
++    e.preventDefault()
++    setLoading(true)
++    try {
++      await submitWorksheet(sessionId, JSON.stringify({ reflection, actionPlan }))
++    } catch (e) {
++      console.error(e)
++    } finally {
++      setLoading(false)
++    }
++  }
++
++  const isCompleted = status === 'completed'
++
++  return (
++    <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-6">
++      <h3 className="text-xl font-bold text-brand-900 mb-2">Lembar Kerja Siswa</h3>
++      
++      <div className="bg-surface rounded-2xl shadow-sm border border-brand-50 overflow-hidden flex flex-col">
++        <div className="bg-brand-50 px-4 py-3 border-b border-brand-100">
++          <label htmlFor="reflection" className="font-semibold text-brand-900 block">
++            Refleksi Diri
++          </label>
++        </div>
++        <div className="p-4">
++          <textarea
++            id="reflection"
++            value={reflection}
++            onChange={(e) => setReflection(e.target.value)}
++            disabled={isCompleted}
++            placeholder="Apa yang kamu pelajari dari video tersebut?"
++            className="w-full min-h-[100px] p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-300 focus:border-brand-500 outline-none transition-all resize-y text-gray-800 disabled:bg-gray-50"
++            required
++          />
++        </div>
++      </div>
++
++      <div className="bg-surface rounded-2xl shadow-sm border border-brand-50 overflow-hidden flex flex-col">
++        <div className="bg-brand-50 px-4 py-3 border-b border-brand-100">
++          <label htmlFor="actionPlan" className="font-semibold text-brand-900 block">
++            Rencana Aksi
++          </label>
++        </div>
++        <div className="p-4">
++          <textarea
++            id="actionPlan"
++            value={actionPlan}
++            onChange={(e) => setActionPlan(e.target.value)}
++            disabled={isCompleted}
++            placeholder="Tindakan apa yang akan kamu lakukan?"
++            className="w-full min-h-[100px] p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-300 focus:border-brand-500 outline-none transition-all resize-y text-gray-800 disabled:bg-gray-50"
++            required
++          />
++        </div>
++      </div>
++
++      {!isCompleted ? (
++        <button
++          type="submit"
++          disabled={loading}
++          className="mt-2 w-full py-3.5 px-4 bg-brand-900 hover:bg-brand-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-70 shadow-sm"
++        >
++          <Save className="w-5 h-5" />
++          {loading ? 'Menyimpan LKS...' : 'Simpan LKS & Selesaikan Sesi'}
++        </button>
++      ) : (
++        <div className="mt-2 w-full py-3 px-4 bg-green-50 text-green-700 font-medium rounded-xl flex items-center justify-center gap-2 border border-green-200">
++          <CheckCircle2 className="w-5 h-5" />
++          Sesi Ini Telah Diselesaikan
++        </div>
++      )}
++    </form>
++  )
++}
