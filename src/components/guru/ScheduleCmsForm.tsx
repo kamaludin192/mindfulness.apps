@@ -423,7 +423,7 @@ export default function ScheduleCmsForm({
               Jadwalkan Konseling Guru BK
             </h4>
             <p className="text-xs text-[#475569]">
-              Pilih slot jam privat bersama Guru BK.
+              Pilih kuota jam privat bersama Guru BK.
             </p>
           </div>
 
@@ -471,7 +471,7 @@ export default function ScheduleCmsForm({
             disabled
             className="w-full py-3.5 rounded-2xl bg-[#057a44] text-white font-bold text-xs opacity-90 cursor-not-allowed text-center shadow-xs"
           >
-            Kirim Permintaan Booking Konseling
+            Kirim Permohonan Konseling
           </button>
         </div>
       </div>

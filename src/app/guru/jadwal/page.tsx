@@ -55,7 +55,7 @@ export default async function GuruScheduleCmsPage() {
           Atur Tanggal & Jam Ketersediaan Konseling
         </h1>
         <p className="text-xs sm:text-sm text-[#334155] font-medium max-w-3xl leading-relaxed">
-          Kelola hari aktif, slot jam bimbingan, tanggal libur khusus, serta petunjuk kedatangan yang akan muncul secara otomatis di form booking portal siswa.
+          Kelola hari aktif, kuota jam bimbingan, tanggal libur khusus, serta petunjuk kedatangan yang akan muncul secara otomatis di form permohonan konseling portal siswa.
         </p>
       </div>
 

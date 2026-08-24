@@ -320,9 +320,9 @@ export default function CounselingBookingCard({
                     </span>
                     <span className="text-[10px] font-medium">
                       {isUnavailable
-                        ? '(Booked/Tutup)'
+                        ? '(Penuh/Tutup)'
                         : isSelected
-                        ? 'Slot Dipilih'
+                        ? 'Dipilih'
                         : 'Tersedia'}
                     </span>
                   </button>
@@ -356,7 +356,7 @@ export default function CounselingBookingCard({
               <CheckCircle2 className="w-4 h-4" />
             )}
             <span>
-              {loading ? 'Mengajukan Jadwal...' : 'Kirim Permintaan Booking Konseling'}
+              {loading ? 'Mengajukan Jadwal...' : 'Kirim Permohonan Konseling'}
             </span>
           </button>
         </form>
