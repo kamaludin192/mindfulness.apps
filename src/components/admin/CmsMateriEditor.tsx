@@ -24,7 +24,7 @@ const DEFAULT_SESSIONS: CmsSessionItem[] = [
     session_number: 1,
     title: 'Sesi 1: Mindful Breathing',
     video_url: '',
-    description: 'Modul dasar untuk melatih fokus pernapasan, relaksasi otot, dan penenangan sistem saraf.',
+    description: 'Materi dasar untuk melatih fokus pernapasan, relaksasi otot, dan penenangan sistem saraf.',
   },
   {
     session_number: 2,

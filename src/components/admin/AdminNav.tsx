@@ -33,7 +33,7 @@ const ADMIN_NAV_ITEMS = [
   },
   {
     href: '/admin/materi',
-    label: 'Pengaturan Kurikulum & Video',
+    label: 'Pengaturan Materi & Video',
     icon: Video,
     exact: false,
   },
