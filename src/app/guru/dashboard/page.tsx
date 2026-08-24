@@ -53,7 +53,7 @@ export default async function GuruDashboardMonitoring() {
             Monitoring Progres Siswa
           </h1>
           <p className="text-xs sm:text-sm text-[#334155] font-medium">
-            Pantau partisipasi, penyelesaian 4 modul intervensi, dan perolehan poin siswa secara real-time.
+            Pantau partisipasi, penyelesaian 4 sesi intervensi, dan perolehan poin siswa secara real-time.
           </p>
         </div>
       </div>

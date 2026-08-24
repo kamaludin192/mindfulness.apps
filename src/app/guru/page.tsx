@@ -144,7 +144,7 @@ export default async function GuruDashboard() {
             </div>
           </div>
           <p className="text-3xl font-extrabold font-serif text-[#0f172a]">{completedWorksheets}</p>
-          <p className="text-xs text-[#057a44] font-bold">Progres Modul 4 Sesi</p>
+          <p className="text-xs text-[#057a44] font-bold">Progres 4 Sesi Latihan</p>
         </div>
 
         <div className="bg-white p-6 rounded-3xl border-2 border-[#d5dcc4] shadow-xs space-y-2">
@@ -260,7 +260,7 @@ export default async function GuruDashboard() {
               <h2 className="font-serif font-extrabold text-base text-[#0f172a]">
                 Aktivitas Lembar Kerja Terbaru
               </h2>
-              <p className="text-xs text-[#475569] font-medium">Penyelesaian modul oleh siswa</p>
+              <p className="text-xs text-[#475569] font-medium">Penyelesaian sesi latihan oleh siswa</p>
             </div>
             <Link
               href="/guru/dashboard"

@@ -131,7 +131,7 @@ export default async function GuruProfilPage() {
           <p className="text-2xl md:text-3xl font-extrabold font-serif text-[#0f172a]">
             {completedWorksheetsCount ?? 0}
           </p>
-          <p className="text-[11px] text-[#057a44] font-medium">Progres modul intervensi</p>
+          <p className="text-[11px] text-[#057a44] font-medium">Progres sesi intervensi</p>
         </div>
 
         <div className="bg-white p-5 rounded-3xl border-2 border-[#d5dcc4] shadow-xs space-y-1">

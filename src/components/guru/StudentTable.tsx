@@ -42,7 +42,7 @@ export function StudentTable({ students }: { students: Student[] | null }) {
       <div className="p-12 text-center text-[#475569] space-y-2">
         <BookOpen className="w-8 h-8 mx-auto text-[#057a44]/50" />
         <p className="font-bold text-sm text-[#0f172a]">Belum Ada Data Siswa Terdaftar</p>
-        <p className="text-xs">Siswa yang mendaftar dan mengikuti modul akan otomatis muncul di sini.</p>
+        <p className="text-xs">Siswa yang mendaftar dan mengikuti latihan akan otomatis muncul di sini.</p>
       </div>
     );
   }
@@ -192,7 +192,7 @@ export function StudentTable({ students }: { students: Student[] | null }) {
                         ? 'bg-blue-50 text-blue-800 border-blue-200'
                         : 'bg-slate-100 text-slate-700 border-slate-200'
                     }`}>
-                      {completed === 4 ? 'Modul Lengkap' : completed > 0 ? 'Sedang Aktif' : 'Belum Mulai'}
+                      {completed === 4 ? '4 Sesi Lengkap' : completed > 0 ? 'Sedang Aktif' : 'Belum Mulai'}
                     </span>
                   </td>
                 </tr>
