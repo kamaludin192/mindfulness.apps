@@ -1,6 +1,7 @@
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import BottomCta from "@/components/public/BottomCta";
+import { getLayoutConfigAction } from "@/app/admin/tampilan/actions";
 import {
   Brain,
   Leaf,
@@ -13,7 +14,10 @@ import {
   Heart,
 } from "lucide-react";
 
-export default function ProgramPage() {
+export default async function ProgramPage() {
+  const config = await getLayoutConfigAction();
+  const program = config.programPage;
+
   return (
     <div className="min-h-screen font-sans bg-[#f3f6e8] text-[#2b3a1a] flex flex-col selection:bg-[#c2db8f]/40">
       <Navbar />
@@ -23,15 +27,15 @@ export default function ProgramPage() {
         <section className="px-4 pt-16 pb-16 md:pt-24 md:pb-20 max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 text-[#3f5726] text-xs md:text-sm font-semibold mb-6 shadow-xs border border-[#d5dcc4]">
             <Sparkles className="w-4 h-4 text-[#3f5726]" />
-            <span>Latihan Terstruktur</span>
+            <span>{program.badge}</span>
           </div>
 
           <h1 className="text-3xl md:text-5xl font-bold font-serif mb-6 leading-tight">
-            Program 4 Sesi <span className="text-[#3f5726]">Interaktif</span>
+            {program.title}
           </h1>
 
           <p className="text-base md:text-lg text-[#2b3a1a]/80 max-w-3xl mx-auto leading-relaxed">
-            Metode psikoedukasi terstruktur yang dirancang bertahap untuk membantu siswa mengamati pikiran, mereduksi kecemasan, dan mengelola emosi dalam suasana belajar yang aman.
+            {program.subtitle}
           </p>
         </section>
 
@@ -41,7 +45,7 @@ export default function ProgramPage() {
             <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
               <span className="text-xs font-bold uppercase tracking-wider text-[#5a7a35]">Latihan Terstruktur untuk Siswa SMA</span>
               <h2 className="text-2xl md:text-4xl font-bold font-serif">
-                Tahapan Membangun Kesadaran
+                {program.methodologyHeading}
               </h2>
               <p className="text-sm text-[#2b3a1a]/70">
                 Tiga tahapan sistematis untuk memastikan setiap siswa mendapatkan pendampingan yang tepat dan berkelanjutan.
@@ -54,9 +58,9 @@ export default function ProgramPage() {
                 <div className="w-12 h-12 rounded-2xl bg-[#c2db8f] flex items-center justify-center font-bold text-xl text-[#1e2a14] mb-6 shadow-xs">
                   1
                 </div>
-                <h3 className="font-bold text-lg mb-3">Asesmen</h3>
+                <h3 className="font-bold text-lg mb-3">{program.step1Title}</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Mengenali kondisi awal emosi dan pernapasan Anda untuk memastikan kesiapan dalam mengikuti latihan.
+                  {program.step1Desc}
                 </p>
               </div>
 
@@ -65,9 +69,9 @@ export default function ProgramPage() {
                 <div className="w-12 h-12 rounded-2xl bg-[#3f5726] flex items-center justify-center font-bold text-xl text-white mb-6 shadow-xs">
                   2
                 </div>
-                <h3 className="font-bold text-lg mb-3">Latihan Rutin</h3>
+                <h3 className="font-bold text-lg mb-3">{program.step2Title}</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Mempraktikkan video mindfulness dan mengisi lembar kerja digital untuk mengintegrasikan pengalaman.
+                  {program.step2Desc}
                 </p>
               </div>
 
@@ -76,9 +80,9 @@ export default function ProgramPage() {
                 <div className="w-12 h-12 rounded-2xl bg-[#75845c] flex items-center justify-center font-bold text-xl text-white mb-6 shadow-xs">
                   3
                 </div>
-                <h3 className="font-bold text-lg mb-3">Evaluasi</h3>
+                <h3 className="font-bold text-lg mb-3">{program.step3Title}</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Memantau perkembangan diri dan berdiskusi online bersama Guru BK saat membutuhkan bimbingan mendalam.
+                  {program.step3Desc}
                 </p>
               </div>
             </div>
@@ -229,10 +233,10 @@ export default function ProgramPage() {
             </div>
             <div className="space-y-2 text-center md:text-left">
               <h3 className="text-xl md:text-2xl font-bold font-serif">
-                Integrasi Chat Konseling Guru BK
+                {program.counselingBannerTitle || "Syarat & Prosedur Konseling Online 1-on-1"}
               </h3>
               <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                Setelah menuntaskan 4 sesi latihan dan mengisi worksheet, tombol <strong>Permohonan Konseling 1-on-1</strong> akan terbuka secara otomatis untuk sesi pendalaman bersama Guru BK Anda.
+                {program.counselingBannerText || "Setelah menuntaskan 4 sesi latihan dan mengisi worksheet, tombol Permohonan Konseling 1-on-1 akan terbuka secara otomatis untuk sesi pendalaman bersama Guru BK Anda."}
               </p>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import BottomCta from "@/components/public/BottomCta";
+import { getLayoutConfigAction } from "@/app/admin/tampilan/actions";
 import {
   Brain,
   CheckCircle2,
@@ -11,7 +12,10 @@ import {
   Building2,
 } from "lucide-react";
 
-export default function TentangKamiPage() {
+export default async function TentangKamiPage() {
+  const config = await getLayoutConfigAction();
+  const tentang = config.tentangKamiPage;
+
   return (
     <div className="min-h-screen font-sans bg-[#f3f6e8] text-[#2b3a1a] flex flex-col selection:bg-[#c2db8f]/40">
       <Navbar />
@@ -22,16 +26,16 @@ export default function TentangKamiPage() {
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white text-[#1e2a14] text-xs md:text-sm font-bold shadow-xs border border-[#d5dcc4] backdrop-blur-md mb-6">
             <span className="w-2 h-2 rounded-full bg-[#3f5726] animate-pulse" />
             <ShieldCheck className="w-4 h-4 text-[#3f5726]" />
-            <span>mindfulnessintervention.id • Ruang Aman & Terverifikasi Siswa</span>
+            <span>{tentang.badge}</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold font-serif mb-6 leading-[1.15] tracking-tight text-[#141f0d]">
-            Mindfulness-Based <br className="hidden sm:inline" />
-            <span className="text-[#3f5726]">Intervention</span>
+            {tentang.titlePrefix} <br className="hidden sm:inline" />
+            <span className="text-[#3f5726]">{tentang.titleHighlight}</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-[#243316] font-medium max-w-3xl mx-auto leading-relaxed">
-            Mindfulness-Based Intervention adalah intervensi berbasis kesadaran yang melatih hadir secara utuh pada momen saat ini secara sengaja. Platform ini digunakan sebagai optimalisasi media layanan Bimbingan dan Konseling untuk memudahkan siswa SMA dalam memperoleh bantuan layanan.
+            {tentang.description}
           </p>
         </section>
 
@@ -39,24 +43,23 @@ export default function TentangKamiPage() {
         <section className="bg-white px-4 py-20 border-y border-[#d5dcc4]/40">
           <div className="max-w-6xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              {/* Kolom Kiri: Visi & SVG Badge Stempel */}
+              {/* Kolom Kiri: Visi */}
               <div className="space-y-8">
                 <div className="p-8 rounded-3xl bg-[#f3f6e8] border border-[#d5dcc4]/50 space-y-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-[#3f5726] flex items-center justify-center text-white">
                       <Eye className="w-5 h-5" />
                     </div>
-                    <h3 className="text-2xl font-bold font-serif text-[#1e2a14]">Visi Kami</h3>
+                    <h3 className="text-2xl font-bold font-serif text-[#1e2a14]">{tentang.visiTitle}</h3>
                   </div>
                   <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                    Menjadi platform pendampingan mental terdepan di Indonesia yang menjembatani layanan bimbingan sekolah dengan inovasi digital, menciptakan ruang singgah psikologis yang aman bagi pelajar di fase transisi.
+                    {tentang.visiText}
                   </p>
                 </div>
 
                 {/* Stempel Melingkar SVG (Figma Match) */}
                 <div className="flex items-center justify-center p-6 bg-[#f3f6e8]/40 rounded-3xl border border-[#d5dcc4]/30">
                   <div className="w-48 h-48 rounded-full bg-[#3f5726] flex items-center justify-center relative text-white shadow-md">
-                    {/* SVG Text on circular path */}
                     <svg className="w-full h-full absolute inset-0 animate-spin-slow" viewBox="0 0 200 200" style={{ animationDuration: "25s" }}>
                       <path
                         id="textCircle"
@@ -80,7 +83,7 @@ export default function TentangKamiPage() {
                   <div className="w-10 h-10 rounded-full bg-[#3f5726] flex items-center justify-center text-white">
                     <Flag className="w-5 h-5" />
                   </div>
-                  <h3 className="text-2xl font-bold font-serif text-[#1e2a14]">Misi Kami</h3>
+                  <h3 className="text-2xl font-bold font-serif text-[#1e2a14]">{tentang.misiTitle}</h3>
                 </div>
 
                 <ul className="space-y-6">
@@ -89,7 +92,7 @@ export default function TentangKamiPage() {
                       <CheckCircle2 className="w-5 h-5 text-[#3f5726]" />
                     </div>
                     <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                      <strong>Akses Terintegrasi:</strong> Memfasilitasi akses bimbingan psikologis yang terintegrasi langsung dengan Guru BK.
+                      <strong>{tentang.misi1Title}:</strong> {tentang.misi1Text}
                     </p>
                   </li>
 
@@ -98,7 +101,7 @@ export default function TentangKamiPage() {
                       <CheckCircle2 className="w-5 h-5 text-[#3f5726]" />
                     </div>
                     <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                      <strong>Evaluasi Digital:</strong> Mengembangkan instrumen digital untuk membantu evaluasi dan pemantauan kesejahteraan mental secara berkala.
+                      <strong>{tentang.misi2Title}:</strong> {tentang.misi2Text}
                     </p>
                   </li>
                 </ul>
@@ -131,47 +134,47 @@ export default function TentangKamiPage() {
             <div className="text-center max-w-3xl mx-auto space-y-3">
               <span className="text-xs font-bold tracking-widest uppercase text-[#5a7a35]">TIM PENELITI</span>
               <h2 className="text-2xl md:text-4xl font-bold font-serif">
-                Di Balik Layar
+                {tentang.teamHeading}
               </h2>
               <p className="text-sm text-[#2b3a1a]/70">
-                Para akademisi dan praktisi bimbingan konseling yang merumuskan kurikulum serta intervensi digital ini.
+                {tentang.teamSubtitle}
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {/* Profil 1: Nabila */}
+              {/* Profil 1 */}
               <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4]/50 flex flex-col items-center text-center hover:-translate-y-1 transition-all">
                 <div className="w-28 h-28 rounded-full bg-[#f3f6e8] border-4 border-white mb-6 flex items-center justify-center shadow-xs">
                   <User className="w-12 h-12 text-[#3f5726]" />
                 </div>
-                <h3 className="font-bold text-lg mb-1">Nabila Fuadina, M.Psi.</h3>
-                <p className="text-xs font-semibold text-[#5a7a35] mb-4">Akademisi & Pakar Inovasi Bimbingan</p>
+                <h3 className="font-bold text-lg mb-1">{tentang.member1Name}</h3>
+                <p className="text-xs font-semibold text-[#5a7a35] mb-4">{tentang.member1Role}</p>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
-                  Akademisi yang berfokus pada integrasi cybercounseling dan pengembangan media intervensi digital. Aktif merancang metode mindfulness untuk mengoptimalkan kesehatan mental (well-being) dan adaptasi sosial pada fase transisi remaja.
+                  {tentang.member1Bio}
                 </p>
               </div>
 
-              {/* Profil 2: Riski */}
+              {/* Profil 2 */}
               <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4]/50 flex flex-col items-center text-center hover:-translate-y-1 transition-all">
                 <div className="w-28 h-28 rounded-full bg-[#f3f6e8] border-4 border-white mb-6 flex items-center justify-center shadow-xs">
                   <User className="w-12 h-12 text-[#3f5726]" />
                 </div>
-                <h3 className="font-bold text-lg mb-1">Riski Putra Ayu Distira, M.Pd</h3>
-                <p className="text-xs font-semibold text-[#5a7a35] mb-4">Praktisi Konseling & Akademisi</p>
+                <h3 className="font-bold text-lg mb-1">{tentang.member2Name}</h3>
+                <p className="text-xs font-semibold text-[#5a7a35] mb-4">{tentang.member2Role}</p>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
-                  Pakar bimbingan psikologis yang berfokus pada intervensi kelompok dan pendekatan Cognitive Behavior Therapy (CBT). Berpengalaman merancang modul pendampingan klinis untuk mereduksi kecemasan sosial dan mengatasi prokrastinasi akademik di kalangan pelajar.
+                  {tentang.member2Bio}
                 </p>
               </div>
 
-              {/* Profil 3: Dr. Thrisia */}
+              {/* Profil 3 */}
               <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4]/50 flex flex-col items-center text-center hover:-translate-y-1 transition-all">
                 <div className="w-28 h-28 rounded-full bg-[#f3f6e8] border-4 border-white mb-6 flex items-center justify-center shadow-xs">
                   <User className="w-12 h-12 text-[#3f5726]" />
                 </div>
-                <h3 className="font-bold text-lg mb-1">Dr. Thrisia Febrianti, M.Pd</h3>
-                <p className="text-xs font-semibold text-[#5a7a35] mb-4">Pakar Psikologi Positif & Akademisi</p>
+                <h3 className="font-bold text-lg mb-1">{tentang.member3Name}</h3>
+                <p className="text-xs font-semibold text-[#5a7a35] mb-4">{tentang.member3Role}</p>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
-                  Doktor pendidikan yang memfokuskan risetnya pada inovasi Mindfulness-Based Cognitive Therapy (MBCT) dan psikologi positif. Memiliki kepakaran dalam merancang model intervensi klinis berbasis bukti guna mengoptimalkan psychological well-being.
+                  {tentang.member3Bio}
                 </p>
               </div>
             </div>
