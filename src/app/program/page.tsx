@@ -78,7 +78,7 @@ export default function ProgramPage() {
                 </div>
                 <h3 className="font-bold text-lg mb-3">Evaluasi</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Memantau perkembangan afektif dan stabilitas suasana hati siswa secara berkala untuk mengevaluasi efektivitas intervensi.
+                  Ambil langkah pertama untuk memulai kesadaran.
                 </p>
               </div>
             </div>
@@ -240,7 +240,7 @@ export default function ProgramPage() {
 
         {/* 6. BOTTOM CTA */}
         <BottomCta
-          title="Mulai Sesi Pertama Sekarang"
+          title="Siap Memulai Perjalanan Anda?"
           subtitle="Bergabunglah dengan program intervensi mindfulness dan rasakan perubahannya pada kenyamanan belajarmu."
           buttonText="Masuk ke Portal Siswa"
           buttonHref="/login"
