@@ -178,13 +178,8 @@ export default function TentangKamiPage() {
           </div>
         </section>
 
-        {/* 5. BOTTOM CTA */}
-        <BottomCta
-          title="Mari Berkolaborasi untuk Kesehatan Mental Remaja"
-          subtitle="Akses platform mindfulness sekarang untuk mulai membimbing siswa menuju kesejahteraan psikologis yang optimal."
-          buttonText="Masuk ke Portal"
-          buttonHref="/login"
-        />
+        {/* 4. BOTTOM CTA */}
+        <BottomCta />
       </main>
 
       <Footer />

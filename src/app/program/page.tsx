@@ -239,12 +239,7 @@ export default function ProgramPage() {
         </section>
 
         {/* 6. BOTTOM CTA */}
-        <BottomCta
-          title="Siap Memulai Perjalanan Anda?"
-          subtitle="Bergabunglah dengan program intervensi mindfulness dan rasakan perubahannya pada kenyamanan belajarmu."
-          buttonText="Masuk ke Portal Siswa"
-          buttonHref="/login"
-        />
+        <BottomCta />
       </main>
 
       <Footer />
