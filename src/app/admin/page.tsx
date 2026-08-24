@@ -1,4 +1,3 @@
-import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import {
   Users,
@@ -8,58 +7,27 @@ import {
   ArrowRight,
   Video,
   Sparkles,
-  Calendar,
   Palette,
+  Calendar,
 } from "lucide-react";
+import { getAdminKpiMetrics } from "@/services/admin.service";
+import { getAllAssessmentsWithStudents } from "@/services/mood.service";
+import { getAllProfiles } from "@/services/profile.service";
+import { MOOD_META } from "@/types/mood";
 
 export default async function AdminDashboardOverview() {
-  const supabase = createClient();
+  const {
+    siswaCount,
+    guruCount,
+    totalUsers,
+    completedExercises,
+    totalBookings,
+    pendingBookings,
+  } = await getAdminKpiMetrics();
 
-  // 1. Fetch total user counts by role
-  const { data: allProfiles } = await supabase
-    .from("profiles")
-    .select("id, full_name, role, created_at");
-
-  const totalUsers = allProfiles?.length || 0;
-  const siswaCount = allProfiles?.filter((p) => p.role === "siswa").length || 0;
-  const guruCount = allProfiles?.filter((p) => p.role === "guru_bk").length || 0;
-
-  // 2. Fetch completed exercises count
-  const { count: completedExercises } = await supabase
-    .from("exercise_progress")
-    .select("*", { count: "exact", head: true })
-    .eq("status", "completed");
-
-  // 3. Fetch counseling bookings stats
-  const { data: bookings } = await supabase
-    .from("counseling_bookings")
-    .select("id, status, scheduled_at, created_at");
-
-  const totalBookings = bookings?.length || 0;
-  const pendingBookings = bookings?.filter((b) => b.status === "pending").length || 0;
-
-  // 4. Fetch recent emotion check-ins and reflections
-  const { data: recentAssessments } = await supabase
-    .from("assessments")
-    .select(`
-      id,
-      mood_score,
-      notes,
-      created_at,
-      student:profiles(
-        full_name
-      )
-    `)
-    .order("created_at", { ascending: false })
-    .limit(6);
-
-  const MOOD_META: Record<number, { label: string; emoji: string; color: string }> = {
-    1: { label: "Sangat Buruk", emoji: "😢", color: "bg-red-50 text-red-700 border-red-200" },
-    2: { label: "Kurang Baik", emoji: "🙁", color: "bg-orange-50 text-orange-700 border-orange-200" },
-    3: { label: "Biasa Saja", emoji: "😐", color: "bg-amber-50 text-amber-700 border-amber-200" },
-    4: { label: "Cukup Baik", emoji: "🙂", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-    5: { label: "Sangat Senang", emoji: "😄", color: "bg-green-50 text-green-700 border-green-200" },
-  };
+  const allProfiles = await getAllProfiles();
+  const allAssessments = await getAllAssessmentsWithStudents();
+  const recentAssessments = allAssessments.slice(0, 6);
 
   return (
     <div className="space-y-8">
@@ -347,7 +315,7 @@ export default async function AdminDashboardOverview() {
                       {profile.full_name || "Tanpa Nama"}
                     </p>
                     <p className="text-[11px] text-[#475569]">
-                      Terdaftar: {new Date(profile.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      Terdaftar: {profile.created_at ? new Date(profile.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}
                     </p>
                   </div>
                 </div>

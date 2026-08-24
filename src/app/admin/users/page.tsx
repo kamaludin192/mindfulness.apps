@@ -1,26 +1,15 @@
-import { createClient } from "@/lib/supabase/server";
 import UserManagementTable from "@/components/admin/UserManagementTable";
 import { Users } from "lucide-react";
+import { getCurrentUser } from "@/services/auth.service";
+import { getAllProfiles } from "@/services/profile.service";
 
 export const metadata = {
   title: "Manajemen Akun & Role - Superadmin CMS",
 };
 
 export default async function AdminUsersPage() {
-  const supabase = createClient();
-
-  const {
-    data: { user: currentUser },
-  } = await supabase.auth.getUser();
-
-  const { data: users, error } = await supabase
-    .from("profiles")
-    .select("id, full_name, role, created_at")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    throw new Error(`Gagal memuat daftar user: ${error.message}`);
-  }
+  const currentUser = await getCurrentUser();
+  const users = await getAllProfiles();
 
   return (
     <div className="space-y-6">

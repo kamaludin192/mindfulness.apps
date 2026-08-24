@@ -1,42 +1,15 @@
-import { createClient } from "@/lib/supabase/server";
-import EmotionMonitoringView, { type AssessmentItem } from "@/components/shared/EmotionMonitoringView";
+import EmotionMonitoringView from "@/components/shared/EmotionMonitoringView";
 import { HeartHandshake } from "lucide-react";
+import { requireAuth } from "@/services/auth.service";
+import { getAllAssessmentsWithStudents } from "@/services/mood.service";
 
 export const metadata = {
   title: "Monitoring Emosi & Refleksi Siswa - Portal Guru BK",
 };
 
 export default async function GuruEmotionMonitoringPage() {
-  const supabase = createClient();
-
-  const { data: user, error: authError } = await supabase.auth.getUser();
-  if (authError || !user?.user) {
-    return (
-      <div className="p-8 text-center bg-white rounded-3xl border border-slate-200">
-        <p className="font-bold text-base text-[#0f172a]">Silakan login sebagai Guru BK.</p>
-      </div>
-    );
-  }
-
-  // Fetch all assessments with student profiles
-  const { data: assessments, error } = await supabase
-    .from("assessments")
-    .select(`
-      id,
-      mood_score,
-      notes,
-      created_at,
-      student:profiles(
-        id,
-        full_name,
-        email
-      )
-    `)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.warn("Could not fetch assessments:", error.message);
-  }
+  await requireAuth(["guru_bk", "superadmin"]);
+  const assessments = await getAllAssessmentsWithStudents();
 
   return (
     <div className="space-y-6">
@@ -58,7 +31,7 @@ export default async function GuruEmotionMonitoringPage() {
 
       {/* Interactive Monitoring View */}
       <EmotionMonitoringView
-        assessments={(assessments || []) as unknown as AssessmentItem[]}
+        assessments={assessments}
         role="guru"
       />
     </div>

@@ -1,7 +1,7 @@
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import BottomCta from "@/components/public/BottomCta";
-import { getLayoutConfigAction } from "@/app/admin/tampilan/actions";
+import { getLayoutConfig } from "@/services/cms.service";
 import {
   Brain,
   CheckCircle2,
@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 export default async function TentangKamiPage() {
-  const config = await getLayoutConfigAction();
+  const config = await getLayoutConfig();
   const tentang = config.tentangKamiPage;
 
   return (

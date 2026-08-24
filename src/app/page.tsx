@@ -2,7 +2,7 @@ import Link from "next/link";
 import Navbar from "@/components/public/Navbar";
 import Footer from "@/components/public/Footer";
 import BottomCta from "@/components/public/BottomCta";
-import { getLayoutConfigAction } from "@/app/admin/tampilan/actions";
+import { getLayoutConfig } from "@/services/cms.service";
 import {
   ArrowRight,
   ShieldCheck,
@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 export default async function HomePage() {
-  const config = await getLayoutConfigAction();
+  const config = await getLayoutConfig();
   const landing = config.landingPage;
 
   return (

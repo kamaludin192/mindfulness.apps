@@ -1,15 +1,16 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import VideoPlayer from '@/components/siswa/VideoPlayer'
 import WorksheetForm from '@/components/siswa/WorksheetForm'
 import { BookOpen, CheckCircle2, Sparkles, Lock, ArrowRight } from 'lucide-react'
+import { requireAuth } from '@/services/auth.service'
+import { getAllSessionMaterials } from '@/services/cms.service'
+import { getStudentProgressMap } from '@/services/exercise.service'
 
 export const metadata = {
   title: 'Materi & Lembar Kerja Siswa - Mindfulness Intervention',
 }
 
-const DEFAULT_SESSIONS = [
+const FALLBACK_DEFAULT_SESSIONS = [
   {
     id: '11111111-1111-1111-1111-111111111111',
     session_number: 1,
@@ -45,37 +46,18 @@ export default async function WorksheetPage({
 }: {
   searchParams: { session?: string }
 }) {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login')
-  }
+  const { user } = await requireAuth(['siswa', 'superadmin'])
 
   // 1. Fetch Sessions from CMS
-  const { data: dbSessions } = await supabase
-    .from('cms_contents')
-    .select('*')
-    .order('session_number', { ascending: true })
-
-  const sessions = dbSessions && dbSessions.length > 0 ? dbSessions : DEFAULT_SESSIONS
+  const dbSessions = await getAllSessionMaterials()
+  const sessions = dbSessions && dbSessions.length > 0 ? dbSessions : FALLBACK_DEFAULT_SESSIONS
 
   // 2. Fetch Progress for All Sessions to calculate sequential locking
-  const { data: allProgress } = await supabase
-    .from('exercise_progress')
-    .select('*')
-    .eq('student_id', user.id)
-
-  const progressMap = new Map()
-  allProgress?.forEach((p) => {
-    progressMap.set(p.session_id, p)
-  })
+  const progressMap = await getStudentProgressMap(user.id)
 
   // 3. Compute sequential locking status (Temporarily unlocked for assessment)
   const sessionListWithLock = sessions.map((s, index) => {
-    const p = progressMap.get(s.id)
+    const p = s.id ? progressMap[Number(s.id)] || progressMap[s.session_number] : progressMap[s.session_number]
     const isCompleted = p?.status === 'completed'
     const isLocked = false // Unlocked for evaluation
 
@@ -94,9 +76,9 @@ export default async function WorksheetPage({
   const isCurrentSessionLocked = false // Unlocked for evaluation
 
   // Current active session progress
-  const currentProgress = progressMap.get(activeSession.id)
-  const isVideoWatched = currentProgress?.is_video_watched || true // Enabled for review
-  const worksheetData = currentProgress?.worksheet_data || null
+  const currentProgress = activeSession.id ? progressMap[Number(activeSession.id)] || progressMap[activeSession.session_number] : progressMap[activeSession.session_number]
+  const isVideoWatched = (currentProgress as unknown as { is_video_watched?: boolean })?.is_video_watched || true // Enabled for review
+  const worksheetData = (currentProgress as unknown as { worksheet_data?: Record<string, unknown> })?.worksheet_data || null
   const status = currentProgress?.status || null
 
   return (

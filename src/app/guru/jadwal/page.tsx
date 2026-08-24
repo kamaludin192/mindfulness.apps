@@ -1,36 +1,20 @@
-import { createClient } from "@/lib/supabase/server";
 import ScheduleCmsForm from "@/components/guru/ScheduleCmsForm";
 import { SlidersHorizontal } from "lucide-react";
 import { type AvailabilitySettingsPayload } from "./actions";
+import { requireAuth } from "@/services/auth.service";
+import { getCounselorAvailability } from "@/services/counseling.service";
 
 export const metadata = {
   title: "Pengaturan Jadwal Konseling - Portal Guru BK",
 };
 
 export default async function GuruScheduleCmsPage() {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return (
-      <div className="p-8 text-center bg-white rounded-3xl border border-slate-200">
-        <p className="font-bold text-base text-[#0f172a]">Silakan login sebagai Guru BK.</p>
-      </div>
-    );
-  }
+  const { user } = await requireAuth(["guru_bk", "superadmin"]);
 
   // Fetch current availability settings from Supabase
   let initialSettings: AvailabilitySettingsPayload | null = null;
   try {
-    const { data } = await supabase
-      .from("counselor_availability_settings")
-      .select("*")
-      .eq("guru_id", user.id)
-      .single();
-
+    const data = await getCounselorAvailability(user.id);
     if (data) {
       initialSettings = {
         activeDays: data.active_days,

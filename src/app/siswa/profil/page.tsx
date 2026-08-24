@@ -1,5 +1,3 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import ProfileEditor from '@/components/siswa/ProfileEditor'
 import {
@@ -14,6 +12,8 @@ import {
   LogOut,
 } from 'lucide-react'
 import { logoutAction } from './actions'
+import { requireAuth } from '@/services/auth.service'
+import { getStudentProgressMap } from '@/services/exercise.service'
 
 export const metadata = {
   title: 'Profil Siswa - Mindfulness Intervention',
@@ -27,28 +27,13 @@ const SESSIONS_OVERVIEW = [
 ]
 
 export default async function SiswaProfilPage() {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { user, profile } = await requireAuth(['siswa', 'superadmin'])
 
-  if (!user) {
-    redirect('/login')
-  }
+  const progressMap = await getStudentProgressMap(user.id)
+  const progressList = Object.values(progressMap)
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
-
-  const { data: progressList } = await supabase
-    .from('exercise_progress')
-    .select('*')
-    .eq('student_id', user.id)
-
-  const completedCount = progressList?.filter((p) => p.status === 'completed').length || 0
-  const submittedCount = progressList?.length || 0
+  const completedCount = progressList.filter((p) => p.status === 'completed').length
+  const submittedCount = progressList.length
 
   const fullName = profile?.full_name || user.user_metadata?.full_name || 'Siswa'
   const email = user.email || '-'

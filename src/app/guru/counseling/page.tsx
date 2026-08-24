@@ -1,46 +1,20 @@
-import { createClient } from "@/lib/supabase/server";
 import { CounselingTable } from "@/components/guru/CounselingTable";
 import { CalendarCheck2 } from "lucide-react";
+import { requireAuth } from "@/services/auth.service";
+import { getAllBookingsForGuru } from "@/services/counseling.service";
 
 export default async function CounselingPage() {
-  const supabase = createClient();
-  
-  const { data: user, error: authError } = await supabase.auth.getUser();
-  if (authError || !user?.user) {
-    return (
-      <div className="p-8 text-center bg-white rounded-3xl border border-slate-200">
-        <p className="font-bold text-base text-[#0f172a]">Silakan login sebagai Guru BK.</p>
-      </div>
-    );
-  }
+  const { user } = await requireAuth(["guru_bk", "superadmin"]);
+  const bookings = await getAllBookingsForGuru(user.id);
 
-  // Fetch bookings with student profiles
-  const { data: bookings, error } = await supabase
-    .from('counseling_bookings')
-    .select(`
-      id,
-      student_id,
-      guru_id,
-      scheduled_at,
-      status,
-      student:profiles!counseling_bookings_student_id_fkey(
-        full_name
-      )
-    `)
-    .order('scheduled_at', { ascending: false });
-
-  if (error) {
-    throw new Error(`Error fetching counseling bookings: ${error.message}`);
-  }
-
-  const formattedBookings = bookings?.map((b) => ({
+  const formattedBookings = bookings.map((b) => ({
     id: b.id,
-    student_id: b.student_id,
-    guru_id: b.guru_id,
+    student_id: (b.student as unknown as { id?: string })?.id || "",
+    guru_id: user.id,
     scheduled_at: b.scheduled_at,
     status: b.status,
-    student_profile: b.student as unknown as { full_name: string }
-  })) || [];
+    student_profile: b.student as unknown as { full_name: string },
+  }));
 
   return (
     <div className="space-y-6">

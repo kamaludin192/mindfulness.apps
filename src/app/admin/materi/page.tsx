@@ -1,22 +1,13 @@
-import { createClient } from "@/lib/supabase/server";
 import CmsMateriEditor from "@/components/admin/CmsMateriEditor";
 import { Video } from "lucide-react";
+import { getAllSessionMaterials } from "@/services/cms.service";
 
 export const metadata = {
   title: "CMS Materi 4 Sesi - Superadmin CMS",
 };
 
 export default async function AdminMateriPage() {
-  const supabase = createClient();
-
-  const { data: cmsSessions, error } = await supabase
-    .from("cms_contents")
-    .select("session_number, title, video_url")
-    .order("session_number", { ascending: true });
-
-  if (error) {
-    console.warn("Could not fetch CMS sessions, using defaults:", error.message);
-  }
+  const cmsSessions = await getAllSessionMaterials();
 
   return (
     <div className="space-y-6">

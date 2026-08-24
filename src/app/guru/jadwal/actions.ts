@@ -1,7 +1,8 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { getCurrentUser } from '@/services/auth.service'
+import { saveCounselorAvailability } from '@/services/counseling.service'
 
 export interface TimeSlotConfig {
   id: string
@@ -18,30 +19,13 @@ export interface AvailabilitySettingsPayload {
 }
 
 export async function saveAvailabilitySettings(payload: AvailabilitySettingsPayload) {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
+  const user = await getCurrentUser()
   if (!user) {
     throw new Error('Anda harus login sebagai Guru BK.')
   }
 
   try {
-    const { error } = await supabase
-      .from('counselor_availability_settings')
-      .upsert(
-        {
-          guru_id: user.id,
-          active_days: payload.activeDays,
-          time_slots: payload.timeSlots,
-          disabled_dates: payload.disabledDates,
-          custom_notes: payload.customNotes,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: 'guru_id' }
-      )
-
+    const { error } = await saveCounselorAvailability(user.id, payload)
     if (error) {
       console.warn('Database upsert warning (fallback active):', error.message)
     }

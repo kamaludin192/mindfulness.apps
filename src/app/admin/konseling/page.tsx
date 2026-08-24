@@ -1,36 +1,13 @@
-import { createClient } from "@/lib/supabase/server";
 import { CalendarCheck2, Calendar, Clock, MessageSquareQuote } from "lucide-react";
+import { getAllBookingsForAdmin } from "@/services/counseling.service";
 
 export const metadata = {
   title: "Audit Konseling - Superadmin CMS",
 };
 
 export default async function AdminCounselingPage() {
-  const supabase = createClient();
+  const allBookings = await getAllBookingsForAdmin();
 
-  const { data: bookings, error } = await supabase
-    .from("counseling_bookings")
-    .select(`
-      id,
-      student_id,
-      guru_id,
-      scheduled_at,
-      status,
-      created_at,
-      student:profiles!counseling_bookings_student_id_fkey(
-        full_name
-      ),
-      guru:profiles!counseling_bookings_guru_id_fkey(
-        full_name
-      )
-    `)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.warn("Could not fetch bookings:", error.message);
-  }
-
-  const allBookings = bookings || [];
   const pendingCount = allBookings.filter((b) => b.status === "pending").length;
   const approvedCount = allBookings.filter((b) => b.status === "approved").length;
   const rejectedCount = allBookings.filter((b) => b.status === "rejected").length;

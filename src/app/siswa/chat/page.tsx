@@ -1,5 +1,3 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import ChatInterface from '@/components/siswa/ChatInterface'
 import CounselingBookingCard from '@/components/siswa/CounselingBookingCard'
 import {
@@ -7,6 +5,11 @@ import {
   PhoneCall,
   Sparkles,
 } from 'lucide-react'
+import { requireAuth } from '@/services/auth.service'
+import { getProfilesByRole } from '@/services/profile.service'
+import { getConversationMessages } from '@/services/chat.service'
+import { getCounselorAvailability } from '@/services/counseling.service'
+import { createClient } from '@/lib/supabase/server'
 
 export const metadata = {
   title: 'Konseling & Chat BK - Siswa',
@@ -17,21 +20,10 @@ export default async function ChatPage({
 }: {
   searchParams?: { guruId?: string }
 }) {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login')
-  }
+  const { user } = await requireAuth(['siswa', 'superadmin'])
 
   // 1. Find all Guru BK to chat with
-  const { data: guruList } = await supabase
-    .from('profiles')
-    .select('id, full_name, created_at')
-    .eq('role', 'guru_bk')
-    .order('full_name', { ascending: true })
+  const guruList = await getProfilesByRole('guru_bk')
 
   // Find active guru
   const selectedGuruId = searchParams?.guruId
@@ -45,15 +37,10 @@ export default async function ChatPage({
   const counselorName = activeGuru.full_name || 'Dra. Endang (Guru BK)'
 
   // 2. Fetch initial chat messages for the selected guru
-  const { data: initialMessages } = await supabase
-    .from('chat_messages')
-    .select('*')
-    .or(
-      `and(sender_id.eq.${user.id},receiver_id.eq.${activeGuru.id}),and(sender_id.eq.${activeGuru.id},receiver_id.eq.${user.id})`
-    )
-    .order('created_at', { ascending: true })
+  const initialMessages = await getConversationMessages(user.id, activeGuru.id)
 
   // 3. Fetch latest booking status
+  const supabase = createClient()
   const { data: existingBookings } = await supabase
     .from('counseling_bookings')
     .select('*')
@@ -68,11 +55,7 @@ export default async function ChatPage({
   } | undefined
 
   // 4. Fetch Counselor Availability Settings for active guru
-  const { data: availabilitySettings } = await supabase
-    .from('counselor_availability_settings')
-    .select('*')
-    .eq('guru_id', activeGuru.id)
-    .single()
+  const availabilitySettings = await getCounselorAvailability(activeGuru.id)
 
   return (
     <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-6">

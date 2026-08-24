@@ -16,13 +16,9 @@ import {
   Loader2,
 } from 'lucide-react'
 import { updateUserRole, registerGuruBk } from '@/app/admin/actions'
+import type { UserProfile } from '@/types/auth'
 
-export type UserProfile = {
-  id: string
-  full_name: string | null
-  role: 'siswa' | 'guru_bk' | 'superadmin'
-  created_at: string
-}
+export type { UserProfile }
 
 export default function UserManagementTable({
   initialUsers,

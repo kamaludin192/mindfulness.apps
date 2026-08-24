@@ -1,5 +1,3 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import GuruProfileEditor from '@/components/guru/GuruProfileEditor'
 import {
@@ -14,43 +12,24 @@ import {
   CreditCard,
 } from 'lucide-react'
 import { logoutAction } from './actions'
+import { requireAuth } from '@/services/auth.service'
+import { getProfilesByRole } from '@/services/profile.service'
+import { getAllBookingsForGuru } from '@/services/counseling.service'
+import { getCompletedExercisesCount } from '@/services/exercise.service'
 
 export const metadata = {
   title: 'Profil Guru BK - mindfulnessintervention.id',
 }
 
 export default async function GuruProfilPage() {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { user, profile } = await requireAuth(['guru_bk', 'superadmin'])
 
-  if (!user) {
-    redirect('/login')
-  }
+  const students = await getProfilesByRole('siswa')
+  const studentCount = students.length
 
-  // 1. Fetch Guru Profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
+  const bookings = await getAllBookingsForGuru(user.id)
 
-  // 2. Fetch stats
-  const { count: studentCount } = await supabase
-    .from('profiles')
-    .select('id', { count: 'exact', head: true })
-    .eq('role', 'siswa')
-
-  const { data: bookings } = await supabase
-    .from('counseling_bookings')
-    .select('id, status')
-    .eq('guru_id', user.id)
-
-  const { count: completedWorksheetsCount } = await supabase
-    .from('exercise_progress')
-    .select('id', { count: 'exact', head: true })
-    .eq('status', 'completed')
+  const completedWorksheetsCount = await getCompletedExercisesCount()
 
   const fullName = profile?.full_name || user.user_metadata?.full_name || 'Guru BK'
   const nip = user.user_metadata?.nip || ''

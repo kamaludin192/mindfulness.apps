@@ -1,5 +1,3 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import {
   Sparkles,
@@ -15,84 +13,34 @@ import {
 } from 'lucide-react'
 import MoodTracker from '@/components/siswa/MoodTracker'
 import PostProgramEvaluationCard from '@/components/siswa/PostProgramEvaluationCard'
+import { requireAuth } from '@/services/auth.service'
+import { getAllSessionMaterials } from '@/services/cms.service'
+import { DEFAULT_SESSIONS, getStudentProgressMap } from '@/services/exercise.service'
+import { getTodayStudentCheckIn } from '@/services/mood.service'
+import { getProfilesByRole } from '@/services/profile.service'
+import type { SessionItem } from '@/types/exercise'
 
 export const metadata = {
   title: 'Dashboard Siswa - mindfulnessintervention.id',
 }
 
-interface SessionItem {
-  id?: string
-  session_number: number
-  title: string
-  description: string
-}
-
-const DEFAULT_SESSIONS: SessionItem[] = [
-  {
-    session_number: 1,
-    title: 'Mindful Breathing',
-    description: 'Latihan dasar pernapasan sadar dan melatih fokus pikiran.',
-  },
-  {
-    session_number: 2,
-    title: 'Mindful Sitting and Mindful Listening',
-    description: 'Melatih kesadaran saat duduk tenang dan mendengarkan dengan penuh perhatian tanpa menghakimi.',
-  },
-  {
-    session_number: 3,
-    title: 'Body Scanning',
-    description: 'Mempelajari pemindaian sensasi tubuh secara menyeluruh untuk meredakan ketegangan fisik dan kecemasan.',
-  },
-  {
-    session_number: 4,
-    title: 'Gratitude and Loving in Kindness',
-    description: 'Menumbuhkan rasa syukur serta memupuk cinta kasih dan kebaikan hati terhadap diri sendiri dan orang lain.',
-  },
-]
-
 export default async function SiswaDashboard() {
-  const supabase = createClient()
+  const { user, profile } = await requireAuth(['siswa', 'superadmin'])
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login')
-  }
-
-  // 1. Fetch Student Profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
-
-  const fullName = profile?.full_name || user.user_metadata?.full_name || 'Siswa'
+  const fullName = profile.full_name || 'Siswa'
   const firstName = fullName.split(' ')[0]
 
-  // 2. Fetch Sessions from CMS
-  const { data: dbSessions } = await supabase
-    .from('cms_contents')
-    .select('*')
-    .order('session_number', { ascending: true })
-
+  // 1. Fetch Sessions from CMS or fallback
+  const dbSessions = await getAllSessionMaterials()
   const sessions = dbSessions && dbSessions.length > 0 ? dbSessions : DEFAULT_SESSIONS
 
-  // 3. Fetch Student's Progress for Each Session
-  const { data: progressList } = await supabase
-    .from('exercise_progress')
-    .select('*')
-    .eq('student_id', user.id)
-
-  const progressMap = new Map()
-  progressList?.forEach((p) => {
-    progressMap.set(p.session_id, p)
-  })
+  // 2. Fetch Student Progress
+  const progressMap = await getStudentProgressMap(user.id)
+  const progressList = Object.values(progressMap)
 
   // Calculate sequential progression lock (Temporarily unlocked for assessment)
   const sessionListWithLock = sessions.map((s: SessionItem, index: number) => {
-    const prog = s.id ? progressMap.get(s.id) : null
+    const prog = s.id ? progressMap[Number(s.id)] || progressMap[s.session_number] : progressMap[s.session_number]
     const isCompleted = prog?.status === 'completed'
     const isLocked = false // Unlocked for evaluation
 
@@ -106,24 +54,14 @@ export default async function SiswaDashboard() {
   })
 
   // Calculate stats
-  const completedCount = progressList?.filter((p) => p.status === 'completed').length || 0
+  const completedCount = progressList.filter((p) => p.status === 'completed').length
   const progressPercent = Math.round((completedCount / 4) * 100)
 
-  // 4. Fetch Latest Daily Emotion Check-In
-  const { data: latestAssessment } = await supabase
-    .from('assessments')
-    .select('*')
-    .eq('student_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
+  // 3. Fetch Latest Daily Emotion Check-In
+  const latestAssessment = await getTodayStudentCheckIn(user.id)
 
-  // 5. Fetch available Guru BKs
-  const { data: guruList } = await supabase
-    .from('profiles')
-    .select('id, full_name')
-    .eq('role', 'guru_bk')
-    .order('full_name', { ascending: true })
+  // 4. Fetch available Guru BKs
+  const guruList = await getProfilesByRole('guru_bk')
 
   // 6. Daily Affirmation
   const affirmations = [

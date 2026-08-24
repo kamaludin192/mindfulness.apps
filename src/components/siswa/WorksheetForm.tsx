@@ -54,11 +54,13 @@ export interface WorksheetPayload {
   submittedAt?: string
 }
 
+import type { ExerciseProgressStatus } from '@/types/exercise'
+
 interface WorksheetFormProps {
   sessionId: string
   sessionNumber: number
   initialData?: WorksheetPayload | null
-  status: 'in_progress' | 'completed' | null
+  status: ExerciseProgressStatus | null
 }
 
 // Default templates for worksheets

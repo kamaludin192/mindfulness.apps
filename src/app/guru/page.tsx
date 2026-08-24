@@ -1,4 +1,3 @@
-import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import {
   Users,
@@ -9,84 +8,26 @@ import {
   Sparkles,
   Calendar,
 } from "lucide-react";
+import { getProfilesByRole } from "@/services/profile.service";
+import { getCompletedExercisesCount, getRecentSubmissions } from "@/services/exercise.service";
+import { getAllAssessmentsWithStudents } from "@/services/mood.service";
+import { getAllBookingsForAdmin } from "@/services/counseling.service";
+import { MOOD_META } from "@/types/mood";
 
 export default async function GuruDashboard() {
-  const supabase = createClient();
+  const students = await getProfilesByRole("siswa");
+  const totalStudents = students.length;
 
-  // 1. Fetch count of students
-  const { count: studentCount } = await supabase
-    .from("profiles")
-    .select("*", { count: "exact", head: true })
-    .eq("role", "siswa");
+  const completedWorksheets = await getCompletedExercisesCount();
 
-  // 2. Fetch completed exercises count
-  const { count: completedExercisesCount } = await supabase
-    .from("exercise_progress")
-    .select("*", { count: "exact", head: true })
-    .eq("status", "completed");
+  const allBookings = await getAllBookingsForAdmin();
+  const pendingRequests = allBookings.filter((b) => b.status === "pending").length;
+  const upcomingBookings = allBookings.slice(0, 4);
 
-  // 3. Fetch pending counseling bookings
-  const { count: pendingBookingsCount } = await supabase
-    .from("counseling_bookings")
-    .select("*", { count: "exact", head: true })
-    .eq("status", "pending");
+  const recentProgress = await getRecentSubmissions(6);
 
-  // 4. Fetch recent student exercise submissions
-  const { data: recentProgress } = await supabase
-    .from("exercise_progress")
-    .select(`
-      id,
-      session_id,
-      status,
-      points_earned,
-      created_at,
-      student:profiles!exercise_progress_student_id_fkey(
-        full_name
-      )
-    `)
-    .order("created_at", { ascending: false })
-    .limit(6);
-
-  // 5. Fetch upcoming counseling sessions
-  const { data: upcomingBookings } = await supabase
-    .from("counseling_bookings")
-    .select(`
-      id,
-      scheduled_at,
-      status,
-      student:profiles!counseling_bookings_student_id_fkey(
-        full_name
-      )
-    `)
-    .order("scheduled_at", { ascending: true })
-    .limit(4);
-
-  // 6. Fetch recent student emotion check-ins & reflections
-  const { data: recentAssessments } = await supabase
-    .from("assessments")
-    .select(`
-      id,
-      mood_score,
-      notes,
-      created_at,
-      student:profiles(
-        full_name
-      )
-    `)
-    .order("created_at", { ascending: false })
-    .limit(6);
-
-  const totalStudents = studentCount ?? 0;
-  const completedWorksheets = completedExercisesCount ?? 0;
-  const pendingRequests = pendingBookingsCount ?? 0;
-
-  const MOOD_META: Record<number, { label: string; emoji: string; color: string }> = {
-    1: { label: "Sangat Buruk", emoji: "😢", color: "bg-red-50 text-red-700 border-red-200" },
-    2: { label: "Kurang Baik", emoji: "🙁", color: "bg-orange-50 text-orange-700 border-orange-200" },
-    3: { label: "Biasa Saja", emoji: "😐", color: "bg-amber-50 text-amber-700 border-amber-200" },
-    4: { label: "Cukup Baik", emoji: "🙂", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-    5: { label: "Sangat Senang", emoji: "😄", color: "bg-green-50 text-green-700 border-green-200" },
-  };
+  const allAssessments = await getAllAssessmentsWithStudents();
+  const recentAssessments = allAssessments.slice(0, 6);
 
   return (
     <div className="space-y-8">

@@ -1,37 +1,27 @@
-"use server";
+'use server'
 
-import { createClient } from "@/lib/supabase/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache'
+import { getCurrentUser, getCurrentUserProfile } from '@/services/auth.service'
+import { updateBookingStatus } from '@/services/counseling.service'
 
-export async function updateCounselingStatus(bookingId: string, newStatus: 'approved' | 'rejected') {
-  const supabase = createClient();
-  
-  // Verify that the user is a guru_bk
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData?.user) {
-    throw new Error("Unauthorized");
+export async function updateCounselingStatus(
+  bookingId: string,
+  newStatus: 'approved' | 'rejected'
+) {
+  const user = await getCurrentUser()
+  if (!user) {
+    throw new Error('Unauthorized')
   }
 
-  const { data: profile, error: profileError } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', userData.user.id)
-    .single();
-
-  if (profileError || profile?.role !== 'guru_bk') {
-    throw new Error("Unauthorized: Only Guru BK can approve/reject counseling");
+  const profile = await getCurrentUserProfile()
+  if (!profile || profile.role !== 'guru_bk') {
+    throw new Error('Unauthorized: Only Guru BK can approve/reject counseling')
   }
 
-  // Update status
-  const { error: updateError } = await supabase
-    .from('counseling_bookings')
-    .update({ status: newStatus })
-    .eq('id', bookingId)
-    .eq('guru_id', userData.user.id);
-
-  if (updateError) {
-    throw new Error(`Failed to update booking: ${updateError.message}`);
+  const result = await updateBookingStatus(bookingId, user.id, newStatus)
+  if (!result.success) {
+    throw new Error(result.error || 'Failed to update booking')
   }
 
-  revalidatePath("/guru/counseling");
+  revalidatePath('/guru/counseling')
 }

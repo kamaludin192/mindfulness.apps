@@ -1,33 +1,13 @@
-import { createClient } from "@/lib/supabase/server";
-import EmotionMonitoringView, { type AssessmentItem } from "@/components/shared/EmotionMonitoringView";
+import EmotionMonitoringView from "@/components/shared/EmotionMonitoringView";
 import { Activity } from "lucide-react";
+import { getAllAssessmentsWithStudents } from "@/services/mood.service";
 
 export const metadata = {
   title: "Log Emosi & Refleksi Siswa - Superadmin CMS",
 };
 
 export default async function AdminEmotionMonitoringPage() {
-  const supabase = createClient();
-
-  // Fetch all assessments with student profiles for Superadmin
-  const { data: assessments, error } = await supabase
-    .from("assessments")
-    .select(`
-      id,
-      mood_score,
-      notes,
-      created_at,
-      student:profiles(
-        id,
-        full_name,
-        email
-      )
-    `)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.warn("Could not fetch assessments for Admin:", error.message);
-  }
+  const assessments = await getAllAssessmentsWithStudents();
 
   return (
     <div className="space-y-6">
@@ -47,7 +27,7 @@ export default async function AdminEmotionMonitoringPage() {
 
       {/* Interactive Monitoring View */}
       <EmotionMonitoringView
-        assessments={(assessments || []) as unknown as AssessmentItem[]}
+        assessments={assessments}
         role="admin"
       />
     </div>
