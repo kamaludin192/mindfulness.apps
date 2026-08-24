@@ -24,7 +24,30 @@ export async function getCurrentUserProfile(): Promise<UserProfile | null> {
     .from('profiles')
     .select('id, full_name, role, school, phone, avatar_url, created_at, updated_at')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+
+  if (!profile) {
+    const fullName =
+      user.user_metadata?.full_name ||
+      user.user_metadata?.name ||
+      user.email?.split('@')[0] ||
+      'Siswa'
+
+    const avatarUrl =
+      user.user_metadata?.avatar_url ||
+      user.user_metadata?.picture ||
+      null
+
+    const newProfile = {
+      id: user.id,
+      full_name: fullName,
+      role: 'siswa' as UserRole,
+      avatar_url: avatarUrl,
+    }
+
+    await supabase.from('profiles').upsert(newProfile)
+    return newProfile as UserProfile
+  }
 
   return profile as UserProfile | null
 }

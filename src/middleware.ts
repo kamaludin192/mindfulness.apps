@@ -78,14 +78,14 @@ export async function middleware(request: NextRequest) {
   }
 
   if (user) {
-    // Fetch user profile to check role
+    // Fetch user profile to check role safely
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
-    const role = profile?.role
+    const role = profile?.role || 'siswa'
 
     if (isAuthRoute) {
       const url = request.nextUrl.clone()
