@@ -15,6 +15,7 @@ import {
   ExternalLink,
   GraduationCap,
   Sparkles,
+  Smile,
 } from 'lucide-react'
 import { logoutAction } from '@/app/siswa/profil/actions'
 
@@ -24,6 +25,12 @@ const ADMIN_NAV_ITEMS = [
     label: 'Overview & Metrik',
     icon: LayoutDashboard,
     exact: true,
+  },
+  {
+    href: '/admin/refleksi',
+    label: 'Log Emosi & Refleksi',
+    icon: Smile,
+    exact: false,
   },
   {
     href: '/admin/users',

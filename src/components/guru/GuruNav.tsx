@@ -14,6 +14,7 @@ import {
   X,
   ShieldCheck,
   UserCheck,
+  Smile,
 } from 'lucide-react'
 import { logoutAction } from '@/app/guru/profil/actions'
 import NotificationBell from '@/components/shared/NotificationBell'
@@ -30,6 +31,12 @@ const NAV_ITEMS = [
     href: '/guru/dashboard',
     label: 'Monitoring Siswa',
     icon: Users,
+    exact: false,
+  },
+  {
+    href: '/guru/refleksi',
+    label: 'Monitoring Emosi & Refleksi',
+    icon: Smile,
     exact: false,
   },
   {

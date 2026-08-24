@@ -172,10 +172,10 @@ export default async function GuruDashboard() {
             </p>
           </div>
           <Link
-            href="/guru/dashboard"
+            href="/guru/refleksi"
             className="text-xs font-bold text-[#057a44] hover:underline flex items-center gap-1 shrink-0"
           >
-            <span>Semua Siswa</span>
+            <span>Buka Halaman Monitoring Khusus</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

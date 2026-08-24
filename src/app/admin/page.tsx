@@ -214,6 +214,13 @@ export default async function AdminDashboardOverview() {
               Data refleksi harian siswa atas pertanyaan: <em>&ldquo;Setelah mengisi emosi hari ini, apa yang sedang Anda rasakan dan pikirkan hari ini?&rdquo;</em>
             </p>
           </div>
+          <Link
+            href="/admin/refleksi"
+            className="text-xs font-bold text-amber-800 hover:text-amber-900 hover:underline flex items-center gap-1 shrink-0"
+          >
+            <span>Buka Halaman Monitoring Khusus</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
