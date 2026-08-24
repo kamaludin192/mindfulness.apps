@@ -56,7 +56,7 @@ export default function ProgramPage() {
                 </div>
                 <h3 className="font-bold text-lg mb-3">Asesmen</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Mengidentifikasi kondisi psikologis awal, tingkat stres akademik, dan kesiapan emosional siswa untuk menentukan kesesuaian pendampingan.
+                  Mengenali kondisi awal emosi dan pernapasan Anda untuk memastikan kesiapan dalam mengikuti latihan.
                 </p>
               </div>
 
@@ -67,7 +67,7 @@ export default function ProgramPage() {
                 </div>
                 <h3 className="font-bold text-lg mb-3">Latihan Rutin</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Menumbuhkan kebiasaan baru melalui 4 modul video interaktif dan pengisian digital worksheet reflektif secara konsisten.
+                  Mempraktikkan video mindfulness dan mengisi lembar kerja digital untuk mengintegrasikan pengalaman.
                 </p>
               </div>
 
@@ -78,7 +78,7 @@ export default function ProgramPage() {
                 </div>
                 <h3 className="font-bold text-lg mb-3">Evaluasi</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed">
-                  Ambil langkah pertama untuk memulai kesadaran.
+                  Memantau perkembangan diri dan berdiskusi online bersama Guru BK saat membutuhkan bimbingan mendalam.
                 </p>
               </div>
             </div>
