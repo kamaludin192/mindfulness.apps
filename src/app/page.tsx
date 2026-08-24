@@ -11,7 +11,7 @@ import {
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen font-sans bg-[#f5f8ec] text-[#2b3a1a] flex flex-col selection:bg-[#c2db8f]/40 relative overflow-x-hidden">
+    <div className="min-h-screen font-sans bg-[#f5f8ec] text-[#2b3a1a] flex flex-col selection:bg-[#c2db8f]/40 relative">
       <Navbar />
 
       <main className="flex-1">
