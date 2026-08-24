@@ -288,7 +288,7 @@ export default function PostProgramEvaluationCard({
                 <div>
                   <p className="font-extrabold text-xs sm:text-sm">Lanjut Konseling dengan Guru BK</p>
                   <p className={`text-[11px] ${followUp === 'konseling' ? 'text-[#0f172a]/80' : 'text-white/70'}`}>
-                    Ingin bimbingan tatap muka / konsultasi lanjutan bersama Guru BK.
+                    Ingin bimbingan online / konsultasi lanjutan bersama Guru BK.
                   </p>
                 </div>
               </button>

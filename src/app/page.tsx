@@ -118,7 +118,7 @@ export default function HomePage() {
                   </div>
                   <h3 className="font-bold text-base text-[#1e2a14]">Evaluasi</h3>
                   <p className="text-xs text-[#2b3a1a]/80 leading-relaxed">
-                    Memantau perkembangan diri dan berdiskusi tatap muka bersama Guru BK saat membutuhkan bimbingan mendalam.
+                    Memantau perkembangan diri dan berdiskusi online bersama Guru BK saat membutuhkan bimbingan mendalam.
                   </p>
                 </div>
               </div>

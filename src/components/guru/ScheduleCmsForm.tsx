@@ -51,7 +51,7 @@ export default function ScheduleCmsForm({
   )
   const [customNotes, setCustomNotes] = useState<string>(
     initialSettings?.customNotes ||
-      'Sesi konseling tatap muka diadakan di Ruang Bimbingan Konseling (BK). Harap hadir 5 menit sebelum waktu yang dipilih.'
+      'Sesi konseling online diadakan melalui ruang chat interaktif. Harap standby di ruang chat sesuai jadwal yang dipilih.'
   )
 
   // New slot form state
@@ -161,7 +161,7 @@ export default function ScheduleCmsForm({
                 1. Jadwal Layanan Rutin (Hari & Jam Konseling)
               </h2>
               <p className="text-xs text-[#475569]">
-                Tentukan hari aktif kerja dan jam sesi bimbingan tatap muka yang dapat dipilih siswa.
+                Tentukan hari aktif kerja dan jam sesi bimbingan online yang dapat dipilih siswa.
               </p>
             </div>
           </div>
@@ -359,7 +359,7 @@ export default function ScheduleCmsForm({
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-extrabold font-serif text-[#0f172a]">
-                3. Petunjuk & Lokasi untuk Siswa
+                3. Petunjuk Konseling untuk Siswa
               </h2>
               <p className="text-xs text-[#475569]">
                 Pesan ini akan ditampilkan tepat di bawah form pengajuan jadwal siswa.

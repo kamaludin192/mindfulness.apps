@@ -49,13 +49,13 @@ export default async function CounselingPage() {
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-xs font-bold text-[#065f46] border border-emerald-200 mb-2">
             <CalendarCheck2 className="w-3.5 h-3.5" />
-            <span>Layanan Konseling Tatap Muka</span>
+            <span>Layanan Konseling Online</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold font-serif text-[#0f172a]">
             Persetujuan & Jadwal Konseling
           </h1>
           <p className="text-xs sm:text-sm text-[#334155] font-medium">
-            Kelola permintaan sesi bimbingan konseling dan konfirmasi waktu temu bersama siswa.
+            Kelola permintaan sesi bimbingan konseling dan konfirmasi waktu sesi online bersama siswa.
           </p>
         </div>
       </div>

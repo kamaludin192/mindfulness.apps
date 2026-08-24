@@ -127,7 +127,7 @@ export default function CounselingBookingCard({
             Jadwalkan Konseling Guru BK
           </h2>
           <p className="text-xs sm:text-sm text-[#475569]">
-            Pilih Guru BK dan slot jam privat yang tersedia untuk bimbingan tatap muka.
+            Pilih Guru BK dan kuota jam privat yang tersedia untuk bimbingan online.
           </p>
         </div>
 

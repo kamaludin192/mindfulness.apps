@@ -86,7 +86,7 @@ export default async function ChatPage({
           Ruang Konseling & Chat Guru BK
         </h1>
         <p className="text-xs sm:text-sm text-[#334155] font-medium">
-          Gunakan ruang ini untuk berkonsultasi secara aman dan mengajukan jadwal temu bimbingan tatap muka bersama Guru BK.
+          Gunakan ruang ini untuk berkonsultasi secara aman dan mengajukan jadwal sesi bimbingan online bersama Guru BK.
         </p>
       </div>
 
