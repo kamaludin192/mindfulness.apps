@@ -28,11 +28,28 @@ export default function VideoPlayer({
     }
   }
 
-  const embedUrl = videoUrl?.includes('youtu.be/')
-    ? videoUrl.replace('youtu.be/', 'youtube.com/embed/')
-    : videoUrl?.includes('youtube.com/watch')
-    ? videoUrl.replace('watch?v=', 'embed/')
-    : videoUrl
+  let embedUrl = videoUrl
+  if (videoUrl) {
+    try {
+      const isYouTube = videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')
+      if (isYouTube) {
+        let videoId = ''
+        if (videoUrl.includes('youtu.be/')) {
+          videoId = videoUrl.split('youtu.be/')[1].split('?')[0]
+        } else if (videoUrl.includes('watch?v=')) {
+          videoId = new URLSearchParams(videoUrl.split('?')[1]).get('v') || ''
+        } else if (videoUrl.includes('embed/')) {
+          videoId = videoUrl.split('embed/')[1].split('?')[0]
+        }
+        
+        if (videoId) {
+          embedUrl = `https://www.youtube.com/embed/${videoId}`
+        }
+      }
+    } catch (e) {
+      console.warn('Gagal memproses URL video:', e)
+    }
+  }
 
   return (
     <div className="flex flex-col gap-4">
