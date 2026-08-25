@@ -171,13 +171,14 @@ export async function registerGuruBkByAdmin(payload: {
         role: 'guru_bk' as const,
         created_at: new Date().toISOString(),
       }
+      // Gunakan UPSERT agar jika baris belum ada, otomatis dibuat
       await fallbackClient
         .from('profiles')
-        .update({
+        .upsert({
+          id: signUpData.user.id,
           role: 'guru_bk',
           full_name: payload.fullName.trim(),
         })
-        .eq('id', signUpData.user.id)
       return { success: true, user: newProfile }
     }
   }

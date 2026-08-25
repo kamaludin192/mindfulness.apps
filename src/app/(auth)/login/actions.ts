@@ -40,19 +40,20 @@ export async function login(prevState: AuthState, formData: FormData): Promise<A
       .from('profiles')
       .select('role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
-    const role = profile?.role
+    const role = profile?.role || user.user_metadata?.role || 'siswa'
 
     if (role === 'superadmin') {
       redirect('/admin')
     } else if (role === 'guru_bk') {
       redirect('/guru')
-    } else if (role === 'siswa') {
+    } else {
       redirect('/siswa')
     }
   }
 
+  // Fallback if no user is returned (should be caught by error above, but just in case)
   redirect('/')
 }
 
@@ -109,7 +110,7 @@ export async function register(prevState: AuthState, formData: FormData): Promis
     }
 
     // Jika tidak ada session, coba paksa login agar langsung masuk
-    const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+    const { data: loginData } = await supabase.auth.signInWithPassword({
       email: email.trim(),
       password: password,
     })

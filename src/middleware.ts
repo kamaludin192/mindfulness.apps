@@ -85,7 +85,7 @@ export async function middleware(request: NextRequest) {
       .eq('id', user.id)
       .maybeSingle()
 
-    const role = profile?.role || 'siswa'
+    const role = profile?.role || user.user_metadata?.role || 'siswa'
 
     if (isAuthRoute) {
       const url = request.nextUrl.clone()

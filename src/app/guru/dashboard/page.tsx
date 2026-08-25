@@ -37,7 +37,13 @@ export default async function GuruDashboardMonitoring() {
     .order('full_name', { ascending: true });
 
   if (error) {
-     throw new Error(`Error fetching students progress: ${error.message}`);
+    return (
+      <div className="p-8 text-center bg-red-50 rounded-3xl border border-red-200">
+        <p className="font-bold text-red-700">Gagal memuat data progres siswa.</p>
+        <p className="text-xs text-red-600 mt-2">{error.message}</p>
+        <p className="text-xs text-red-600 mt-1">Pastikan skema database dan cache sudah diperbarui.</p>
+      </div>
+    );
   }
 
   return (
