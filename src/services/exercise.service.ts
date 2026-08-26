@@ -26,18 +26,17 @@ export const DEFAULT_SESSIONS: SessionItem[] = [
 
 export async function getStudentProgressMap(
   studentId: string
-): Promise<Record<number, ExerciseProgress>> {
+): Promise<Record<string, ExerciseProgress>> {
   const supabase = createClient()
   const { data: progressList } = await supabase
     .from('exercise_progress')
     .select('*')
     .eq('student_id', studentId)
 
-  const map: Record<number, ExerciseProgress> = {}
+  const map: Record<string, ExerciseProgress> = {}
   if (progressList) {
     for (const item of progressList) {
-      const sId = Number(item.session_id)
-      map[sId] = item as ExerciseProgress
+      map[String(item.session_id)] = item as ExerciseProgress
     }
   }
   return map

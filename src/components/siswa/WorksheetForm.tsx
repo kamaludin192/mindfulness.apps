@@ -94,6 +94,7 @@ export default function WorksheetForm({
 }: WorksheetFormProps) {
   const [loading, setLoading] = useState(false)
   const [savedSuccess, setSavedSuccess] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
 
   // Sesi 1 State (Mindful Breathing)
   const [breathingRows, setBreathingRows] = useState<BreathingRow[]>(
@@ -138,6 +139,7 @@ export default function WorksheetForm({
 
       await submitWorksheet(sessionId, JSON.stringify(payload))
       setSavedSuccess(true)
+      setIsEditing(false)
     } catch (err) {
       console.error(err)
     } finally {
@@ -145,7 +147,7 @@ export default function WorksheetForm({
     }
   }
 
-  const isCompleted = status === 'completed' || savedSuccess
+  const isCompleted = (status === 'completed' || savedSuccess) && !isEditing
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-6 pt-6 border-t border-[#d5dcc4]">
@@ -707,7 +709,7 @@ export default function WorksheetForm({
             </div>
             <button
               type="button"
-              onClick={() => setSavedSuccess(false)}
+              onClick={() => setIsEditing(true)}
               className="px-4 py-2 bg-white hover:bg-green-100 text-green-800 text-xs font-bold rounded-xl border border-green-300 transition-colors cursor-pointer shrink-0"
             >
               Edit / Tambah Catatan

@@ -55,11 +55,21 @@ export default async function WorksheetPage({
   // 2. Fetch Progress for All Sessions to calculate sequential locking
   const progressMap = await getStudentProgressMap(user.id)
 
-  // 3. Compute sequential locking status (Temporarily unlocked for assessment)
+  // 3. Compute sequential locking status
   const sessionListWithLock = sessions.map((s, index) => {
-    const p = s.id ? progressMap[Number(s.id)] || progressMap[s.session_number] : progressMap[s.session_number]
+    // Match by UUID string or fallback to stringified session_number
+    const p = s.id ? progressMap[s.id] || progressMap[String(s.session_number)] : progressMap[String(s.session_number)]
     const isCompleted = p?.status === 'completed'
-    const isLocked = false // Unlocked for evaluation
+    
+    // Lock if previous session exists and is NOT completed
+    let isLocked = false
+    if (index > 0) {
+      const prevSession = sessions[index - 1]
+      const prevP = prevSession.id ? progressMap[prevSession.id] || progressMap[String(prevSession.session_number)] : progressMap[String(prevSession.session_number)]
+      if (prevP?.status !== 'completed') {
+        isLocked = true
+      }
+    }
 
     return {
       ...s,
@@ -73,11 +83,11 @@ export default async function WorksheetPage({
 
   const activeSessionId = searchParams.session || sessions[0].id
   const activeSession = sessionListWithLock.find((s) => s.id === activeSessionId) || sessionListWithLock[0]
-  const isCurrentSessionLocked = false // Unlocked for evaluation
+  const isCurrentSessionLocked = activeSession.isLocked
 
   // Current active session progress
-  const currentProgress = activeSession.id ? progressMap[Number(activeSession.id)] || progressMap[activeSession.session_number] : progressMap[activeSession.session_number]
-  const isVideoWatched = (currentProgress as unknown as { is_video_watched?: boolean })?.is_video_watched || true // Enabled for review
+  const currentProgress = activeSession.id ? progressMap[activeSession.id] || progressMap[String(activeSession.session_number)] : progressMap[String(activeSession.session_number)]
+  const isVideoWatched = (currentProgress as unknown as { is_video_watched?: boolean })?.is_video_watched || false
   const worksheetData = (currentProgress as unknown as { worksheet_data?: Record<string, unknown> })?.worksheet_data || null
   const status = currentProgress?.status || null
 
