@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { markVideoWatched } from '@/app/siswa/worksheet/actions'
 import { CheckCircle2, PlayCircle, Eye } from 'lucide-react'
 
@@ -15,12 +16,14 @@ export default function VideoPlayer({
 }) {
   const [isWatched, setIsWatched] = useState(initialWatched)
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const handleWatchComplete = async () => {
     setLoading(true)
     try {
       await markVideoWatched(sessionId)
       setIsWatched(true)
+      router.refresh()
     } catch (e) {
       console.error(e)
     } finally {
