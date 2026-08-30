@@ -245,6 +245,30 @@ export default function LayoutCmsEditor({
             </h4>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1.5 md:col-span-2 pt-2 border-t border-slate-100">
+                  <label className="text-xs font-bold text-[#0f172a]">
+                    Isi Visi Kami
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={config.tentangKamiPage.visiText}
+                    onChange={(e) => handleTentangChange('visiText', e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 focus:bg-white outline-none leading-relaxed"
+                  />
+                </div>
+
+                <div className="space-y-1.5 md:col-span-2">
+                  <label className="text-xs font-bold text-[#0f172a]">
+                    Teks Stempel Melingkar
+                  </label>
+                  <input
+                    type="text"
+                    value={config.tentangKamiPage.stampText}
+                    onChange={(e) => handleTentangChange('stampText', e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 focus:bg-white outline-none"
+                  />
+                </div>
+
               <div className="space-y-1.5 md:col-span-2">
                 <label className="text-xs font-bold text-[#0f172a]">
                   Badge Teks Atas
@@ -456,6 +480,73 @@ export default function LayoutCmsEditor({
             </div>
           </div>
 
+          {/* 4 Sessions Preview */}
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-slate-200 shadow-xs space-y-5">
+            <h4 className="font-serif font-extrabold text-base text-[#0f172a] border-b border-slate-200 pb-3 flex items-center gap-2">
+              <Layers className="w-4 h-4 text-amber-500" />
+              <span>C. Sekilas 4 Sesi Latihan</span>
+            </h4>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[#0f172a]">Badge / Label Atas</label>
+                <input
+                  type="text"
+                  value={config.landingPage.sessionsBadge}
+                  onChange={(e) => handleLandingChange('sessionsBadge', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[#0f172a]">Judul Utama (Heading)</label>
+                <input
+                  type="text"
+                  value={config.landingPage.sessionsTitle}
+                  onChange={(e) => handleLandingChange('sessionsTitle', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[#0f172a]">Teks Link Navigasi</label>
+                <input
+                  type="text"
+                  value={config.landingPage.sessionsLinkText}
+                  onChange={(e) => handleLandingChange('sessionsLinkText', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+              {[1, 2, 3, 4].map((num) => (
+                <div key={num} className="p-4 rounded-2xl bg-[#f8fafc] border border-slate-200 space-y-2">
+                  <span className="text-xs font-bold text-emerald-800">Konten Sesi {num}</span>
+                  <input
+                    type="text"
+                    value={config.landingPage[`session${num}Title` as keyof typeof config.landingPage]}
+                    onChange={(e) => handleLandingChange(`session${num}Title` as keyof typeof config.landingPage, e.target.value)}
+                    placeholder="Judul Sesi"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-medium text-[#0f172a] outline-none"
+                  />
+                  <textarea
+                    value={config.landingPage[`session${num}Desc` as keyof typeof config.landingPage]}
+                    onChange={(e) => handleLandingChange(`session${num}Desc` as keyof typeof config.landingPage, e.target.value)}
+                    placeholder="Deskripsi Sesi"
+                    rows={2}
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs text-[#0f172a] outline-none"
+                  />
+                  <input
+                    type="text"
+                    value={config.landingPage[`session${num}Worksheet` as keyof typeof config.landingPage]}
+                    onChange={(e) => handleLandingChange(`session${num}Worksheet` as keyof typeof config.landingPage, e.target.value)}
+                    placeholder="Teks Nama Worksheet"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-[11px] font-medium text-emerald-700 outline-none"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Bottom CTA */}
           <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-slate-200 shadow-xs space-y-5">
             <h4 className="font-serif font-extrabold text-base text-[#0f172a] border-b border-slate-200 pb-3 flex items-center gap-2">
@@ -645,11 +736,103 @@ export default function LayoutCmsEditor({
             </div>
           </div>
 
+          {/* 4 Sessions Detail Program */}
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-slate-200 shadow-xs space-y-5">
+            <h4 className="font-serif font-extrabold text-base text-[#0f172a] border-b border-slate-200 pb-3 flex items-center gap-2">
+              <Layers className="w-4 h-4 text-amber-500" />
+              <span>C. Detail 4 Sesi Praktik Mindfulness</span>
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[1, 2, 3, 4].map((num) => (
+                <div key={num} className="p-4 rounded-2xl bg-[#f8fafc] border border-slate-200 space-y-2">
+                  <span className="text-xs font-bold text-emerald-800">Detail Sesi {num}</span>
+                  <input
+                    type="text"
+                    value={config.programPage[`session${num}Title` as keyof typeof config.programPage]}
+                    onChange={(e) => handleProgramChange(`session${num}Title` as keyof typeof config.programPage, e.target.value)}
+                    placeholder="Judul Sesi"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-medium text-[#0f172a] outline-none"
+                  />
+                  <textarea
+                    value={config.programPage[`session${num}Desc` as keyof typeof config.programPage]}
+                    onChange={(e) => handleProgramChange(`session${num}Desc` as keyof typeof config.programPage, e.target.value)}
+                    placeholder="Deskripsi Sesi"
+                    rows={2}
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs text-[#0f172a] outline-none"
+                  />
+                  <textarea
+                    value={config.programPage[`session${num}Homework` as keyof typeof config.programPage]}
+                    onChange={(e) => handleProgramChange(`session${num}Homework` as keyof typeof config.programPage, e.target.value)}
+                    placeholder="Deskripsi Penugasan"
+                    rows={2}
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-[11px] font-medium text-emerald-700 outline-none"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pengalaman Pembelajaran */}
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-slate-200 shadow-xs space-y-5">
+            <h4 className="font-serif font-extrabold text-base text-[#0f172a] border-b border-slate-200 pb-3 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <span>D. Pengalaman Pembelajaran (3 Fitur Utama)</span>
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1.5 md:col-span-2">
+                <label className="text-xs font-bold text-[#0f172a]">Judul Bagian</label>
+                <input
+                  type="text"
+                  value={config.programPage.learningTitle}
+                  onChange={(e) => handleProgramChange('learningTitle', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+              <div className="space-y-1.5 md:col-span-2">
+                <label className="text-xs font-bold text-[#0f172a]">Subjudul Bagian</label>
+                <textarea
+                  rows={2}
+                  value={config.programPage.learningSubtitle}
+                  onChange={(e) => handleProgramChange('learningSubtitle', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+              
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[#0f172a]">Fitur 1 (Teks)</label>
+                <input
+                  type="text"
+                  value={config.programPage.learningFeature1}
+                  onChange={(e) => handleProgramChange('learningFeature1', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[#0f172a]">Fitur 2 (Teks)</label>
+                <input
+                  type="text"
+                  value={config.programPage.learningFeature2}
+                  onChange={(e) => handleProgramChange('learningFeature2', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[#0f172a]">Fitur 3 (Teks)</label>
+                <input
+                  type="text"
+                  value={config.programPage.learningFeature3}
+                  onChange={(e) => handleProgramChange('learningFeature3', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Banner Syarat Konseling */}
           <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-slate-200 shadow-xs space-y-5">
             <h4 className="font-serif font-extrabold text-base text-[#0f172a] border-b border-slate-200 pb-3 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500" />
-              <span>C. Banner Petunjuk Syarat Konseling 1-on-1</span>
+              <span>E. Banner Petunjuk Syarat Konseling 1-on-1</span>
             </h4>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -800,12 +983,61 @@ export default function LayoutCmsEditor({
             </div>
           </div>
 
+          {/* Didukung Oleh */}
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-slate-200 shadow-xs space-y-5">
+            <h4 className="font-serif font-extrabold text-base text-[#0f172a] border-b border-slate-200 pb-3 flex items-center gap-2">
+              <Users className="w-4 h-4 text-amber-500" />
+              <span>B. Bagian Didukung Oleh (Sponsor / Institusi)</span>
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1.5 md:col-span-2">
+                <label className="text-xs font-bold text-[#0f172a]">Teks Badge (Kecil)</label>
+                <input
+                  type="text"
+                  value={config.tentangKamiPage.supportBadge}
+                  onChange={(e) => handleTentangChange('supportBadge', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[#0f172a]">Nama Institusi 1</label>
+                <input
+                  type="text"
+                  value={config.tentangKamiPage.supporter1}
+                  onChange={(e) => handleTentangChange('supporter1', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[#0f172a]">Nama Institusi 2</label>
+                <input
+                  type="text"
+                  value={config.tentangKamiPage.supporter2}
+                  onChange={(e) => handleTentangChange('supporter2', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Tim Peneliti */}
           <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-slate-200 shadow-xs space-y-5">
             <h4 className="font-serif font-extrabold text-base text-[#0f172a] border-b border-slate-200 pb-3 flex items-center gap-2">
               <Users className="w-4 h-4 text-amber-500" />
-              <span>B. Tim Peneliti & Praktisi Pengembang (3 Profil)</span>
+              <span>C. Tim Peneliti & Praktisi Pengembang (3 Profil)</span>
             </h4>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[#0f172a]">Teks Badge (Kecil)</label>
+                <input
+                  type="text"
+                  value={config.tentangKamiPage.teamBadge}
+                  onChange={(e) => handleTentangChange('teamBadge', e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f8fafc] border border-slate-200 text-xs sm:text-sm font-medium text-[#0f172a] focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Member 1 */}

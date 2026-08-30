@@ -68,7 +68,7 @@ export default async function TentangKamiPage() {
                       />
                       <text className="text-[11px] font-bold tracking-[0.25em] uppercase fill-[#c2db8f]">
                         <textPath href="#textCircle" startOffset="0%">
-                          EDUKATIF • TERUKUR • BERBASIS RISET •
+                          {tentang.stampText}
                         </textPath>
                       </text>
                     </svg>
@@ -113,16 +113,16 @@ export default async function TentangKamiPage() {
         {/* 3. DIDUKUNG OLEH SECTION */}
         <section className="bg-[#e8ece1] px-4 py-16">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <h4 className="text-xs font-bold tracking-widest uppercase text-[#3f5726]">DIDUKUNG OLEH</h4>
+            <h4 className="text-xs font-bold tracking-widest uppercase text-[#3f5726]">{tentang.supportBadge}</h4>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
               <div className="flex items-center gap-3 bg-white px-6 py-4 rounded-2xl shadow-xs border border-[#d5dcc4]/60">
                 <Brain className="w-6 h-6 text-[#3f5726]" />
-                <span className="font-semibold text-sm">Konseling MBCT</span>
+                <span className="font-semibold text-sm">{tentang.supporter1}</span>
               </div>
 
               <div className="flex items-center gap-3 bg-white px-6 py-4 rounded-2xl shadow-xs border border-[#d5dcc4]/60">
                 <Building2 className="w-6 h-6 text-[#3f5726]" />
-                <span className="font-semibold text-sm">Klinik Psikologi Terapan</span>
+                <span className="font-semibold text-sm">{tentang.supporter2}</span>
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@ export default async function TentangKamiPage() {
         <section className="bg-[#f3f6e8] px-4 py-20">
           <div className="max-w-6xl mx-auto space-y-16">
             <div className="text-center max-w-3xl mx-auto space-y-3">
-              <span className="text-xs font-bold tracking-widest uppercase text-[#5a7a35]">TIM PENELITI</span>
+              <span className="text-xs font-bold tracking-widest uppercase text-[#5a7a35]">{tentang.teamBadge}</span>
               <h2 className="text-2xl md:text-4xl font-bold font-serif">
                 {tentang.teamHeading}
               </h2>

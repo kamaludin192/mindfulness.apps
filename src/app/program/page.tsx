@@ -111,16 +111,16 @@ export default async function ProgramPage() {
                   </span>
                   <Sparkles className="w-5 h-5 text-[#3f5726]" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Mindful Breathing</h3>
+                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">{program.session1Title}</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed mb-6">
-                  Latihan pernapasan sadar yang dilengkapi dengan materi psikoedukasi untuk melatih fokus dan ketenangan saat menghadapi situasi pemicu kecemasan.
+                  {program.session1Desc}
                 </p>
                 <div className="p-4 rounded-2xl bg-[#f3f6e8] text-xs space-y-2 border border-[#d5dcc4]/50">
                   <p className="font-semibold text-[#3f5726] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
                     Penugasan:
                   </p>
-                  <p className="text-[#2b3a1a]/80">Tugas di rumah: berapa kali berlatih <em>mindful breathing</em> selama sehari.</p>
+                  <p className="text-[#2b3a1a]/80" dangerouslySetInnerHTML={{ __html: program.session1Homework }} />
                 </div>
               </div>
 
@@ -132,16 +132,16 @@ export default async function ProgramPage() {
                   </span>
                   <Leaf className="w-5 h-5 text-[#c2db8f]" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Mindful Sitting and Mindful Listening</h3>
+                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">{program.session2Title}</h3>
                 <p className="text-sm text-white/90 leading-relaxed mb-6">
-                  Berlatih mengobservasi sekeliling dengan kesadaran penuh tanpa menghakimi saat duduk tenang dan mendengarkan dengan penuh perhatian.
+                  {program.session2Desc}
                 </p>
                 <div className="p-4 rounded-2xl bg-white/10 text-xs space-y-2 border border-white/10">
                   <p className="font-semibold text-[#c2db8f] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
                     Penugasan:
                   </p>
-                  <p className="text-white/80">Penugasan <em>worksheet experience calendar</em> untuk dilakukan di rumah seharian apa yang dirasakan pada perasaan dan pikiran.</p>
+                  <p className="text-white/80" dangerouslySetInnerHTML={{ __html: program.session2Homework }} />
                 </div>
               </div>
 
@@ -153,16 +153,16 @@ export default async function ProgramPage() {
                   </span>
                   <Brain className="w-5 h-5 text-[#3f5726]" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Body Scanning</h3>
+                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">{program.session3Title}</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed mb-6">
-                  Kenali ketegangan fisik melalui teknik pemindaian sensasi tubuh secara menyeluruh untuk meredakan ketegangan fisik dan kecemasan.
+                  {program.session3Desc}
                 </p>
                 <div className="p-4 rounded-2xl bg-white/80 text-xs space-y-2 border border-[#d5dcc4]/50">
                   <p className="font-semibold text-[#3f5726] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
                     Penugasan:
                   </p>
-                  <p className="text-[#2b3a1a]/80">Penugasan <em>worksheet daily thought record</em>.</p>
+                  <p className="text-[#2b3a1a]/80" dangerouslySetInnerHTML={{ __html: program.session3Homework }} />
                 </div>
               </div>
 
@@ -174,16 +174,16 @@ export default async function ProgramPage() {
                   </span>
                   <Heart className="w-5 h-5 text-[#3f5726]" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">Gratitude and Loving in Kindness</h3>
+                <h3 className="text-xl md:text-2xl font-bold font-serif mb-3">{program.session4Title}</h3>
                 <p className="text-sm text-[#2b3a1a]/80 leading-relaxed mb-6">
-                  Tumbuhkan rasa syukur dan memupuk cinta kasih serta kebaikan hati terhadap diri sendiri maupun orang lain.
+                  {program.session4Desc}
                 </p>
                 <div className="p-4 rounded-2xl bg-[#f3f6e8] text-xs space-y-2 border border-[#d5dcc4]/50">
                   <p className="font-semibold text-[#3f5726] flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4" />
                     Penugasan:
                   </p>
-                  <p className="text-[#2b3a1a]/80">Penugasan <em>worksheet gratitude</em> (menyebutkan hal yang disyukuri) dan <em>worksheet letter for myself</em> (menuliskan surat cinta untuk diri).</p>
+                  <p className="text-[#2b3a1a]/80" dangerouslySetInnerHTML={{ __html: program.session4Homework }} />
                 </div>
               </div>
             </div>
@@ -194,10 +194,10 @@ export default async function ProgramPage() {
         <section className="bg-[#e8ece1] px-4 py-20">
           <div className="max-w-6xl mx-auto text-center">
             <h2 className="text-2xl md:text-4xl font-bold font-serif mb-4">
-              Pengalaman Pembelajaran
+              {program.learningTitle}
             </h2>
             <p className="text-sm md:text-base text-[#2b3a1a]/80 max-w-2xl mx-auto mb-14">
-              Sistem yang dirancang untuk mendukung fokus, kenyamanan, dan pelacakan progres secara aman.
+              {program.learningSubtitle}
             </p>
 
             <div className="grid md:grid-cols-3 gap-8 text-left">
@@ -205,21 +205,21 @@ export default async function ProgramPage() {
                 <div className="w-12 h-12 rounded-2xl bg-[#f3f6e8] flex items-center justify-center mb-4">
                   <Headphones className="w-6 h-6 text-[#3f5726]" />
                 </div>
-                <h3 className="font-bold text-lg">Panduan Program Terstruktur</h3>
+                <h3 className="font-bold text-lg">{program.learningFeature1}</h3>
               </div>
 
               <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4]/40 hover:-translate-y-1 transition-all">
                 <div className="w-12 h-12 rounded-2xl bg-[#f3f6e8] flex items-center justify-center mb-4">
                   <Smile className="w-6 h-6 text-[#3f5726]" />
                 </div>
-                <h3 className="font-bold text-lg">Pelacakan Mood Harian</h3>
+                <h3 className="font-bold text-lg">{program.learningFeature2}</h3>
               </div>
 
               <div className="bg-white rounded-3xl p-8 shadow-xs border border-[#d5dcc4]/40 hover:-translate-y-1 transition-all">
                 <div className="w-12 h-12 rounded-2xl bg-[#f3f6e8] flex items-center justify-center mb-4">
                   <Award className="w-6 h-6 text-[#3f5726]" />
                 </div>
-                <h3 className="font-bold text-lg">Pelacakan Konsistensi</h3>
+                <h3 className="font-bold text-lg">{program.learningFeature3}</h3>
               </div>
             </div>
           </div>

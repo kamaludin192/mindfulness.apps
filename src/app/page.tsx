@@ -135,14 +135,14 @@ export default async function HomePage() {
           <div className="max-w-6xl mx-auto space-y-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#3f5726]">Latihan</span>
-                <h2 className="text-2xl md:text-3xl font-bold font-serif text-[#1e2a14] mt-1">4 Sesi Mindfulness Interaktif</h2>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#3f5726]">{landing.sessionsBadge}</span>
+                <h2 className="text-2xl md:text-3xl font-bold font-serif text-[#1e2a14] mt-1">{landing.sessionsTitle}</h2>
               </div>
               <Link
                 href="/program"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#3f5726] hover:underline"
               >
-                <span>Lihat Detail Lengkap Modul</span>
+                <span>{landing.sessionsLinkText}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -154,14 +154,14 @@ export default async function HomePage() {
                   Sesi 1
                 </span>
                 <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
-                  Mindful Breathing
+                  {landing.session1Title}
                 </h3>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
-                  Mempelajari dasar pernapasan sadar dan melatih fokus pikiran.
+                  {landing.session1Desc}
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Worksheet Mindful Breathing</span>
+                  <span>{landing.session1Worksheet}</span>
                 </div>
               </div>
 
@@ -171,14 +171,14 @@ export default async function HomePage() {
                   Sesi 2
                 </span>
                 <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
-                  Mindful Sitting and Mindful Listening
+                  {landing.session2Title}
                 </h3>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
-                  Melatih kesadaran saat duduk tenang dan mendengarkan dengan penuh perhatian tanpa menghakimi.
+                  {landing.session2Desc}
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Worksheet Experience Calendar</span>
+                  <span>{landing.session2Worksheet}</span>
                 </div>
               </div>
 
@@ -188,14 +188,14 @@ export default async function HomePage() {
                   Sesi 3
                 </span>
                 <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
-                  Body Scanning
+                  {landing.session3Title}
                 </h3>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
-                  Mempelajari pemindaian sensasi tubuh secara menyeluruh untuk meredakan ketegangan fisik dan kecemasan.
+                  {landing.session3Desc}
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Worksheet Daily Thought Record</span>
+                  <span>{landing.session3Worksheet}</span>
                 </div>
               </div>
 
@@ -205,14 +205,14 @@ export default async function HomePage() {
                   Sesi 4
                 </span>
                 <h3 className="text-lg font-bold font-serif mb-2 text-[#1e2a14]">
-                  Gratitude and Loving in Kindness
+                  {landing.session4Title}
                 </h3>
                 <p className="text-xs text-[#2b3a1a]/80 leading-relaxed mb-4">
-                  Menumbuhkan rasa syukur serta memupuk cinta kasih dan kebaikan hati terhadap diri sendiri dan orang lain.
+                  {landing.session4Desc}
                 </p>
                 <div className="text-[11px] text-[#3f5726] font-medium flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Worksheet Gratitude & Worksheet Letter for Myself</span>
+                  <span>{landing.session4Worksheet}</span>
                 </div>
               </div>
             </div>
