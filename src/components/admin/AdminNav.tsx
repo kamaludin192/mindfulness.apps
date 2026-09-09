@@ -17,6 +17,7 @@ import {
   Sparkles,
   Smile,
   Palette,
+  Activity,
 } from 'lucide-react'
 import { logoutAction } from '@/app/siswa/profil/actions'
 
@@ -55,6 +56,12 @@ const ADMIN_NAV_ITEMS = [
     href: '/admin/konseling',
     label: 'Audit Jadwal Konseling',
     icon: CalendarCheck2,
+    exact: false,
+  },
+  {
+    href: '/admin/monitoring-sesi',
+    label: 'Monitoring Sesi Siswa',
+    icon: Activity,
     exact: false,
   },
 ]

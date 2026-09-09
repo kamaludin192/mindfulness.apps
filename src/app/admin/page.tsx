@@ -9,6 +9,7 @@ import {
   Sparkles,
   Palette,
   Calendar,
+  Activity,
 } from "lucide-react";
 import { getAdminKpiMetrics } from "@/services/admin.service";
 import { getAllAssessmentsWithStudents } from "@/services/mood.service";
@@ -185,6 +186,25 @@ export default async function AdminDashboardOverview() {
           </p>
           <span className="inline-flex items-center gap-1 text-xs font-bold text-blue-700">
             <span>Buka Audit Konseling</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </Link>
+
+        <Link
+          href="/admin/monitoring-sesi"
+          className="bg-white p-5 sm:p-6 rounded-3xl border-2 border-slate-200 hover:border-teal-500 hover:shadow-md transition-all space-y-3 cursor-pointer group"
+        >
+          <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
+            <Activity className="w-5 h-5" />
+          </div>
+          <h3 className="font-serif font-extrabold text-base text-[#0f172a] group-hover:text-teal-700 transition-colors">
+            Monitoring Sesi Siswa
+          </h3>
+          <p className="text-xs text-[#475569] leading-relaxed">
+            Pantau tingkat partisipasi, penyelesaian lembar kerja pada 4 sesi intervensi, dan perolehan poin dari seluruh siswa secara real-time.
+          </p>
+          <span className="inline-flex items-center gap-1 text-xs font-bold text-teal-700">
+            <span>Buka Monitoring Sesi</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </span>
         </Link>
