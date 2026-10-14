@@ -69,6 +69,9 @@ const initialAuthState: AuthState = {
   success: null,
 }
 
+// Konfigurasi aktivasi login Google (set ke true jika kredensial OAuth baru telah siap)
+const ENABLE_GOOGLE_AUTH = false
+
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login')
   const [showPassword, setShowPassword] = useState(false)
@@ -170,41 +173,43 @@ export default function AuthPage() {
             </button>
           </div>
 
-          {/* Google Sign In Button (Prominent with Google Icon & Text) */}
-          <div className="space-y-4 pt-1">
-            <button
-              type="button"
-              onClick={handleGoogleAuth}
-              disabled={googleLoading}
-              title={activeTab === 'login' ? 'Masuk dengan Akun Google' : 'Daftar dengan Akun Google'}
-              aria-label={activeTab === 'login' ? 'Masuk dengan Akun Google' : 'Daftar dengan Akun Google'}
-              className="w-full py-3.5 px-4 flex items-center justify-center gap-3 rounded-2xl border border-[#d5dcc4] bg-white hover:bg-[#f3f6e8] shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-            >
-              {googleLoading ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-[#3f5726]/30 border-t-[#3f5726] rounded-full animate-spin" />
-                  <span className="text-xs md:text-sm font-semibold text-[#1e2a14]">
-                    Menghubungkan ke Google...
-                  </span>
-                </div>
-              ) : (
-                <>
-                  <GoogleIcon />
-                  <span className="text-xs md:text-sm font-semibold text-[#1e2a14]">
-                    {activeTab === 'login' ? 'Masuk dengan Akun Google' : 'Daftar dengan Akun Google'}
-                  </span>
-                </>
-              )}
-            </button>
+          {/* Google Sign In Button (Dinonaktifkan sementara via toggle ENABLE_GOOGLE_AUTH) */}
+          {ENABLE_GOOGLE_AUTH && (
+            <div className="space-y-4 pt-1">
+              <button
+                type="button"
+                onClick={handleGoogleAuth}
+                disabled={googleLoading}
+                title={activeTab === 'login' ? 'Masuk dengan Akun Google' : 'Daftar dengan Akun Google'}
+                aria-label={activeTab === 'login' ? 'Masuk dengan Akun Google' : 'Daftar dengan Akun Google'}
+                className="w-full py-3.5 px-4 flex items-center justify-center gap-3 rounded-2xl border border-[#d5dcc4] bg-white hover:bg-[#f3f6e8] shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {googleLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-[#3f5726]/30 border-t-[#3f5726] rounded-full animate-spin" />
+                    <span className="text-xs md:text-sm font-semibold text-[#1e2a14]">
+                      Menghubungkan ke Google...
+                    </span>
+                  </div>
+                ) : (
+                  <>
+                    <GoogleIcon />
+                    <span className="text-xs md:text-sm font-semibold text-[#1e2a14]">
+                      {activeTab === 'login' ? 'Masuk dengan Akun Google' : 'Daftar dengan Akun Google'}
+                    </span>
+                  </>
+                )}
+              </button>
 
-            {/* Divider */}
-            <div className="relative flex items-center justify-center">
-              <div className="border-t border-[#d5dcc4] w-full" />
-              <span className="bg-white px-3 text-[11px] text-[#2b3a1a]/50 uppercase tracking-wider shrink-0">
-                atau via email & kata sandi
-              </span>
+              {/* Divider */}
+              <div className="relative flex items-center justify-center">
+                <div className="border-t border-[#d5dcc4] w-full" />
+                <span className="bg-white px-3 text-[11px] text-[#2b3a1a]/50 uppercase tracking-wider shrink-0">
+                  atau via email & kata sandi
+                </span>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Feedback Alerts */}
           {currentState?.error && (
