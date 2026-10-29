@@ -27,7 +27,7 @@ export const DEFAULT_SESSIONS: SessionItem[] = [
 export async function getStudentProgressMap(
   studentId: string
 ): Promise<Record<string, ExerciseProgress>> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: progressList } = await supabase
     .from('exercise_progress')
     .select('*')
@@ -46,7 +46,7 @@ export async function markVideoAsWatched(
   studentId: string,
   sessionId: string | number
 ): Promise<void> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: progress } = await supabase
     .from('exercise_progress')
     .select('*')
@@ -78,7 +78,7 @@ export async function submitStudentWorksheet(
   sessionId: string | number,
   worksheetData: Record<string, unknown>
 ): Promise<void> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: progress } = await supabase
     .from('exercise_progress')
     .select('*')
@@ -112,7 +112,7 @@ export async function submitStudentWorksheet(
 }
 
 export async function getCompletedExercisesCount(): Promise<number> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { count } = await supabase
     .from('exercise_progress')
     .select('*', { count: 'exact', head: true })
@@ -122,7 +122,7 @@ export async function getCompletedExercisesCount(): Promise<number> {
 }
 
 export async function getRecentSubmissions(limit = 6): Promise<ExerciseProgress[]> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data } = await supabase
     .from('exercise_progress')
     .select(`

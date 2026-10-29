@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import type { UserProfile, UserRole } from '@/types/auth'
 
 export async function getCurrentUser() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user },
     error,
@@ -19,7 +19,7 @@ export async function getCurrentUserProfile(): Promise<UserProfile | null> {
   const user = await getCurrentUser()
   if (!user) return null
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: profile } = await supabase
     .from('profiles')
     .select('id, full_name, role, school, phone, avatar_url, created_at, updated_at')
@@ -81,14 +81,14 @@ export async function requireAuth(allowedRoles?: UserRole[]): Promise<{
 }
 
 export async function resetPasswordForEmail(email: string, redirectTo: string) {
-  const supabase = createClient()
+  const supabase = await createClient()
   return await supabase.auth.resetPasswordForEmail(email, {
     redirectTo,
   })
 }
 
 export async function sendPasswordResetOtp(email: string, redirectTo?: string) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const cleanEmail = email.trim().toLowerCase()
 
   const { error } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
@@ -110,7 +110,7 @@ export async function verifyPasswordResetOtp(
   token: string,
   newPassword: string
 ) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const cleanEmail = email.trim().toLowerCase()
   const cleanToken = token.trim()
 
@@ -168,7 +168,7 @@ export async function provisionOrUpdateOAuthUser(user: {
     role?: string
   }
 }): Promise<{ role: UserRole }> {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // 1. Check if profile already exists by user ID
   const { data: existingProfile } = await supabase

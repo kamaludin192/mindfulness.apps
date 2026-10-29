@@ -29,7 +29,7 @@ export async function cancelCounseling(bookingId: string) {
   const user = await getCurrentUser()
   if (!user) throw new Error('Unauthorized')
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const { error } = await supabase
     .from('counseling_bookings')
     .delete()

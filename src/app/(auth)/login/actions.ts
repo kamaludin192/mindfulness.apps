@@ -16,7 +16,7 @@ export async function login(prevState: AuthState, formData: FormData): Promise<A
     return { error: 'Email dan kata sandi wajib diisi.' }
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email.trim(),
@@ -76,7 +76,7 @@ export async function register(prevState: AuthState, formData: FormData): Promis
     return { error: 'Kata sandi minimal harus 6 karakter.' }
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase.auth.signUp({
     email: email.trim(),

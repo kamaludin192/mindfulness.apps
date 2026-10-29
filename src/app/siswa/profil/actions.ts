@@ -11,7 +11,7 @@ export interface ProfileActionState {
 }
 
 export async function logoutAction() {
-  const supabase = createClient()
+  const supabase = await createClient()
   await supabase.auth.signOut()
   redirect('/login')
 }
@@ -28,7 +28,7 @@ export async function updateProfile(
     return { error: 'Nama lengkap tidak boleh kosong.', success: null }
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()

@@ -8,7 +8,7 @@ const LAYOUT_CMS_CONFIG_KEY = '__APP_LAYOUT_CONFIG__'
 const LAYOUT_CMS_SESSION_NUMBER = 999
 
 export async function getLayoutConfig(): Promise<AppLayoutConfig> {
-  const supabase = createClient()
+  const supabase = await createClient()
   try {
     const { data, error } = await supabase
       .from('cms_contents')
@@ -33,7 +33,7 @@ export async function getLayoutConfig(): Promise<AppLayoutConfig> {
 }
 
 export async function saveLayoutConfig(config: AppLayoutConfig): Promise<void> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const payloadJson = JSON.stringify(config)
 
   const { data: existing } = await supabase
@@ -66,7 +66,7 @@ export async function saveLayoutConfig(config: AppLayoutConfig): Promise<void> {
 }
 
 export async function resetLayoutConfig(): Promise<void> {
-  const supabase = createClient()
+  const supabase = await createClient()
   await supabase
     .from('cms_contents')
     .delete()
@@ -75,7 +75,7 @@ export async function resetLayoutConfig(): Promise<void> {
 }
 
 export async function getAllSessionMaterials() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data, error } = await supabase
     .from('cms_contents')
     .select('*')
@@ -92,7 +92,7 @@ export async function updateSessionMaterial(
   sessionNumber: number,
   payload: { title: string; videoUrl?: string; description?: string }
 ): Promise<void> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: existing } = await supabase
     .from('cms_contents')
     .select('id')

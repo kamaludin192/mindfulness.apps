@@ -8,7 +8,7 @@ export async function requestCounselingBooking(
   scheduledAt: string,
   notes?: string
 ): Promise<{ success: boolean; data?: CounselingBooking; error?: string }> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data, error } = await supabase
     .from('counseling_bookings')
     .insert({
@@ -32,7 +32,7 @@ export async function updateBookingStatus(
   guruId: string,
   status: CounselingStatus
 ): Promise<{ success: boolean; error?: string }> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { error } = await supabase
     .from('counseling_bookings')
     .update({ status })
@@ -46,7 +46,7 @@ export async function updateBookingStatus(
 }
 
 export async function getUpcomingBookingsForGuru(guruId: string, limit = 6) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data } = await supabase
     .from('counseling_bookings')
     .select(`
@@ -65,7 +65,7 @@ export async function getUpcomingBookingsForGuru(guruId: string, limit = 6) {
 }
 
 export async function getAllBookingsForGuru(guruId: string) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data, error } = await supabase
     .from('counseling_bookings')
     .select(`
@@ -91,7 +91,7 @@ export async function getAllBookingsForGuru(guruId: string) {
 }
 
 export async function getAllBookingsForAdmin() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data, error } = await supabase
     .from('counseling_bookings')
     .select(`
@@ -119,7 +119,7 @@ export async function getAllBookingsForAdmin() {
 }
 
 export async function getCounselorAvailability(guruId: string) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data } = await supabase
     .from('counselor_availability_settings')
     .select('*')
@@ -133,7 +133,7 @@ export async function saveCounselorAvailability(
   guruId: string,
   payload: AvailabilitySettingsPayload
 ) {
-  const supabase = createClient()
+  const supabase = await createClient()
   return await supabase
     .from('counselor_availability_settings')
     .upsert(

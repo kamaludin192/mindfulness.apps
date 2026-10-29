@@ -3,7 +3,7 @@ import { StudentTable } from "@/components/guru/StudentTable";
 import { Users } from "lucide-react";
 
 export default async function GuruDashboardMonitoring() {
-  const supabase = createClient();
+  const supabase = await createClient();
   
   const { data: user, error: authError } = await supabase.auth.getUser();
   if (authError || !user?.user) {

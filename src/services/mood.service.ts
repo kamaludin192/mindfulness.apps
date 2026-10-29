@@ -6,7 +6,7 @@ export async function saveOrUpdateEmotionCheckIn(
   moodScore: number,
   notes?: string | null
 ): Promise<{ success: boolean; error?: string }> {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Calculate start of current local day (00:00:00)
   const startOfDay = new Date()
@@ -51,7 +51,7 @@ export async function getTodayStudentCheckIn(studentId: string): Promise<{
   notes: string | null
   created_at?: string
 } | null> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const startOfDay = new Date()
   startOfDay.setHours(0, 0, 0, 0)
 
@@ -68,7 +68,7 @@ export async function getTodayStudentCheckIn(studentId: string): Promise<{
 }
 
 export async function getAllAssessmentsWithStudents(): Promise<AssessmentItem[]> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data, error } = await supabase
     .from('assessments')
     .select(`
@@ -93,7 +93,7 @@ export async function getAllAssessmentsWithStudents(): Promise<AssessmentItem[]>
 }
 
 export async function getRecentStudentCheckIns(studentId: string, limit = 7) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data } = await supabase
     .from('assessments')
     .select('id, mood_score, notes, created_at')

@@ -6,7 +6,7 @@ export async function sendChatMessage(
   receiverId: string,
   message: string
 ): Promise<void> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { error } = await supabase.from('chat_messages').insert({
     sender_id: senderId,
     receiver_id: receiverId,
@@ -20,7 +20,7 @@ export async function getConversationMessages(
   userId1: string,
   userId2: string
 ): Promise<ChatMessage[]> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data, error } = await supabase
     .from('chat_messages')
     .select(`

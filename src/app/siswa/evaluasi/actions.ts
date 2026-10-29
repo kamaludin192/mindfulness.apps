@@ -12,7 +12,7 @@ export interface ProgramEvaluationPayload {
 }
 
 export async function submitProgramEvaluation(payload: ProgramEvaluationPayload) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user },
     error: authError,

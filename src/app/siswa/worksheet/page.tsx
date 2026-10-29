@@ -44,8 +44,9 @@ const FALLBACK_DEFAULT_SESSIONS = [
 export default async function WorksheetPage({
   searchParams,
 }: {
-  searchParams: { session?: string }
+  searchParams: Promise<{ session?: string }>
 }) {
+  const resolvedSearchParams = await searchParams
   const { user } = await requireAuth(['siswa', 'superadmin'])
 
   // 1. Fetch Sessions from CMS
@@ -81,7 +82,7 @@ export default async function WorksheetPage({
     }
   })
 
-  const activeSessionId = searchParams.session || sessions[0].id
+  const activeSessionId = resolvedSearchParams?.session || sessions[0].id
   const activeSession = sessionListWithLock.find((s) => s.id === activeSessionId) || sessionListWithLock[0]
   const isCurrentSessionLocked = activeSession.isLocked
 

@@ -18,15 +18,16 @@ export const metadata = {
 export default async function ChatPage({
   searchParams,
 }: {
-  searchParams?: { guruId?: string }
+  searchParams?: Promise<{ guruId?: string }>
 }) {
+  const resolvedSearchParams = await searchParams
   const { user } = await requireAuth(['siswa', 'superadmin'])
 
   // 1. Find all Guru BK to chat with
   const guruList = await getProfilesByRole('guru_bk')
 
   // Find active guru
-  const selectedGuruId = searchParams?.guruId
+  const selectedGuruId = resolvedSearchParams?.guruId
   const activeGuru =
     (selectedGuruId && guruList?.find((g) => g.id === selectedGuruId)) ||
     guruList?.[0] || {
@@ -40,7 +41,7 @@ export default async function ChatPage({
   const initialMessages = await getConversationMessages(user.id, activeGuru.id)
 
   // 3. Fetch latest booking status
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: existingBookings } = await supabase
     .from('counseling_bookings')
     .select('*')

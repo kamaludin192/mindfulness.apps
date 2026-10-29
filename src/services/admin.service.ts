@@ -4,7 +4,7 @@ import type { AdminKpiMetrics } from '@/types/admin'
 import type { UserRole } from '@/types/auth'
 
 export async function ensureSuperadmin() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -27,7 +27,7 @@ export async function ensureSuperadmin() {
 }
 
 export async function getAdminKpiMetrics(): Promise<AdminKpiMetrics> {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // 1. Fetch total user counts by role
   const { data: allProfiles } = await supabase
@@ -148,7 +148,7 @@ export async function registerGuruBkByAdmin(payload: {
       return { success: true, user: newProfile }
     }
   } else {
-    const fallbackClient = createClient()
+    const fallbackClient = await createClient()
     const { data: signUpData, error: signUpError } = await fallbackClient.auth.signUp({
       email: payload.email.trim().toLowerCase(),
       password: payload.password,

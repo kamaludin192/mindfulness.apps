@@ -12,7 +12,7 @@ export interface GuruProfileActionState {
 }
 
 export async function logoutAction() {
-  const supabase = createClient()
+  const supabase = await createClient()
   await supabase.auth.signOut()
   redirect('/login')
 }
@@ -30,7 +30,7 @@ export async function updateGuruProfile(
     return { error: 'Nama lengkap dan gelar tidak boleh kosong.', success: null }
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
